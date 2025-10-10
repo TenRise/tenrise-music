@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ten Rise: Official Music Showcase</title>
+    <!-- Load Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Inter font for modern look */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Fallback for no image */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            transition: background 0.5s;
+            /* MAIN BACKGROUND IMAGE WITH LIGHTER OVERLAY */
+            background-image: 
+                linear-gradient(rgba(17, 24, 39, 0.5), rgba(17, 24, 39, 0.5)), /* Lighter overlay (0.5 opacity) */
+                url('https://i.imgur.com/zFqAhiy.png'); /* YOUR GLOBAL BACKGROUND */
+        }
+
+        /* Specific style for the detail panel background (slightly darker for contrast) */
+        #detail-panel {
+            background-image: 
+                linear-gradient(rgba(17, 24, 39, 0.95), rgba(17, 24, 39, 0.95)), /* Stronger overlay */
+                url('https://i.imgur.com/zFqAhiy.png'); /* YOUR GLOBAL BACKGROUND */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; 
+        }
+
+        /* Album Cover styling for the Modal Grid */
+        .album-cover {
+            transition: all 0.2s ease-in-out;
+            border: 4px solid transparent; /* Always has a transparent border for consistent sizing */
+            aspect-ratio: 1 / 1; /* Ensures perfect square covers */
+            width: 100%;
+            height: auto;
+        }
+        .album-cover:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Layered glow for consistency */
+        .album-cover.selected {
+            border-color: #06b6d4; /* Primary accent color border (Cyan/Light Blue) */
+            transform: scale(1.05);
+            box-shadow: 
+                0 0 8px 2px rgba(6, 182, 212, 1), /* Inner, brighter glow */
+                0 0 20px 5px rgba(6, 182, 212, 0.6); /* Outer, softer glow */
+        }
+        
+        /* Custom box-shadow for search focus */
+        #modal-search-input:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 
+                0 0 0 3px rgba(6, 182, 212, 0.5), 
+                0 0 8px rgba(6, 182, 212, 0.3);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Bright Cyan/Light Blue (Tailwind Cyan 500)
+                        'primary-accent': '#06b6d4', 
+                        'dark-bg': '#1f2937', // Dark gray
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <!-- Main Application Container -->
+    <div class="min-h-screen flex flex-col p-4 sm:p-8">
+
+        <!-- Language Selector and Header -->
+        <header class="mb-4 flex flex-col items-center relative">
+            
+            <!-- Language Selector -->
+            <div class="absolute top-0 right-0 flex space-x-2">
+                <button id="lang-en" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200" onclick="setLanguage('en')">EN</button>
+                <button id="lang-jp" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200" onclick="setLanguage('jp')">JP</button>
+            </div>
+            
+            <!-- Logo -->
+            <img src="https://i.imgur.com/80HMrPY.png" 
+                 alt="Ten Rise Official Music Gallery Logo" 
+                 class="w-full max-w-xl h-auto"
+                 onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE+OFFICIAL+POLICE';"
+            >
+        </header>
+
+        <!-- Social Media Links Bar -->
+        <div id="social-links-bar" class="flex justify-center items-center mb-8">
+            <!-- Social icons will be placed here by JavaScript -->
+        </div>
+
+        <!-- 1. Selection Trigger Section (Opens Modal) -->
+        <div class="mb-10 bg-gray-900/50 backdrop-blur-sm rounded-xl p-4 shadow-xl">
+            
+            <!-- CURRENT SELECTION SUMMARY - Now always visible -->
+            <div id="current-selection-summary" class="w-full mb-4 flex items-center space-x-4">
+                <!-- Current selection details go here -->
+            </div>
+
+            <!-- BUTTON TO OPEN MODAL -->
+            <button id="gallery-toggle" class="w-full flex justify-between items-center text-left group focus:outline-none bg-primary-accent/10 hover:bg-primary-accent/20 p-3 rounded-lg transition-colors duration-200" onclick="openSelectionModal()">
+                <!-- Title is professional, short and concise -->
+                <h2 id="gallery-title" class="text-xl font-bold text-gray-100 group-hover:text-primary-accent transition-colors duration-200">View All Releases</h2>
+                <!-- Icon now points right, indicating a new screen/modal will open -->
+                <svg id="toggle-icon" class="w-6 h-6 text-gray-400 group-hover:text-primary-accent transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </button>
+        </div>
+
+        <!-- 2. Detail Panel (Dynamically Updated) -->
+        <main id="detail-panel" class="flex-grow bg-gray-900/90 rounded-xl shadow-2xl p-6 md:p-10 text-white flex flex-col lg:flex-row gap-8">
+            <!-- Content will be inserted here by JavaScript -->
+            <div id="detail-content" class="w-full flex justify-center items-center h-full min-h-[300px]">
+                <!-- Updated ID for translation -->
+                <p id="initial-prompt" class="text-gray-400 text-xl animate-pulse">Select an album cover above to see the full details.</p>
+            </div>
+        </main>
+        
+        <!-- Message Box -->
+        <div id="message-box" class="fixed bottom-4 right-4 p-4 bg-yellow-900 border border-yellow-700 text-yellow-300 rounded-lg text-sm transition-all duration-300 shadow-lg z-50" style="display:none;">
+        </div>
+    </div>
+    
+    <!-- Selection Modal (New Full-Screen Pop-up) -->
+    <div id="selection-modal" class="fixed inset-0 z-50 hidden bg-gray-900/95 backdrop-blur-md overflow-y-auto p-4 sm:p-8">
+        <div class="max-w-7xl mx-auto">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-bold text-primary-accent text-gray-100">Select a Release</h2>
+                <button onclick="closeSelectionModal()" class="text-gray-300 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-accent">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <!-- Search Input -->
+            <div class="mb-8 flex justify-center">
+                <input type="text" id="modal-search-input" oninput="filterReleases()" 
+                       placeholder="Search by Title, Style, or Instrument (e.g., Female Vocal, Instrumental, Piano, Year)..." 
+                       class="w-full md:max-w-xl p-3 rounded-lg bg-gray-800 text-gray-200 placeholder-gray-500 border border-gray-700 focus:border-primary-accent transition-all duration-300">
+            </div>
+
+            <!-- Album Grid Container -->
+            <div id="modal-release-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+                <!-- Album Covers will be rendered here by renderGallery() -->
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // --- 1. LANGUAGE CONFIGURATION (NEW) ---
+        let currentLanguage = 'en';
+
+        const TRANSLATIONS = {
+            'en': {
+                'gallery-title': 'View All Releases', // Updated to new text
+                'current-selection': 'Currently Selected:',
+                'initial-prompt': 'Select a release to view the full details.',
+                'details-heading': 'Single Details',
+                'listen-prompt': 'Click an icon to listen:',
+                'artist': 'Artist',
+                'duration': 'Duration',
+                'label': 'Label',
+                'style': 'Style',
+                'release_date': 'Release Date',
+                'desc_heading': 'Track Description:',
+                
+                // --- ORIGINAL TRACKS ---
+                'track-journey-desc': "A gentle, cinematic piece built around themes of hope and aspiration. Featuring serene female vocals, intricate piano melodies, and lush synthesizer arrangements, the track culminates with the ethereal quality of a children's choir, suggesting a bright, illuminated future. The style aligns with uplifting Anisong and anime soundtracks, providing calm, hopeful music.",
+                'track-stars-desc': "An energetic and highly rhythmic anthem designed to inspire determination. This track features a powerful lead female vocal backed by a dynamic children's choir, set against a driving blend of synthesizer leads and prominent piano rhythms. Its powerful, uplifting style is characteristic of modern Anisong and anime themes, delivering rhymed, energetic music.",
+                'single-neon-desc': "An energetic, driving single that marks the beginning of the Ten Rise sound. This is a standalone digital-only release.",
+                
+                // --- MOCK TRACKS (FOR TESTING) ---
+                'mock-starlight-desc': "A high-energy, pulsing EDM-infused track featuring vocal chops and a deep, driving bassline. This instrumental piece is designed for maximum impact and high-intensity motion sequences.",
+                'mock-echoes-desc': "An ambient ballad characterized by lush strings and subtle electronic textures. The piece features a prominent male tenor vocal and dramatic orchestral swells, evoking reflection and nostalgia.",
+                'mock-crimson-desc': "A fast-paced rock opera with heavy guitar riffs, complex drumming, and soaring dual male and female vocals. Ideal for intense action or battle scenes in anime.",
+                'mock-silent-desc': "A peaceful, instrumental lo-fi hip-hop track featuring a subtle piano loop, gentle percussion, and an overall calm atmosphere, perfect for studying or relaxation.",
+                'mock-cyber-desc': "A vibrant synthwave track paying homage to 80s aesthetics. It features a pulsating rhythm, neon-drenched synth leads, and a retro-futuristic atmosphere.",
+                'mock-lunar-desc': "A minimalist electronica piece built around deep sub-bass frequencies and experimental sound design. This track is atmospheric and designed to be sonically immersive.",
+                'mock-clockwork-desc': "A dark, powerful track blending industrial metal with complex, intricate electronic drum patterns and aggressive, layered synth textures.",
+                'mock-golden-desc': "An uplifting acoustic folk-pop track featuring light percussion, rich vocal harmonies, and warm guitar melodies, centered around a sunset or 'golden hour' theme.",
+                'mock-architect-desc': "A refined progressive house track with extended, melodic instrumental breaks and a soaring, emotional synth melody line. Built for the club and the soundtrack alike.",
+                'mock-deepsea-desc': "A melancholic classical crossover piece featuring a prominent string quartet. The mood is dark, reflective, and deeply expressive.",
+            },
+            'jp': {
+                'gallery-title': '全リリースを見る', // Updated to new text (JP)
+                'current-selection': '現在選択中:',
+                'initial-prompt': 'リリースを選択して詳細をご覧ください。',
+                'details-heading': 'シングル詳細',
+                'listen-prompt': 'アイコンをクリックして聴く:',
+                'artist': 'アーティスト',
+                'duration': '演奏時間',
+                'label': 'レーベル',
+                'style': 'スタイル',
+                'release_date': 'リリース日',
+                'desc_heading': '楽曲の説明:',
+                
+                // --- ORIGINAL TRACKS (JP) ---
+                'track-journey-desc': "希望と憧れをテーマにした、優しくシネマティックな楽曲。穏やかな女性ボーカル、繊細なピアノメロディ、豊かなシンセサイザーアレンジメントを特徴とし、子供たちのコーラスが明るく照らされた未来を暗示します。アップリフティングなアニソン、アニメのサウンドトラックに適合する、穏やかで希望に満ちた音楽です。",
+                'track-stars-desc': "決意を鼓舞するためにデザインされた、エネルギッシュでリズミカルなアンセム。力強いリード女性ボーカルとダイナミックな子供たちのコーラスが特徴で、ドライヴ感のあるシンセサイザーと際立ったピアノのリズムが融合しています。力強く、高揚感のあるスタイルは、現代のアニソンやアニメのテーマ曲を彷彿とさせ、リズミカルでエネルギッシュな楽曲をお届けします。",
+                'single-neon-desc': "Ten Riseサウンドの始まりを告げる、エネルギッシュでドライヴ感のあるシングル。デジタル配信限定リリースです。",
+                
+                // --- MOCK TRACKS (FOR TESTING - JP) ---
+                'mock-starlight-desc': "ボーカルチョップと深くドライヴするベースラインが特徴の、ハイエナジーで脈動するEDMインフューズドトラック。最大のインパクトと激しい動きのシーケンスのために設計されたインストゥルメンタル曲です。",
+                'mock-echoes-desc': "豊かなストリングスと繊細な電子テクスチャが特徴のアンビエントなバラード。著名な男性テノールボーカルと劇的なオーケストラの高まりがあり、内省とノスタルジアを呼び起こします。",
+                'mock-crimson-desc': "ヘビーなギターリフ、複雑なドラム、そして壮大なデュアル男性・女性ボーカルを特徴とするテンポの速いロックオペラ。アニメの激しいアクションやバトルシーンに最適です。",
+                'mock-silent-desc': "微妙なピアノループ、穏やかなパーカッション、そして全体的に落ち着いた雰囲気が特徴の、平和なインストゥルメンタルなローファイヒップホップトラック。勉強やリラックスに最適です。",
+                'mock-cyber-desc': "80年代の美学に敬意を表した鮮やかなシンセウェーブトラック。脈動するリズム、ネオンに染まったシンセリード、そしてレトロフューチャーな雰囲気が特徴です。",
+                'mock-lunar-desc': "深いサブベース周波数と実験的なサウンドデザインに基づいて構築されたミニマリストのエレクトロニカ作品。このトラックは雰囲気があり、音響的に没入感を高めるように設計されています。",
+                'mock-clockwork-desc': "インダストリアルメタルと複雑で入り組んだエレクトロニックドラムパターン、そしてアグレッシブでレイヤードされたシンセテクスチャを融合させた、暗くパワフルなトラック。",
+                'mock-golden-desc': "軽快なパーカッション、豊かなボーカルハーモニー、温かいギターメロディを特徴とする、アップリフティングなアコースティックフォークポップトラック。「ゴールデンアワー」をテーマにしています。",
+                'mock-architect-desc': "拡張されたメロディックなインストゥルメンタルブレイクと、壮大で感情的なシンセメロディラインを特徴とする洗練されたプログレッシブハウストラック。クラブにもサウンドトラックにも対応します。",
+                'mock-deepsea-desc': "主要な弦楽四重奏団をフィーチャーした、メランコリックなクラシカルクロスオーバー作品。雰囲気は暗く、内省的で、深い表現力を持っています。",
+            }
+        };
+
+        /**
+         * Fetches the translated string for a given key.
+         */
+        function t(key) {
+            return TRANSLATIONS[currentLanguage][key] || key;
+        }
+
+        /**
+         * Sets the application language and re-renders translatable elements.
+         */
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            
+            // 1. Update Language Buttons Styling
+            document.getElementById('lang-en').classList.remove('text-primary-accent', 'text-gray-400');
+            document.getElementById('lang-jp').classList.remove('text-primary-accent', 'text-gray-400');
+            
+            if (lang === 'en') {
+                document.getElementById('lang-en').classList.add('text-primary-accent');
+                document.getElementById('lang-jp').classList.add('text-gray-400');
+            } else {
+                document.getElementById('lang-jp').classList.add('text-primary-accent');
+                document.getElementById('lang-en').classList.add('text-gray-400');
+            }
+
+            // 2. Translate Static Elements
+            document.getElementById('gallery-title').textContent = t('gallery-title');
+            
+            // 3. Re-render Dynamic Content
+            if (RELEASES_DATA.length > 0 && selectedReleaseIndex !== null) {
+                displayDetails(selectedReleaseIndex);
+            } else {
+                document.getElementById('initial-prompt').textContent = t('initial-prompt');
+            }
+        }
+
+        // --- 2. CONFIGURATION & STATE ---
+        // Start by displaying the details for the second album in the list (index 1)
+        let selectedReleaseIndex = 1; 
+        
+        const SOCIAL_LINKS = [
+            { 
+                name: "Instagram", 
+                url: "https://www.instagram.com/tr_tenrise/", 
+                iconUrl: "https://i.imgur.com/RHS4HTR.png"
+            },
+            { 
+                name: "TikTok", 
+                url: "https://www.tiktok.com/@tr_tenrise", 
+                iconUrl: "https://i.imgur.com/kOu4UG7.png" 
+            },
+            { 
+                name: "X (Twitter)", 
+                url: "https://x.com/TR_TenRise", 
+                iconUrl: "https://i.imgur.com/Yd5oBVX.png" 
+            },
+        ];
+        
+        const RELEASES_DATA = [
+            // --- ORIGINAL TRACKS (3) ---
+            {
+                id: 'track-journey',
+                title: "光の旅路 Journey of Light",
+                artist: "Ten Rise",
+                label: "Ten Rise Records",
+                image: "https://i.imgur.com/dFLGglK.jpeg",
+                duration: "5:07",
+                descriptionKey: 'track-journey-desc', 
+                genres: ["J-Pop", "Anisong", "Anime OST", "Female Vocal", "Cinematic Uplifting Trance (Ballad)", "Piano"],
+                releaseDate: "September 25, 2025", 
+                streamingLinks: [
+                    { name: "Spotify", url: "https://open.spotify.com/album/4T2dI4Gtwv62TbtWwNUzcR", iconUrl: "https://i.imgur.com/C1Sa9gR.png"},
+                    { name: "Apple Music", url: "https://music.apple.com/jp/album/journey-of-light-single/1840632415?at=10l7qr", iconUrl: "https://i.imgur.com/VEq0YKj.png"},
+                    { name: "YouTube Music", url: "https://music.youtube.com/watch?v=ww_blgytmmA", iconUrl: "https://i.imgur.com/IKzOJac.png"},
+                    { name: "Amazon Music", url: "https://www.amazon.co.jp/music/player/albums/B0FRN5KY59?&_encoding=UTF8&tag=tcjaz-22&linkCode=ur2&camp=247&creative=1211", iconUrl: "https://i.imgur.com/x8Fu3Ot.png"},
+                    { name: "Line Music", url: "https://music.line.me/webapp/album/mb0000000004af7632", iconUrl: "https://i.imgur.com/b90tXvr.png"},
+                    { name: "Awa", url: "https://s.awa.fm/track/b6db9113a176c8171e70", iconUrl: "https://i.imgur.com/Lfo1UZ4.png"},
+                    { name: "Dhit Docomo", url: "https://dhits.docomo.ne.jp/search/freeword/musics?k_q=Ten%20Rise%20%E5%85%89%E3%81%AE%E6%97%85%E8%B7%AF", iconUrl: "https://i.imgur.com/nheUqcV.png" },
+                    { name: "KKBOX", url: "https://www.kkbox.com/jp/ja/album/_albYKvuDpNo6CCsFq", iconUrl: "https://i.imgur.com/noe1VXg.png"},
+                    { name: "Mora", url: "https://mora.jp/package/43000074/TCJPR0001494929/", iconUrl: "https://i.imgur.com/sPIBy5J.png"},
+                    { name: "Music.jp", url: "https://music-book.jp/Search?Keyword=Ten%20Rise%20%E5%85%89%E3%81%AE%E6%97%85%E8%B7%AF", iconUrl: "https://i.imgur.com/sPIBy5J.png"},
+                    { name: "Rakuten Music", url: "https://music.rakuten.co.jp/link/search?q=%20%E5%85%89%E3%81%AE%E6%97%85%E8%B7%AF", iconUrl: "https://i.imgur.com/AhUEhy2.png"},
+                    { name: "Recochoku", url: "https://recochoku.jp/album/A2005723996", iconUrl: "https://i.imgur.com/tjVsvF2.png"},
+                ],
+            },
+            {
+                id: 'track-stars',
+                title: "星の彼方へ Beyond the Stars",
+                artist: "Ten Rise",
+                label: "Ten Rise Records",
+                image: "https://i.imgur.com/mcMAj8X.jpeg", 
+                duration: "6:33",
+                descriptionKey: 'track-stars-desc',
+                genres: ["J-Pop", "Anisong", "Anime OST", "Female Vocal", "Cinematic Uplifting Trance (Ballad)", "Piano"], 
+                releaseDate: "October 2, 2025",
+                streamingLinks: [
+                    { name: "Apple Music", url: "https://music.apple.com/jp/album/beyond-the-stars-single/1843268720", iconUrl: "https://i.imgur.com/VEq0YKj.png"},
+                    { name: "Spotify", url: "https://open.spotify.com/album/6UztNcNTQuTbKeQmO5v64I", iconUrl: "https://i.imgur.com/C1Sa9gR.png"},
+                    { name: "YouTube Music", url: "https://music.youtube.com/watch?v=TyZnEaDB4KM", iconUrl: "https://i.imgur.com/IKzOJac.png"},
+                    { name: "Line Music", url: "https://music.line.me/webapp/album/mb0000000004b6cfeb", iconUrl: "https://i.imgur.com/b90tXvr.png"},
+                    { name: "Amazon Music", url: "https://www.amazon.co.jp/music/player/albums/B0FTF5CQ5W?&_encoding=UTF8&tag=tcjaz-22&linkCode=ur2&camp=247&creative=1211", iconUrl: "https://i.imgur.com/x8Fu3Ot.png"},
+                    { name: "Awa", url: "https://s.awa.fm/track/bf13967a12f74c4ce886", iconUrl: "https://i.imgur.com/Lfo1UZ4.png"},
+                    { name: "Recochoku", url: "https://recochoku.jp/album/A2005763230", iconUrl: "https://i.imgur.com/tjVsvF2.png"},
+                    { name: "Mora", url: "https://mora.jp/package/43000074/TCJPR0001494928/", iconUrl: "https://i.imgur.com/sPIBy5J.png"},
+                    { name: "KKBOX", url: "https://www.kkbox.com/jp/ja/album/-rlURCfJ1XBjKrt77US", iconUrl: "https://i.imgur.com/noe1VXg.png"},
+                    { name: "Dhit Docomo", url: "https://dhits.docomo.ne.jp/search/freeword/musics?k_q=Ten%20Rise%20%E6%98%9F%E3%81%AE%E5%BD%BC%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/nheUqcV.png" },
+                    { name: "Music.jp", url: "https://music-book.jp/Search?Keyword=Ten%20Rise%20%E6%98%9F%E3%81%AE%E5%BD%BC%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/sPIBy5J.png"},
+                    { name: "Rakuten Music", url: "https://music.rakuten.co.jp/link/search?q=%20%E6%98%9F%E3%81%AE%E5%BD%BC%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/AhUEhy2.png"},
+                ],
+            },
+            {
+                id: 'single-neon',
+                title: "Neon Dawn (Radio Edit)",
+                artist: "Ten Rise",
+                label: "Ten Rise Records",
+                image: "https://placehold.co/400x400/06b6d4/ffffff?text=First+Light+Single",
+                duration: "3:45",
+                descriptionKey: 'single-neon-desc',
+                genres: ["Uplifting Trance", "Radio Edit", "Instrumental", "Synthesizer"],
+                releaseDate: "TBA",
+                streamingLinks: [
+                    { name: "Spotify", url: "https://mockup-spotify.com/single-first", iconUrl: "https://placehold.co/40x40/1DB954/ffffff?text=S" },
+                    { name: "Bandcamp", url: "https://mockup-bandcamp.com/single-first", iconUrl: "https://placehold.co/40x40/1ed179/ffffff?text=BC" },
+                    { name: "Line Music", url: "https://mockup-line.com/single-first", iconUrl: "https://placehold.co/40x40/3b82f6/ffffff?text=L" }, 
+                ],
+            },
+
+            // --- MOCK TRACKS (10) FOR TESTING GALLERY SCROLLING ---
+            {
+                id: 'mock-starlight',
+                title: "Starlight Nexus",
+                artist: "Ten Rise",
+                label: "Test Label",
+                image: "https://placehold.co/400x400/9333ea/ffffff?text=STARLIGHT+NEXUS", // Pink/Purple
+                duration: "4:12",
+                descriptionKey: 'mock-starlight-desc',
+                genres: ["EDM", "Progressive Trance", "Instrumental", "Synthesizer", "Bassline"],
+                releaseDate: "2026",
+                streamingLinks: [],
+            },
+            {
+                id: 'mock-echoes',
+                title: "Echoes of Tomorrow",
+                artist: "Ten Rise",
+                label: "Test Label",
+                image: "https://placehold.co/400x400/3b82f6/ffffff?text=ECHOES+OF+TOMORROW", // Blue/White
+                duration: "5:50",
+                descriptionKey: 'mock-echoes-desc',
+                genres: ["Ambient", "Orchestral", "Male Vocal", "Strings"],
+                releaseDate: "2026",
+                streamingLinks: [],
+            },
+            {
+                id: 'mock-crimson',
+                title: "Crimson Flash",
+                artist: "Ten Rise",
+                label: "Test Label",
+                image: "https://placehold.co/400x400/ef4444/ffffff?text=CRIMSON+FLASH", // Red/Black
+                duration: "3:20",
+                descriptionKey: 'mock-crimson-desc',
+                genres: ["J-Rock", "Anime", "Heavy Guitar", "Dual Vocal", "Drums"],
+                releaseDate: "2026",
+                streamingLinks: [],
+            },
+            {
+                id: 'mock-silent',
+                title: "Silent Garden",
+                artist: "Ten Rise",
+                label: "Test Label",
+                image: "https://placehold.co/400x400/10b981/ffffff?text=SILENT+GARDEN", // Green/Brown
+                duration: "2:45",
+                descriptionKey: 'mock-silent-desc',
+                genres: ["Lo-Fi", "Instrumental", "Piano", "Chillhop", "Percussion"],
+                releaseDate: "2027",
+                streamingLinks: [],
+            },
+            {
+                id: 'mock-cyber',
+                title: "Cyber Rain",
+                artist: "Ten Rise",
+                label: "Test Label",
+                image: "https://placehold.co/400x400/0891b2/000000?text=CYBER+RAIN", // Neon Cyan/Black
+                duration: "4:55",
+                descriptionKey: 'mock-cyber-desc',
+                genres: ["Synthwave", "80s Pop", "Instrumental", "Retro", "Synthesizer"],
+                releaseDate: "2027",
+                streamingLinks: [],
+            },
+            {
+                id: 'mock-lunar',
+                title: "Lunar Drift",
+                artist: "Ten Rise",
+                label: "Test Label",
+                image: "https://placehold.co/400x400/6b7280/ffffff?text=LUNAR+DRIFT", // Gray/Silver
+                duration: "6:01",
+                descriptionKey: 'mock-lunar-desc',
+                genres: ["Minimal Techno", "Experimental", "Ambient", "Sub-Bass"],
+                releaseDate: "2028",
+                streamingLinks: [],
+            },
+            {
+                id: 'mock-clockwork',
+                title: "Clockwork Heart",
+                artist: "Ten Rise",
+                label: "Test Label",
+                image: "https://placehold.co/400x400/92400e/ffffff?text=CLOCKWORK+HEART", // Bronze/Gears
+                duration: "3:40",
+                descriptionKey: 'mock-clockwork-desc',
+                genres: ["Industrial Metal", "Electronic", "Aggressive", "Drums"],
+                releaseDate: "2028",
+                streamingLinks: [],
+            },
+            {
+                id: 'mock-golden',
+                title: "Golden Hour",
+                artist: "Ten Rise",
+                label: "Test Label",
+                image: "https://placehold.co/400x400/f59e0b/ffffff?text=GOLDEN+HOUR", // Yellow/Orange
+                duration: "3:10",
+                descriptionKey: 'mock-golden-desc',
+                genres: ["Acoustic", "Folk Pop", "Vocal Harmony", "Guitar", "Percussion"],
+                releaseDate: "2029",
+                streamingLinks: [],
+            },
+            {
+                id: 'mock-architect',
+                title: "The Architect's Dream",
+                artist: "Ten Rise",
+                label: "Test Label",
+                image: "https://placehold.co/400x400/1f2937/ffffff?text=ARCHITECTS+DREAM", // Geometric shapes
+                duration: "7:05",
+                descriptionKey: 'mock-architect-desc',
+                genres: ["Progressive House", "Trance", "Instrumental", "Synthesizer"],
+                releaseDate: "2029",
+                streamingLinks: [],
+            },
+            {
+                id: 'mock-deepsea',
+                title: "Deep Sea Waltz",
+                artist: "Ten Rise",
+                label: "Test Label",
+                image: "https://placehold.co/400x400/1d4ed8/ffffff?text=DEEP+SEA+WALTZ", // Dark Blue/Ocean
+                duration: "4:30",
+                descriptionKey: 'mock-deepsea-desc',
+                genres: ["Classical Crossover", "Waltz", "String Quartet", "Melancholic"],
+                releaseDate: "2030",
+                streamingLinks: [],
+            },
+        ];
+        
+        // --- 3. STATE MANAGEMENT & UTILITIES ---
+
+        /**
+         * Opens the full-screen selection modal.
+         */
+        function openSelectionModal() {
+            document.getElementById('selection-modal').classList.remove('hidden');
+            // Ensure the gallery is rendered and selected state is correct when opening
+            renderGallery(RELEASES_DATA, document.getElementById('modal-release-grid'));
+            document.getElementById('modal-search-input').value = ''; // Clear search on open
+        }
+
+        /**
+         * Closes the full-screen selection modal.
+         */
+        function closeSelectionModal() {
+            document.getElementById('selection-modal').classList.add('hidden');
+        }
+
+        /**
+         * Displays a temporary message box.
+         */
+        function showMessage(message, type = 'info') {
+            const box = document.getElementById('message-box');
+            let bgColor = 'bg-yellow-900';
+            let borderColor = 'border-yellow-700';
+            let textColor = 'text-yellow-300';
+            
+            if (type === 'success') {
+                bgColor = 'bg-green-900';
+                borderColor = 'border-green-700';
+                textColor = 'text-green-300';
+            } else if (type === 'error') {
+                bgColor = 'bg-red-900';
+                borderColor = 'border-red-700';
+                textColor = 'text-red-300';
+            }
+            
+            box.className = `fixed bottom-4 right-4 p-4 border rounded-lg text-sm transition-all duration-300 shadow-lg z-50 ${bgColor} ${borderColor} ${textColor}`;
+            box.textContent = message;
+            box.style.display = 'block';
+
+            clearTimeout(box.timeout);
+            box.timeout = setTimeout(() => {
+                box.style.display = 'none';
+            }, 5000);
+        }
+        
+        /**
+         * Renders the social media links in the header bar.
+         */
+        function renderSocialLinks() {
+            const container = document.getElementById('social-links-bar');
+            container.innerHTML = '';
+
+            SOCIAL_LINKS.forEach(link => {
+                const linkElement = document.createElement('a');
+                linkElement.href = link.url;
+                linkElement.target = '_blank';
+                linkElement.title = `Visit Ten Rise on ${link.name}`;
+                linkElement.className = 'mx-3 transition-opacity duration-200 opacity-80 hover:opacity-100 hover:scale-105'; 
+                
+                const iconImg = document.createElement('img');
+                iconImg.src = link.iconUrl;
+                iconImg.alt = `${link.name} icon`;
+                iconImg.className = 'w-14 h-14 object-contain rounded-lg'; 
+                
+                iconImg.onerror = function() {
+                    this.onerror=null;
+                    this.src='https://placehold.co/40x40/9ca3af/ffffff?text=?';
+                }
+
+                linkElement.appendChild(iconImg);
+                container.appendChild(linkElement);
+            });
+        }
+
+
+        /**
+         * Renders the release grid into the target container.
+         * @param {Array} releases The array of releases to display.
+         * @param {HTMLElement} container The DOM element to render into.
+         */
+        function renderGallery(releases, container) {
+            container.innerHTML = '';
+            
+            if (releases.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center w-full col-span-full py-12">No releases found matching your search criteria.</p>';
+                return;
+            }
+
+            releases.forEach((release) => {
+                // Find the original index to correctly match the selectedReleaseIndex
+                const originalIndex = RELEASES_DATA.findIndex(r => r.id === release.id);
+                
+                const wrapper = document.createElement('div');
+                wrapper.className = 'flex flex-col items-center group';
+                
+                const img = document.createElement('img');
+                img.src = release.image;
+                img.alt = `Cover for ${release.title}`; 
+                // Grid layout styling - full width for grid cell
+                img.className = `album-cover w-full object-cover rounded-xl cursor-pointer shadow-lg`; 
+                img.setAttribute('data-index', originalIndex);
+                img.onclick = () => {
+                    displayDetails(originalIndex);
+                    closeSelectionModal(); // Close modal on selection
+                };
+                
+                const title = document.createElement('p');
+                // Use group-hover to highlight the text when hovering the wrapper
+                title.className = 'text-sm text-gray-400 mt-3 text-center w-full truncate group-hover:text-primary-accent transition-colors duration-200';
+                title.textContent = release.title;
+
+                // Apply selected style if it is the currently selected release
+                if (originalIndex === selectedReleaseIndex) {
+                    img.classList.add('selected');
+                } else {
+                    img.classList.remove('selected');
+                }
+
+                img.onerror = function() {
+                    this.onerror = null;
+                    this.src = `https://placehold.co/400x400/9ca3af/111827?text=${release.title.substring(0, 10)}`;
+                }
+
+                wrapper.appendChild(img);
+                wrapper.appendChild(title);
+                container.appendChild(wrapper);
+            });
+        }
+        
+        /**
+         * Filters the list of releases based on the search input value in the modal.
+         */
+        function filterReleases() {
+            const input = document.getElementById('modal-search-input');
+            const query = input.value.toLowerCase().trim();
+            
+            const targetContainer = document.getElementById('modal-release-grid');
+
+            if (query === '') {
+                renderGallery(RELEASES_DATA, targetContainer);
+                return;
+            }
+
+            const filtered = RELEASES_DATA.filter(release => {
+                // Get the current language's description content for searching
+                const descriptionContent = t(release.descriptionKey).toLowerCase();
+
+                // Check multiple fields for robustness
+                return release.title.toLowerCase().includes(query) ||
+                       release.artist.toLowerCase().includes(query) ||
+                       release.genres.some(genre => genre.toLowerCase().includes(query)) ||
+                       descriptionContent.includes(query) ||
+                       release.releaseDate.substring(release.releaseDate.length - 4).includes(query); // Search by Year
+            });
+
+            renderGallery(filtered, targetContainer);
+        }
+
+
+        /**
+         * Renders the details and links for the selected single track, using current language.
+         */
+        function displayDetails(index) {
+            selectedReleaseIndex = index;
+            const release = RELEASES_DATA[index];
+            const detailContainer = document.getElementById('detail-content');
+            const summaryContainer = document.getElementById('current-selection-summary');
+
+            // Update all album covers in the modal to remove/add 'selected' class
+            const allCovers = document.querySelectorAll('.album-cover');
+            allCovers.forEach(cover => {
+                if (parseInt(cover.getAttribute('data-index')) === index) {
+                    cover.classList.add('selected');
+                } else {
+                    cover.classList.remove('selected');
+                }
+            });
+
+            
+            // 1. Update Current Selection Summary
+            summaryContainer.innerHTML = `
+                <img src="${release.image}" 
+                     alt="Cover for ${release.title}" 
+                     class="w-16 h-16 object-cover rounded-md shadow-lg border-2 border-primary-accent"
+                     onerror="this.onerror=null;this.src='https://placehold.co/48x48/06b6d4/ffffff?text=TR';"
+                >
+                <div class="truncate">
+                    <p class="text-sm font-semibold text-gray-300">${t('current-selection')}</p>
+                    <p class="text-xl font-bold text-gray-100 truncate">${release.title}</p>
+                </div>
+            `;
+            
+            // 2. Get translated description
+            const description = t(release.descriptionKey);
+
+            // 3. Build Detail Panel HTML - USING TRANSLATION KEYS
+            detailContainer.innerHTML = `
+                <!-- Track Art Column -->
+                <div class="w-full lg:w-1/3 flex flex-col items-center">
+                    <img src="${release.image}" alt="Cover for ${release.title}" 
+                        class="w-full max-w-xs h-auto object-cover rounded-xl shadow-xl mb-6"
+                        onerror="this.onerror=null;this.src='https://placehold.co/400x400/9ca3af/ffffff?text=${release.title.substring(0, 10)}';"
+                    >
+                    
+                    <!-- Streaming Links Container -->
+                    <p class="text-sm font-semibold text-gray-400 mb-4 text-center">${t('listen-prompt')}</p>
+                    <div id="links-container" class="w-full max-w-xs grid grid-cols-6 gap-1 mt-2 p-0">
+                        <!-- Links will go here -->
+                    </div>
+                </div>
+
+                <!-- Details Column: Focus on Single Track Metadata -->
+                <div class="w-full lg:w-2/3">
+                    <p class="text-xl text-primary-accent font-light uppercase tracking-wider mb-1">${t('details-heading')}</p>
+                    
+                    <h2 class="text-4xl font-extrabold text-gray-100 mb-4">${release.title}</h2>
+                    
+                    <!-- Track specific info (using t() for labels) -->
+                    <div class="text-lg text-gray-300 space-y-2 mb-6 border-b border-gray-700 pb-4">
+                        <p><strong class="text-gray-400">${t('artist')}:</strong> ${release.artist}</p>
+                        <p><strong class="text-gray-400">${t('duration')}:</strong> ${release.duration}</p>
+                        <p><strong class="text-gray-400">${t('label')}:</strong> ${release.label}</p>
+                        
+                        <!-- Joining genres with the requested separator -->
+                        ${release.genres ? `<p><strong class="text-gray-400">${t('style')}:</strong> ${release.genres.join(' / ')}</p>` : ''}
+                        
+                        <p><strong class="text-gray-400">${t('release_date')}:</strong> ${release.releaseDate}</p>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-primary-accent mb-3">${t('desc_heading')}</h3>
+                    <p class="text-gray-300 text-base">${description}</p>
+                </div>
+            `;
+            
+            // 4. Render Links
+            const linksContainer = document.getElementById('links-container');
+            
+            release.streamingLinks.forEach(link => {
+                const linkElement = document.createElement('a');
+                linkElement.href = link.url;
+                linkElement.target = '_blank';
+                linkElement.title = `Listen on ${link.name}`; 
+                linkElement.className = 'flex flex-col items-center justify-center transition-transform duration-150 hover:scale-110 p-1 rounded-lg focus:ring-2 focus:ring-primary-accent'; 
+                
+                const iconHtml = document.createElement('img');
+                iconHtml.src = link.iconUrl;
+                iconHtml.alt = `${link.name} icon`; 
+                iconHtml.className = 'w-8 h-8 object-contain rounded-lg shadow-md'; 
+                
+                iconHtml.onerror = function() {
+                    this.onerror=null;
+                    this.src='https://placehold.co/40x40/9ca3af/ffffff?text=?';
+                    this.classList.remove('rounded-lg');
+                }
+
+                linkElement.appendChild(iconHtml);
+                linksContainer.appendChild(linkElement);
+            });
+        }
+
+        // --- 4. INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSocialLinks();
+            
+            // Set default language to English and apply styling/translations
+            setLanguage('en'); 
+
+            // Automatically display details for the currently selected release index.
+            if (RELEASES_DATA.length > 0) {
+                // Keep the original track selected, which is index 1.
+                displayDetails(selectedReleaseIndex); 
+            }
+        });
+
+    </script>
+</body>
+</html>
