@@ -321,7 +321,7 @@
         <p class="text-gray-300 mb-8 text-center">We'd love to hear from you! Send us a message and we'll respond as soon as possible.</p>
 
         <!-- Netlify Forms-enabled form -->
-        <form id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="space-y-6">
+        <form id="contact-form" name="contact" method="POST" netlify data-netlify="true" netlify-honeypot="bot-field" class="space-y-6">
           <input type="hidden" name="form-name" value="contact" />
           <p class="hidden">
             <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
@@ -391,6 +391,7 @@
   <!-- JavaScript -->
   <script>
     const CONTACT_EMAIL = 'gregory.benne@edhec.com';
+    const ENABLE_MAILTO_FALLBACK = false; // set to true only if you want email client fallback
 
     // App state
     const CONFIG = {
@@ -871,7 +872,7 @@
       loadTrack(release.youtubeId);
     }
 
-    // Contact form submit to Netlify (with graceful mailto fallback)
+    // Contact form submit to Netlify (with optional mailto fallback disabled by default)
     async function handleContactSubmit(e) {
       e.preventDefault();
       const form = e.currentTarget;
@@ -896,7 +897,7 @@
       if (honeypot) data.append('bot-field', honeypot);
 
       try {
-        const res = await fetch('/', {
+        const res = await fetch(window.location.pathname, {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: data.toString()
@@ -906,15 +907,15 @@
           form.reset();
           return;
         }
-        showMessage('Could not send via server. Opening your email app…', 'error');
+        showMessage('Could not send via server.', 'error');
       } catch {
-        showMessage('Network error. Opening your email app…', 'error');
+        showMessage('Network error while sending.', 'error');
       }
 
-      // Fallback: open mail client if Netlify post fails
-      const mailtoSubject = encodeURIComponent(`Contact — ${subject}`);
-      const mailtoBody = encodeURIComponent(
-        `Name: ${name}
+      if (ENABLE_MAILTO_FALLBACK) {
+        const mailtoSubject = encodeURIComponent(`Contact — ${subject}`);
+        const mailtoBody = encodeURIComponent(
+          `Name: ${name}
 Email: ${email}
 Subject: ${subject}
 
@@ -922,8 +923,9 @@ Message:
 ${message}
 
 Sent from: ${window.location.href}`
-      );
-      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${mailtoSubject}&body=${mailtoBody}`;
+        );
+        window.location.href = `mailto:${CONTACT_EMAIL}?subject=${mailtoSubject}&body=${mailtoBody}`;
+      }
     }
 
     // Events
@@ -955,5 +957,15 @@ Sent from: ${window.location.href}`
       renderInitialSummary();
     });
   </script>
+
+  <!-- Hidden Netlify detection form (ensures build-time detection) -->
+  <form name="contact" method="POST" netlify data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input type="hidden" name="form-name" value="contact" />
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <input type="text" name="subject" />
+    <textarea name="message"></textarea>
+    <input type="text" name="bot-field" />
+  </form>
 </body>
 </html>
