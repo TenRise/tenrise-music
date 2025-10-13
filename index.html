@@ -319,7 +319,14 @@
       <div class="bg-gray-900/90 rounded-xl shadow-2xl p-8 w-full max-w-2xl">
         <h2 class="text-3xl font-bold text-primary-accent mb-6 text-center">Contact Us</h2>
         <p class="text-gray-300 mb-8 text-center">We'd love to hear from you! Send us a message and we'll respond as soon as possible.</p>
-        <form id="contact-form" class="space-y-6">
+
+        <!-- Netlify Forms-enabled form -->
+        <form id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="space-y-6">
+          <input type="hidden" name="form-name" value="contact" />
+          <p class="hidden">
+            <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
+          </p>
+
           <input type="text" id="name" name="name" required placeholder="Your Name" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300">
           <input type="email" id="email" name="email" required placeholder="Your Email" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300">
           <input type="text" id="subject" name="subject" required placeholder="Subject" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300">
@@ -383,7 +390,9 @@
 
   <!-- JavaScript -->
   <script>
-    // State
+    const CONTACT_EMAIL = 'gregory.benne@edhec.com';
+
+    // App state
     const CONFIG = {
       currentLanguage: 'en',
       selectedReleaseIndex: null,
@@ -420,10 +429,16 @@
       { name: "X (Twitter)", url: "https://x.com/TR_TenRise", iconUrl: "https://i.imgur.com/Yd5oBVX.png" }
     ];
 
+    // Streaming links data (order unified, icons set, KKBOX/Rakuten fixed)
     const RELEASES_DATA = [
       {
-        id: 'track-journey', title: "光の旅路 Journey of Light", artist: "Ten Rise", label: "Ten Rise Records",
-        image: "https://i.imgur.com/dFLGglK.jpeg", duration: "5:07", descriptionKey: 'track-journey-desc',
+        id: 'track-journey',
+        title: "光の旅路 Journey of Light",
+        artist: "Ten Rise",
+        label: "Ten Rise Records",
+        image: "https://i.imgur.com/dFLGglK.jpeg",
+        duration: "5:07",
+        descriptionKey: 'track-journey-desc',
         genres: ["J-Pop", "Anisong", "Anime OST", "Female Vocal", "Cinematic Uplifting Trance (Ballad)", "Piano"],
         releaseDate: "September 25, 2025",
         youtubeId: "ww_blgytmmA",
@@ -443,8 +458,13 @@
         ]
       },
       {
-        id: 'track-stars', title: "星の彼方へ Beyond the Stars", artist: "Ten Rise", label: "Ten Rise Records",
-        image: "https://i.imgur.com/mcMAj8X.jpeg", duration: "6:33", descriptionKey: 'track-stars-desc',
+        id: 'track-stars',
+        title: "星の彼方へ Beyond the Stars",
+        artist: "Ten Rise",
+        label: "Ten Rise Records",
+        image: "https://i.imgur.com/mcMAj8X.jpeg",
+        duration: "6:33",
+        descriptionKey: 'track-stars-desc',
         genres: ["J-Pop", "Anisong", "Anime OST", "Female Vocal", "Cinematic Uplifting Trance (Ballad)", "Piano"],
         releaseDate: "October 2, 2025",
         youtubeId: "TyZnEaDB4KM",
@@ -458,14 +478,14 @@
           { name: "Recochoku", url: "https://recochoku.jp/album/A2005763230", iconUrl: "https://i.imgur.com/tjVsvF2.png"},
           { name: "Mora", url: "https://mora.jp/package/43000074/TCJPR0001494928/", iconUrl: "https://i.imgur.com/sPIBy5J.png"},
           { name: "KKBOX", url: "https://www.kkbox.com/jp/ja/album/-rlURCfJ1XBjKrt7US", iconUrl: "https://i.imgur.com/noe1VXg.png"},
-          { name: "Dhit Docomo", url: "https://dhits.docomo.ne.jp/search/freeword/musics?k_q=Ten%20Rise%20%E6%98%9F%E3%81%AE%E5%BD%BC%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/nheUqcV.png" },
+          { name: "Dhit Docomo", url: "https://dhits.docomo.ne.jp/search/freeword/musics?k_q=Ten%20Rise%20%E6%98%9F%E3%81%AE%E5%BD%90%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/nheUqcV.png" },
           { name: "Music.jp", url: "https://music-book.jp/Search?Keyword=Ten%20Rise%20%E6%98%9F%E3%81%AE%E5%BD%90%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/yl0AG8L.png"},
-          { name: "Rakuten Music", url: "https://music.rakuten.co.jp/link/search?q=%20%E6%98%9F%E3%81%AE%E5%BD%BC%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/AhUEhy2.png"}
+          { name: "Rakuten Music", url: "https://music.rakuten.co.jp/link/search?q=%20%E6%98%9F%E3%81%AE%E5%BD%90%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/AhUEhy2.png"}
         ]
       }
     ];
 
-    // Visualizer
+    // Visualizer (unchanged)
     function createVisualizer() {
       const container = document.getElementById('visualizer-container');
       if (!container) return;
@@ -506,7 +526,7 @@
       });
     }
 
-    // Progress
+    // Player progress (unchanged)
     function startProgressUpdates() { stopProgressUpdates(); CONFIG.progressInterval = setInterval(updateProgressBar, 100); }
     function stopProgressUpdates() { if (CONFIG.progressInterval) { clearInterval(CONFIG.progressInterval); CONFIG.progressInterval = null; } }
 
@@ -517,7 +537,7 @@
         events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange }
       });
     }
-    function onPlayerReady() { /* ready */ }
+    function onPlayerReady() {}
     function onPlayerStateChange(event) {
       const playIcon = document.getElementById('play-icon');
       const pauseIcon = document.getElementById('pause-icon');
@@ -659,8 +679,8 @@
 
     function setLanguage(lang) {
       CONFIG.currentLanguage = lang;
-      const langPairs = [['lang-en', 'lang-jp'], ['lang-en-contact', 'lang-jp-contact'], ['lang-en-donation', 'lang-jp-donation']];
-      langPairs.forEach(([enId, jpId]) => {
+      const pairs = [['lang-en', 'lang-jp'], ['lang-en-contact', 'lang-jp-contact'], ['lang-en-donation', 'lang-jp-donation']];
+      pairs.forEach(([enId, jpId]) => {
         const enBtn = document.getElementById(enId);
         const jpBtn = document.getElementById(jpId);
         if (enBtn && jpBtn) {
@@ -757,7 +777,7 @@
         release.artist.toLowerCase().includes(query) ||
         release.genres.some(genre => genre.toLowerCase().includes(query)) ||
         t(release.descriptionKey).toLowerCase().includes(query) ||
-        release.releaseDate.toLowerCase().includes(query)
+        (release.releaseDate || '').toLowerCase().includes(query)
       ) : RELEASES_DATA;
       renderGallery(filtered);
     }
@@ -787,9 +807,9 @@
       dc.className = 'w-full flex flex-col lg:flex-row items-start gap-6 lg:gap-10';
 
       dc.innerHTML =
-        `<div class="detail-left w-full lg:w-1/3 flex flex-col items-center lg:items-start">
+        `<div class="w-full lg:w-1/3 flex flex-col items-center lg:items-start">
             <img src="${release.image}" alt="Cover for ${release.title}"
-                 class="detail-cover w-10/12 max-w-[280px] sm:max-w-[320px] md:max-w-[360px] h-auto object-cover rounded-xl shadow-xl mb-4 sm:mb-6"
+                 class="w-10/12 max-w-[280px] sm:max-w-[320px] md:max-w-[360px] h-auto object-cover rounded-xl shadow-xl mb-4 sm:mb-6"
                  onerror="this.src='https://placehold.co/400x400/9ca3af/ffffff?text=${release.title.substring(0, 10)}'">
 
             <div class="media-player w-full max-w-[420px] sm:max-w-xs mb-4 sm:mb-6">
@@ -825,7 +845,7 @@
             </div>
 
             <p class="text-sm font-semibold text-gray-400 mb-2 sm:mb-4 text-center lg:text-left">${t('listen-prompt')}</p>
-            <div id="links-container" class="w-full max-w-[420px] sm:max-w-xs grid grid-cols-4 sm:grid-cols-6 gap-2 sm:gap-1 mt-1 p-0">
+            <div class="w-full max-w-[420px] sm:max-w-xs grid grid-cols-4 sm:grid-cols-6 gap-2 sm:gap-1 mt-1 p-0">
               ${release.streamingLinks.map(link =>
                 `<a href="${link.url}" target="_blank" title="Listen on ${link.name}" class="flex flex-col items-center justify-center transition-transform duration-150 hover:scale-110 p-1 rounded-lg focus:ring-2 focus:ring-primary-accent">
                   <img src="${link.iconUrl}" alt="${link.name} icon" class="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 object-contain rounded-lg shadow-md" onerror="this.src='https://placehold.co/40x40/9ca3af/ffffff?text=?'">
@@ -834,7 +854,7 @@
             </div>
          </div>
 
-         <div class="detail-right w-full lg:w-2/3">
+         <div class="w-full lg:w-2/3">
             <h3 class="text-base sm:text-xl font-bold text-primary-accent mb-2 sm:mb-3">${t('details-heading')}</h3>
             <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-100 mb-3 sm:mb-4 break-words">${release.title}</h2>
             <div class="text-sm sm:text-base text-gray-300 space-y-2 mb-5 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
@@ -851,18 +871,69 @@
       loadTrack(release.youtubeId);
     }
 
+    // Contact form submit to Netlify (with graceful mailto fallback)
+    async function handleContactSubmit(e) {
+      e.preventDefault();
+      const form = e.currentTarget;
+      const formName = form.querySelector('input[name="form-name"]').value;
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const subject = form.subject.value.trim();
+      const message = form.message.value.trim();
+      const honeypot = form.querySelector('input[name="bot-field"]')?.value || '';
+
+      if (!name || !email || !subject || !message) {
+        showMessage('Please complete all fields before sending.', 'error');
+        return;
+      }
+
+      const data = new URLSearchParams();
+      data.append('form-name', formName);
+      data.append('name', name);
+      data.append('email', email);
+      data.append('subject', subject);
+      data.append('message', message);
+      if (honeypot) data.append('bot-field', honeypot);
+
+      try {
+        const res = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: data.toString()
+        });
+        if (res.ok) {
+          showMessage('Thanks! Your message was sent successfully.', 'success');
+          form.reset();
+          return;
+        }
+        showMessage('Could not send via server. Opening your email app…', 'error');
+      } catch {
+        showMessage('Network error. Opening your email app…', 'error');
+      }
+
+      // Fallback: open mail client if Netlify post fails
+      const mailtoSubject = encodeURIComponent(`Contact — ${subject}`);
+      const mailtoBody = encodeURIComponent(
+        `Name: ${name}
+Email: ${email}
+Subject: ${subject}
+
+Message:
+${message}
+
+Sent from: ${window.location.href}`
+      );
+      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${mailtoSubject}&body=${mailtoBody}`;
+    }
+
     // Events
     document.addEventListener('DOMContentLoaded', () => {
       const hash = window.location.hash.replace('#', '') || 'home';
       showPage(['showcase', 'contact', 'donation'].includes(hash) ? hash : 'home');
 
-      document.getElementById('contact-form').addEventListener('submit', e => {
-        e.preventDefault();
-        showMessage('Thank you for your message! We will get back to you soon.', 'success');
-        e.target.reset();
-      });
+      const contactForm = document.getElementById('contact-form');
+      if (contactForm) contactForm.addEventListener('submit', handleContactSubmit);
 
-      // Modal outside click handling
       const overlay = document.getElementById('selection-modal');
       const modalContent = document.getElementById('modalContent');
       if (overlay && modalContent) {
