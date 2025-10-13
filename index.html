@@ -168,10 +168,7 @@
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+    @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
 
     #youtube-player {
       position: absolute;
@@ -183,7 +180,7 @@
     .visualizer-container {
       position: relative;
       margin-top: 16px;
-      height: 100px; /* increased height */
+      height: 100px;
       display: flex;
       align-items: end;
       justify-content: space-between;
@@ -202,11 +199,11 @@
       border-radius: 2px 2px 0 0;
       transition: height 0.1s ease;
       min-height: 2px;
-      max-height: 96px; /* allow bars to grow taller inside the taller container */
+      max-height: 96px;
     }
     .visualizer-bar.active { box-shadow: 0 0 6px rgba(6, 182, 212, 0.7); }
 
-    /* Mobile adjustments: increase height so it isn't cut off on phones */
+    /* Mobile adjustments */
     @media (max-width: 640px) {
       .media-player {
         transform: none;
@@ -431,18 +428,18 @@
         releaseDate: "September 25, 2025",
         youtubeId: "ww_blgytmmA",
         streamingLinks: [
-          { name: "Spotify", url: "https://open.spotify.com/album/4T2dI4Gtwv62TbtWwNUzcR", iconUrl: "https://i.imgur.com/C1Sa9gR.png"},
           { name: "Apple Music", url: "https://music.apple.com/jp/album/journey-of-light-single/1840632415?at=10l7qr", iconUrl: "https://i.imgur.com/VEq0YKj.png"},
+          { name: "Spotify", url: "https://open.spotify.com/album/4T2dI4Gtwv62TbtWwNUzcR", iconUrl: "https://i.imgur.com/C1Sa9gR.png"},
           { name: "YouTube Music", url: "https://music.youtube.com/watch?v=ww_blgytmmA", iconUrl: "https://i.imgur.com/IKzOJac.png"},
-          { name: "Amazon Music", url: "https://www.amazon.co.jp/music/player/albums/B0FRN5KY59?&_encoding=UTF8&tag=tcjaz-22&linkCode=ur2&camp=247&creative=1211", iconUrl: "https://i.imgur.com/x8Fu3Ot.png"},
           { name: "Line Music", url: "https://music.line.me/webapp/album/mb0000000004af7632", iconUrl: "https://i.imgur.com/b90tXvr.png"},
+          { name: "Amazon Music", url: "https://www.amazon.co.jp/music/player/albums/B0FRN5KY59?&_encoding=UTF8&tag=tcjaz-22&linkCode=ur2&camp=247&creative=1211", iconUrl: "https://i.imgur.com/x8Fu3Ot.png"},
           { name: "Awa", url: "https://s.awa.fm/track/b6db9113a176c8171e70", iconUrl: "https://i.imgur.com/Lfo1UZ4.png"},
-          { name: "Dhit Docomo", url: "https://dhits.docomo.ne.jp/search/freeword/musics?k_q=Ten%20Rise%20%E5%85%89%E3%81%AE%E6%97%85%E8%B7%AF", iconUrl: "https://i.imgur.com/nheUqcV.png" },
-          { name: "KKBOX", url: "https://www.kkbox.com/jp/ja/album/_albYKvuDpNo6CCsFq", iconUrl: "https://i.imgur.com/noe1VXg.png"},
+          { name: "Recochoku", url: "https://recochoku.jp/album/A2005723996", iconUrl: "https://i.imgur.com/tjVsvF2.png"},
           { name: "Mora", url: "https://mora.jp/package/43000074/TCJPR0001494929/", iconUrl: "https://i.imgur.com/sPIBy5J.png"},
-          { name: "Music.jp", url: "https://music-book.jp/Search?Keyword=Ten%20Rise%20%E5%85%89%E3%81%AE%E6%97%85%E8%B7%AF", iconUrl: "https://i.imgur.com/sPIBy5J.png"},
-          { name: "Rakuten Music", url: "https://music.rakuten.co.jp/link/search?q=%20%E5%85%89%E3%81%AE%E6%97%85%E8%B7%AF", iconUrl: "https://i.imgur.com/AhUEhy2.png"},
-          { name: "Recochoku", url: "https://recochoku.jp/album/A2005723996", iconUrl: "https://i.imgur.com/tjVsvF2.png"}
+          { name: "KKBOX", url: "https://www.kkbox.com/jp/ja/album/_albYKvuDpNo6CCsFq", iconUrl: "https://i.imgur.com/noe1VXg.png"},
+          { name: "Dhit Docomo", url: "https://dhits.docomo.ne.jp/search/freeword/musics?k_q=Ten%20Rise%20%E5%85%89%E3%81%AE%E6%97%85%E8%B7%AF", iconUrl: "https://i.imgur.com/nheUqcV.png" },
+          { name: "Music.jp", url: "https://music-book.jp/Search?Keyword=Ten%20Rise%20%E5%85%89%E3%81%AE%E6%97%85%E8%B7%AF", iconUrl: "https://i.imgur.com/yl0AG8L.png"},
+          { name: "Rakuten Music", url: "https://music.rakuten.co.jp/link/search?q=%20%E5%85%89%E3%81%AE%E6%97%85%E8%B7%AF", iconUrl: "https://i.imgur.com/AhUEhy2.png"}
         ]
       },
       {
@@ -460,9 +457,9 @@
           { name: "Awa", url: "https://s.awa.fm/track/bf13967a12f74c4ce886", iconUrl: "https://i.imgur.com/Lfo1UZ4.png"},
           { name: "Recochoku", url: "https://recochoku.jp/album/A2005763230", iconUrl: "https://i.imgur.com/tjVsvF2.png"},
           { name: "Mora", url: "https://mora.jp/package/43000074/TCJPR0001494928/", iconUrl: "https://i.imgur.com/sPIBy5J.png"},
-          { name: "KKBOX", url: "https://www.kkbox.com/jp/ja/album/-rlURCfJ1XBjKrt77US", iconUrl: "https://i.imgur.com/noe1VXg.png"},
+          { name: "KKBOX", url: "https://www.kkbox.com/jp/ja/album/-rlURCfJ1XBjKrt7US", iconUrl: "https://i.imgur.com/noe1VXg.png"},
           { name: "Dhit Docomo", url: "https://dhits.docomo.ne.jp/search/freeword/musics?k_q=Ten%20Rise%20%E6%98%9F%E3%81%AE%E5%BD%BC%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/nheUqcV.png" },
-          { name: "Music.jp", url: "https://music-book.jp/Search?Keyword=Ten%20Rise%20%E6%98%9F%E3%81%AE%E5%BD%BC%E6%96%B9%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/sPIBy5J.png"},
+          { name: "Music.jp", url: "https://music-book.jp/Search?Keyword=Ten%20Rise%20%E6%98%9F%E3%81%AE%E5%BD%90%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/yl0AG8L.png"},
           { name: "Rakuten Music", url: "https://music.rakuten.co.jp/link/search?q=%20%E6%98%9F%E3%81%AE%E5%BD%BC%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/AhUEhy2.png"}
         ]
       }
@@ -492,7 +489,7 @@
           const time = Date.now() * 0.002;
           const wave = Math.sin(time + index * 0.3) * 0.5 + 0.5;
           const random = Math.random() * 0.3;
-          const height = 2 + (wave + random) * 45; // no change; taller container now displays it fully
+          const height = 2 + (wave + random) * 45;
           bar.style.height = `${height}px`;
           bar.classList.toggle('active', height > 25);
         });
@@ -824,7 +821,6 @@
                 <a href="${release.streamingLinks.find(link => link.name === 'YouTube Music').url}" target="_blank" class="text-xs text-primary-accent hover:underline">Open in YouTube Music</a>
               </div>
 
-              <!-- Taller Audio Visualizer -->
               <div class="visualizer-container" id="visualizer-container"></div>
             </div>
 
@@ -839,7 +835,7 @@
          </div>
 
          <div class="detail-right w-full lg:w-2/3">
-            <p class="text-sm sm:text-base text-primary-accent font-light uppercase tracking-wider mb-1">${t('details-heading')}</p>
+            <h3 class="text-base sm:text-xl font-bold text-primary-accent mb-2 sm:mb-3">${t('details-heading')}</h3>
             <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-100 mb-3 sm:mb-4 break-words">${release.title}</h2>
             <div class="text-sm sm:text-base text-gray-300 space-y-2 mb-5 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
               <p><strong class="text-gray-400">${t('artist')}:</strong> ${release.artist}</p>
