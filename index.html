@@ -4,61 +4,246 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ten Rise: Official Music Showcase</title>
-    <!-- Load Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
     <style>
-        /* Inter font for modern look */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #111827; /* Fallback for no image */
+            background-color: #111827;
+            background-image: 
+                linear-gradient(rgba(17, 24, 39, 0.5), rgba(17, 24, 39, 0.5)),
+                url('https://i.imgur.com/3RD3PbO.jpeg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            transition: background 0.5s;
-            /* MAIN BACKGROUND IMAGE WITH LIGHTER OVERLAY */
-            background-image: 
-                linear-gradient(rgba(17, 24, 39, 0.5), rgba(17, 24, 39, 0.5)), /* Lighter overlay (0.5 opacity) */
-                url('https://i.imgur.com/zFqAhiy.png'); /* YOUR GLOBAL BACKGROUND */
         }
 
-        /* Specific style for the detail panel background (slightly darker for contrast) */
         #detail-panel {
             background-image: 
-                linear-gradient(rgba(17, 24, 39, 0.95), rgba(17, 24, 39, 0.95)), /* Stronger overlay */
-                url('https://i.imgur.com/zFqAhiy.png'); /* YOUR GLOBAL BACKGROUND */
+                linear-gradient(rgba(17, 24, 39, 0.95), rgba(17, 24, 39, 0.95)),
+                url('https://i.imgur.com/3RD3PbO.jpeg');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed; 
+            background-attachment: fixed;
         }
 
-        /* Album Cover styling for the Modal Grid */
+        .modal-content-translucent {
+            background-image: 
+                linear-gradient(rgba(17, 24, 39, 0.90), rgba(17, 24, 39, 0.90)),
+                url('https://i.imgur.com/3RD3PbO.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .modal-sticky-header { backdrop-filter: blur(4px); }
+
         .album-cover {
             transition: all 0.2s ease-in-out;
-            border: 4px solid transparent; /* Always has a transparent border for consistent sizing */
-            aspect-ratio: 1 / 1; /* Ensures perfect square covers */
+            border: 4px solid transparent;
+            aspect-ratio: 1;
             width: 100%;
-            height: auto;
         }
-        .album-cover:hover {
-            transform: scale(1.03);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
-        }
-        
-        /* Layered glow for consistency */
+        .album-cover:hover { transform: scale(1.03); }
         .album-cover.selected {
-            border-color: #06b6d4; /* Primary accent color border (Cyan/Light Blue) */
+            border-color: #06b6d4;
             transform: scale(1.05);
             box-shadow: 
-                0 0 8px 2px rgba(6, 182, 212, 1), /* Inner, brighter glow */
-                0 0 20px 5px rgba(6, 182, 212, 0.6); /* Outer, softer glow */
+                0 0 8px 2px rgba(6, 182, 212, 1),
+                0 0 20px 5px rgba(6, 182, 212, 0.6);
         }
         
-        /* Custom box-shadow for search focus */
         #modal-search-input:focus {
             outline: none;
             border-color: #06b6d4;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.5);
+        }
+        
+        .modal-scrollable::-webkit-scrollbar { width: 8px; }
+        .modal-scrollable::-webkit-scrollbar-thumb { 
+            background-color: #06b6d4;
+            border-radius: 4px;
+        }
+        .modal-scrollable::-webkit-scrollbar-track { 
+            background-color: #374151;
+        }
+        
+        .page {
+            position: absolute; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100vh;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s;
+            display: flex;
+        }
+        .page.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Navigation Panel with same style as "Available Releases" section */
+        .nav-panel {
+            background: rgba(17, 24, 39, 0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-icon {
+            transition: all 0.3s ease;
+            color: #06b6d4;
+        }
+
+        .nav-button {
+            transition: all 0.3s ease;
+            background: transparent;
+            border: 1px solid transparent;
+        }
+        .nav-button:hover {
+            transform: translateY(-2px);
+            background: rgba(6, 182, 212, 0.15);
+            border-color: rgba(6, 182, 212, 0.4);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+        }
+        .nav-button:hover .nav-icon {
+            filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.8));
+        }
+
+        /* Media Player Styles - EXACTLY like selected album covers */
+        .media-player {
+            background: rgba(31, 41, 55, 0.7);
+            border: 4px solid #06b6d4;
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+            transform: scale(1.05);
             box-shadow: 
-                0 0 0 3px rgba(6, 182, 212, 0.5), 
-                0 0 8px rgba(6, 182, 212, 0.3);
+                0 0 8px 2px rgba(6, 182, 212, 1),
+                0 0 20px 5px rgba(6, 182, 212, 0.6);
+        }
+
+        .media-player:focus-within {
+            border-color: #06b6d4;
+            box-shadow: 
+                0 0 12px 3px rgba(6, 182, 212, 1),
+                0 0 25px 8px rgba(6, 182, 212, 0.8);
+        }
+
+        .play-button {
+            background: #06b6d4;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer.
+        }
+
+        .play-button:hover {
+            background: #0891b2;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            height: 6px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .progress {
+            background: #06b6d4;
+            height: 100%;
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        .volume-slider {
+            -webkit-appearance: none;
+            width: 100px;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #06b6d4;
+            cursor: pointer;
+        }
+
+        .time-display {
+            font-size: 0.8rem;
+            color: #9ca3af;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f4f6;
+            border-top: 2px solid #06b6d4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Hidden YouTube player */
+        #youtube-player {
+            position: absolute;
+            top: -1000px;
+            left: -1000px;
+            width: 1px;
+            height: 1px;
+        }
+
+        /* Visualizer Styles - FIXED to fill full width */
+        .visualizer-container {
+            position: relative;
+            margin-top: 16px;
+            height: 60px;
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 1px;
+            padding: 8px;
+            border-radius: 8px;
+            background: rgba(17, 24, 39, 0.3);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .visualizer-bar {
+            flex: 1;
+            min-width: 3px;
+            background: linear-gradient(to top, #06b6d4, #0891b2, #0e7490);
+            border-radius: 2px 2px 0 0;
+            transition: height 0.1s ease;
+            min-height: 2px;
+            max-height: 50px;
+        }
+
+        .visualizer-bar.active {
+            box-shadow: 0 0 6px rgba(6, 182, 212, 0.7);
         }
     </style>
     <script>
@@ -66,9 +251,8 @@
             theme: {
                 extend: {
                     colors: {
-                        // Bright Cyan/Light Blue (Tailwind Cyan 500)
-                        'primary-accent': '#06b6d4', 
-                        'dark-bg': '#1f2937', // Dark gray
+                        'primary-accent': '#06b6d4',
+                        'dark-bg': '#1f2937',
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -78,227 +262,210 @@
         }
     </script>
 </head>
-<body>
+<body class="text-white">
 
-    <!-- Main Application Container -->
-    <div class="min-h-screen flex flex-col p-4 sm:p-8">
+    <!-- Navigation Panel with Redesigned Clear Icons -->
+    <div class="fixed top-4 left-4 z-40">
+        <div class="nav-panel rounded-xl p-1 flex items-center justify-between space-x-1 min-h-[40px]">
+            <!-- Home - Modern House Design -->
+            <button onclick="showPage('home')" title="Home" class="nav-button p-1 rounded-lg group">
+                <svg width="20" height="20" viewBox="0 0 24 24" class="nav-icon" fill="currentColor">
+                    <path d="M12 2L2 7L4 9V21H20V9L22 7L12 2Z" stroke="currentColor" stroke-width="1" fill="none"/>
+                    <rect x="9" y="13" width="6" height="8" fill="currentColor" opacity="0.7"/>
+                    <path d="M12 2V7" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+            </button>
 
-        <!-- Language Selector and Header -->
+            <!-- Music - Clear Sound Waves -->
+            <button onclick="showPage('showcase')" title="Music Showcase" class="nav-button p-1 rounded-lg group">
+                <svg width="20" height="20" viewBox="0 0 24 24" class="nav-icon" fill="currentColor">
+                    <path d="M6 17V9M10 17V5M14 17V9M18 17V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+                    <circle cx="6" cy="17" r="2" fill="currentColor"/>
+                    <circle cx="10" cy="17" r="2" fill="currentColor"/>
+                    <circle cx="14" cy="17" r="2" fill="currentColor"/>
+                    <circle cx="18" cy="17" r="2" fill="currentColor"/>
+                </svg>
+            </button>
+
+            <!-- Contact - Modern Envelope -->
+            <button onclick="showPage('contact')" title="Contact Us" class="nav-button p-1 rounded-lg group">
+                <svg width="20" height="20" viewBox="0 0 24 24" class="nav-icon" fill="currentColor">
+                    <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                    <path d="M2 8L12 13L22 8" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                    <circle cx="7" cy="11" r="0.5" fill="currentColor"/>
+                    <circle cx="10" cy="11" r="0.5" fill="currentColor"/>
+                    <circle cx="13" cy="11" r="0.5" fill="currentColor"/>
+                </svg>
+            </button>
+
+            <!-- Donation - Heart (unchanged) -->
+            <button onclick="showPage('donation')" title="Support Us" class="nav-button p-1 rounded-lg group">
+                <svg width="20" height="20" viewBox="0 0 24 24" class="nav-icon" fill="currentColor">
+                    <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5C22 12.28 18.6 15.36 13.45 20.04L12 21.35Z" fill="currentColor"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Hidden YouTube Player -->
+    <div id="youtube-player"></div>
+
+    <!-- Pages remain exactly the same -->
+    <div id="page-home" class="page active min-h-screen flex flex-col justify-center items-center p-4 sm:p-8">
+        <button onclick="showPage('showcase')" title="Go to Music Showcase" class="bg-transparent border-none transition-transform duration-300 hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-primary-accent focus:ring-opacity-50 rounded-lg p-0 cursor-pointer">
+            <img src="https://i.imgur.com/80HMrPY.png" alt="Ten Rise Official Logo" class="w-full max-w-2xl h-auto mb-12 animate-pulse" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
+        </button>
+    </div>
+
+    <div id="page-showcase" class="page min-h-screen flex flex-col p-4 sm:p-8">
         <header class="mb-4 flex flex-col items-center relative">
-            
-            <!-- Language Selector -->
             <div class="absolute top-0 right-0 flex space-x-2">
-                <button id="lang-en" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200" onclick="setLanguage('en')">EN</button>
-                <button id="lang-jp" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200" onclick="setLanguage('jp')">JP</button>
+                <button id="lang-en" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-primary-accent" onclick="setLanguage('en')">EN</button>
+                <button id="lang-jp" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-gray-400" onclick="setLanguage('jp')">JP</button>
             </div>
-            
-            <!-- Logo -->
-            <img src="https://i.imgur.com/80HMrPY.png" 
-                 alt="Ten Rise Official Music Gallery Logo" 
-                 class="w-full max-w-xl h-auto"
-                 onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE+OFFICIAL+POLICE';"
-            >
+            <img src="https://i.imgur.com/80HMrPY.png" alt="Ten Rise Logo" class="w-full max-w-xl h-auto" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
         </header>
 
-        <!-- Social Media Links Bar -->
-        <div id="social-links-bar" class="flex justify-center items-center mb-8">
-            <!-- Social icons will be placed here by JavaScript -->
-        </div>
+        <div id="social-links-bar" class="flex justify-center items-center mb-8"></div>
 
-        <!-- 1. Selection Trigger Section (Opens Modal) -->
+        <!-- Available Releases Section -->
         <div class="mb-10 bg-gray-900/50 backdrop-blur-sm rounded-xl p-4 shadow-xl">
-            
-            <!-- CURRENT SELECTION SUMMARY - Now always visible -->
-            <div id="current-selection-summary" class="w-full mb-4 flex items-center space-x-4">
-                <!-- Current selection details go here -->
-            </div>
-
-            <!-- BUTTON TO OPEN MODAL -->
-            <button id="gallery-toggle" class="w-full flex justify-between items-center text-left group focus:outline-none bg-primary-accent/10 hover:bg-primary-accent/20 p-3 rounded-lg transition-colors duration-200" onclick="openSelectionModal()">
-                <!-- Title is professional, short and concise -->
+            <div id="current-selection-summary" class="w-full mb-4 flex items-center justify-between space-x-4 min-h-[64px]"></div>
+            <button id="gallery-toggle" class="w-full flex justify-between items-center text-left group focus:outline-none bg-primary-accent/10 hover:bg-primary-accent/20 p-3 rounded-lg transition-colors duration-200" onclick="openModal()">
                 <h2 id="gallery-title" class="text-xl font-bold text-gray-100 group-hover:text-primary-accent transition-colors duration-200">View All Releases</h2>
-                <!-- Icon now points right, indicating a new screen/modal will open -->
-                <svg id="toggle-icon" class="w-6 h-6 text-gray-400 group-hover:text-primary-accent transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                <svg class="w-6 h-6 text-gray-400 group-hover:text-primary-accent transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
             </button>
         </div>
 
-        <!-- 2. Detail Panel (Dynamically Updated) -->
         <main id="detail-panel" class="flex-grow bg-gray-900/90 rounded-xl shadow-2xl p-6 md:p-10 text-white flex flex-col lg:flex-row gap-8">
-            <!-- Content will be inserted here by JavaScript -->
             <div id="detail-content" class="w-full flex justify-center items-center h-full min-h-[300px]">
-                <!-- Updated ID for translation -->
-                <p id="initial-prompt" class="text-gray-400 text-xl animate-pulse">Select an album cover above to see the full details.</p>
+                <p id="initial-prompt" class="text-gray-400 text-xl animate-pulse">Select a release to view the full details.</p>
             </div>
         </main>
         
-        <!-- Message Box -->
-        <div id="message-box" class="fixed bottom-4 right-4 p-4 bg-yellow-900 border border-yellow-700 text-yellow-300 rounded-lg text-sm transition-all duration-300 shadow-lg z-50" style="display:none;">
+        <div id="message-box" class="fixed bottom-4 right-4 p-4 bg-yellow-900 border border-yellow-700 text-yellow-300 rounded-lg text-sm transition-all duration-300 shadow-lg z-50 hidden"></div>
+    </div>
+
+    <div id="page-contact" class="page min-h-screen flex flex-col p-4 sm:p-8">
+        <header class="mb-4 flex flex-col items-center relative">
+            <div class="absolute top-0 right-0 flex space-x-2">
+                <button id="lang-en-contact" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-primary-accent" onclick="setLanguage('en')">EN</button>
+                <button id="lang-jp-contact" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-gray-400" onclick="setLanguage('jp')">JP</button>
+            </div>
+            <img src="https://i.imgur.com/80HMrPY.png" alt="Ten Rise Logo" class="w-full max-w-xl h-auto" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
+        </header>
+
+        <div class="flex-grow flex items-center justify-center">
+            <div class="bg-gray-900/90 rounded-xl shadow-2xl p-8 w-full max-w-2xl">
+                <h2 class="text-3xl font-bold text-primary-accent mb-6 text-center">Contact Us</h2>
+                <p class="text-gray-300 mb-8 text-center">We'd love to hear from you! Send us a message and we'll respond as soon as possible.</p>
+                <form id="contact-form" class="space-y-6">
+                    <input type="text" id="name" name="name" required placeholder="Your Name" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300">
+                    <input type="email" id="email" name="email" required placeholder="Your Email" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300">
+                    <input type="text" id="subject" name="subject" required placeholder="Subject" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300">
+                    <textarea id="message" name="message" rows="6" required placeholder="Your Message" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300 resize-none"></textarea>
+                    <button type="submit" class="w-full bg-primary-accent hover:bg-cyan-500 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-accent focus:ring-opacity-50">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-donation" class="page min-h-screen flex flex-col p-4 sm:p-8">
+        <header class="mb-4 flex flex-col items-center relative">
+            <div class="absolute top-0 right-0 flex space-x-2">
+                <button id="lang-en-donation" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-primary-accent" onclick="setLanguage('en')">EN</button>
+                <button id="lang-jp-donation" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-gray-400" onclick="setLanguage('jp')">JP</button>
+            </div>
+            <img src="https://i.imgur.com/80HMrPY.png" alt="Ten Rise Logo" class="w-full max-w-xl h-auto" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
+        </header>
+
+        <div class="flex-grow flex items-center justify-center">
+            <div class="bg-gray-900/90 rounded-xl shadow-2xl p-8 w-full max-w-2xl">
+                <h2 class="text-3xl font-bold text-primary-accent mb-6 text-center">Support Ten Rise</h2>
+                <div class="text-gray-300 space-y-4 text-center">
+                    <p class="text-lg">We're working hard to create amazing music and share it with the world.</p>
+                    <p>Your support helps us continue our musical journey and create more content for our fans.</p>
+                    <p class="text-primary-accent font-semibold">Coming Soon: Donation Options</p>
+                    <p class="text-sm text-gray-400">We're setting up secure donation methods. Check back soon!</p>
+                </div>
+                <div class="mt-8 p-6 bg-gray-800/50 rounded-lg border border-gray-700 text-center">
+                    <p class="text-gray-400 mb-4">Donation options will appear here soon</p>
+                    <div class="flex justify-center space-x-4 opacity-50">
+                        <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center"><span class="text-gray-500 text-xs">PayPal</span></div>
+                        <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center"><span class="text-gray-500 text-xs">Stripe</span></div>
+                        <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center"><span class="text-gray-500 text-xs">Bank</span></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     
-    <!-- Selection Modal (New Full-Screen Pop-up) -->
-    <div id="selection-modal" class="fixed inset-0 z-50 hidden bg-gray-900/95 backdrop-blur-md overflow-y-auto p-4 sm:p-8">
-        <div class="max-w-7xl mx-auto">
-            <!-- Modal Header -->
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-3xl font-bold text-primary-accent text-gray-100">Select a Release</h2>
-                <button onclick="closeSelectionModal()" class="text-gray-300 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-primary-accent">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-            </div>
-
-            <!-- Search Input -->
-            <div class="mb-8 flex justify-center">
-                <input type="text" id="modal-search-input" oninput="filterReleases()" 
-                       placeholder="Search by Title, Style, or Instrument (e.g., Female Vocal, Instrumental, Piano, Year)..." 
-                       class="w-full md:max-w-xl p-3 rounded-lg bg-gray-800 text-gray-200 placeholder-gray-500 border border-gray-700 focus:border-primary-accent transition-all duration-300">
-            </div>
-
-            <!-- Album Grid Container -->
-            <div id="modal-release-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-                <!-- Album Covers will be rendered here by renderGallery() -->
+    <!-- Modal -->
+    <div id="selection-modal" class="fixed inset-0 z-50 bg-black bg-opacity-80 backdrop-blur-sm hidden transition-opacity duration-300 ease-out" aria-modal="true" role="dialog">
+        <div class="flex items-center justify-center min-h-screen p-4 sm:p-6">
+            <div id="modalContent" class="modal-content-translucent p-6 sm:p-8 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden transform scale-95 opacity-0 transition-all duration-300 ease-out">
+                <div class="modal-sticky-header sticky top-0 z-20 -mx-6 -mt-6 px-6 pt-6 pb-4">
+                    <div class="flex justify-between items-center pb-4 mb-4 border-b border-gray-700">
+                        <h2 class="text-3xl font-bold text-primary-accent text-gray-100">Select a Release</h2>
+                        <button id="closeModalButton" onclick="closeModal()" class="text-primary-accent hover:text-cyan-300 transition-colors p-2 rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-accent" aria-label="Close modal">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                    <input type="text" id="modal-search-input" oninput="filterReleases()" placeholder="Search by Title, Style, or Instrument..." class="w-full md:max-w-xl py-1 px-3 rounded-lg bg-gray-800/70 text-sm text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent transition-all duration-300">
+                </div>
+                <div class="modal-scrollable overflow-y-auto max-h-[60vh] pb-4 py-6 px-6 sm:py-8 sm:px-10">
+                    <div id="modal-release-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"></div>
+                </div>
             </div>
         </div>
     </div>
 
-
+    <!-- OPTIMIZED JavaScript - Only safe optimizations -->
     <script>
-        // --- 1. LANGUAGE CONFIGURATION (NEW) ---
-        let currentLanguage = 'en';
+        // Constants and Configuration - Grouped for better organization
+        const CONFIG = {
+            currentLanguage: 'en',
+            selectedReleaseIndex: null,
+            youtubePlayer: null,
+            isPlaying: false,
+            currentTrackId: null,
+            progressInterval: null,
+            visualizerInterval: null,
+            visualizerBars: []
+        };
 
         const TRANSLATIONS = {
             'en': {
-                'gallery-title': 'View All Releases', // Updated to new text
-                'current-selection': 'Currently Selected:',
-                'initial-prompt': 'Select a release to view the full details.',
-                'details-heading': 'Single Details',
-                'listen-prompt': 'Click an icon to listen:',
-                'artist': 'Artist',
-                'duration': 'Duration',
-                'label': 'Label',
-                'style': 'Style',
-                'release_date': 'Release Date',
-                'desc_heading': 'Track Description:',
-                
-                // --- ORIGINAL TRACKS ---
+                'gallery-title': 'View All Releases', 'current-selection': 'Current Selection:', 'initial-prompt': 'Select a release to view the full details.',
+                'details-heading': 'Single Details', 'listen-prompt': 'Click an icon to listen:', 'artist': 'Artist', 'duration': 'Duration', 'label': 'Label',
+                'style': 'Style', 'release_date': 'Release Date', 'desc_heading': 'Track Description:', 'available-releases': 'Available Releases',
+                'click-to-view': 'Click "View All Releases" below to select a track', 'contact-title': 'Contact Us', 'donation-title': 'Support Ten Rise',
                 'track-journey-desc': "A gentle, cinematic piece built around themes of hope and aspiration. Featuring serene female vocals, intricate piano melodies, and lush synthesizer arrangements, the track culminates with the ethereal quality of a children's choir, suggesting a bright, illuminated future. The style aligns with uplifting Anisong and anime soundtracks, providing calm, hopeful music.",
-                'track-stars-desc': "An energetic and highly rhythmic anthem designed to inspire determination. This track features a powerful lead female vocal backed by a dynamic children's choir, set against a driving blend of synthesizer leads and prominent piano rhythms. Its powerful, uplifting style is characteristic of modern Anisong and anime themes, delivering rhymed, energetic music.",
-                'single-neon-desc': "An energetic, driving single that marks the beginning of the Ten Rise sound. This is a standalone digital-only release.",
-                
-                // --- MOCK TRACKS (FOR TESTING) ---
-                'mock-starlight-desc': "A high-energy, pulsing EDM-infused track featuring vocal chops and a deep, driving bassline. This instrumental piece is designed for maximum impact and high-intensity motion sequences.",
-                'mock-echoes-desc': "An ambient ballad characterized by lush strings and subtle electronic textures. The piece features a prominent male tenor vocal and dramatic orchestral swells, evoking reflection and nostalgia.",
-                'mock-crimson-desc': "A fast-paced rock opera with heavy guitar riffs, complex drumming, and soaring dual male and female vocals. Ideal for intense action or battle scenes in anime.",
-                'mock-silent-desc': "A peaceful, instrumental lo-fi hip-hop track featuring a subtle piano loop, gentle percussion, and an overall calm atmosphere, perfect for studying or relaxation.",
-                'mock-cyber-desc': "A vibrant synthwave track paying homage to 80s aesthetics. It features a pulsating rhythm, neon-drenched synth leads, and a retro-futuristic atmosphere.",
-                'mock-lunar-desc': "A minimalist electronica piece built around deep sub-bass frequencies and experimental sound design. This track is atmospheric and designed to be sonically immersive.",
-                'mock-clockwork-desc': "A dark, powerful track blending industrial metal with complex, intricate electronic drum patterns and aggressive, layered synth textures.",
-                'mock-golden-desc': "An uplifting acoustic folk-pop track featuring light percussion, rich vocal harmonies, and warm guitar melodies, centered around a sunset or 'golden hour' theme.",
-                'mock-architect-desc': "A refined progressive house track with extended, melodic instrumental breaks and a soaring, emotional synth melody line. Built for the club and the soundtrack alike.",
-                'mock-deepsea-desc': "A melancholic classical crossover piece featuring a prominent string quartet. The mood is dark, reflective, and deeply expressive.",
+                'track-stars-desc': "An energetic and highly rhythmic anthem designed to inspire determination. This track features a powerful lead female vocal backed by a dynamic children's choir, set against a driving blend of synthesizer leads and prominent piano rhythms. Its powerful, uplifting style is characteristic of modern Anisong and anime themes, delivering rhymed, energetic music."
             },
             'jp': {
-                'gallery-title': '全リリースを見る', // Updated to new text (JP)
-                'current-selection': '現在選択中:',
-                'initial-prompt': 'リリースを選択して詳細をご覧ください。',
-                'details-heading': 'シングル詳細',
-                'listen-prompt': 'アイコンをクリックして聴く:',
-                'artist': 'アーティスト',
-                'duration': '演奏時間',
-                'label': 'レーベル',
-                'style': 'スタイル',
-                'release_date': 'リリース日',
-                'desc_heading': '楽曲の説明:',
-                
-                // --- ORIGINAL TRACKS (JP) ---
+                'gallery-title': '全リリースを見る', 'current-selection': '現在の選択:', 'initial-prompt': 'リリースを選択して詳細をご覧ください。',
+                'details-heading': 'シングル詳細', 'listen-prompt': 'アイコンをクリックして聴く:', 'artist': 'アーティスト', 'duration': '演奏時間', 'label': 'レーベル',
+                'style': 'スタイル', 'release_date': 'リリース日', 'desc_heading': '楽曲の説明:', 'available-releases': '利用可能なリリース',
+                'click-to-view': '下の「全リリースを見る」をクリックして曲を選択してください', 'contact-title': 'お問い合わせ', 'donation-title': 'Ten Riseをサポート',
                 'track-journey-desc': "希望と憧れをテーマにした、優しくシネマティックな楽曲。穏やかな女性ボーカル、繊細なピアノメロディ、豊かなシンセサイザーアレンジメントを特徴とし、子供たちのコーラスが明るく照らされた未来を暗示します。アップリフティングなアニソン、アニメのサウンドトラックに適合する、穏やかで希望に満ちた音楽です。",
-                'track-stars-desc': "決意を鼓舞するためにデザインされた、エネルギッシュでリズミカルなアンセム。力強いリード女性ボーカルとダイナミックな子供たちのコーラスが特徴で、ドライヴ感のあるシンセサイザーと際立ったピアノのリズムが融合しています。力強く、高揚感のあるスタイルは、現代のアニソンやアニメのテーマ曲を彷彿とさせ、リズミカルでエネルギッシュな楽曲をお届けします。",
-                'single-neon-desc': "Ten Riseサウンドの始まりを告げる、エネルギッシュでドライヴ感のあるシングル。デジタル配信限定リリースです。",
-                
-                // --- MOCK TRACKS (FOR TESTING - JP) ---
-                'mock-starlight-desc': "ボーカルチョップと深くドライヴするベースラインが特徴の、ハイエナジーで脈動するEDMインフューズドトラック。最大のインパクトと激しい動きのシーケンスのために設計されたインストゥルメンタル曲です。",
-                'mock-echoes-desc': "豊かなストリングスと繊細な電子テクスチャが特徴のアンビエントなバラード。著名な男性テノールボーカルと劇的なオーケストラの高まりがあり、内省とノスタルジアを呼び起こします。",
-                'mock-crimson-desc': "ヘビーなギターリフ、複雑なドラム、そして壮大なデュアル男性・女性ボーカルを特徴とするテンポの速いロックオペラ。アニメの激しいアクションやバトルシーンに最適です。",
-                'mock-silent-desc': "微妙なピアノループ、穏やかなパーカッション、そして全体的に落ち着いた雰囲気が特徴の、平和なインストゥルメンタルなローファイヒップホップトラック。勉強やリラックスに最適です。",
-                'mock-cyber-desc': "80年代の美学に敬意を表した鮮やかなシンセウェーブトラック。脈動するリズム、ネオンに染まったシンセリード、そしてレトロフューチャーな雰囲気が特徴です。",
-                'mock-lunar-desc': "深いサブベース周波数と実験的なサウンドデザインに基づいて構築されたミニマリストのエレクトロニカ作品。このトラックは雰囲気があり、音響的に没入感を高めるように設計されています。",
-                'mock-clockwork-desc': "インダストリアルメタルと複雑で入り組んだエレクトロニックドラムパターン、そしてアグレッシブでレイヤードされたシンセテクスチャを融合させた、暗くパワフルなトラック。",
-                'mock-golden-desc': "軽快なパーカッション、豊かなボーカルハーモニー、温かいギターメロディを特徴とする、アップリフティングなアコースティックフォークポップトラック。「ゴールデンアワー」をテーマにしています。",
-                'mock-architect-desc': "拡張されたメロディックなインストゥルメンタルブレイクと、壮大で感情的なシンセメロディラインを特徴とする洗練されたプログレッシブハウストラック。クラブにもサウンドトラックにも対応します。",
-                'mock-deepsea-desc': "主要な弦楽四重奏団をフィーチャーした、メランコリックなクラシカルクロスオーバー作品。雰囲気は暗く、内省的で、深い表現力を持っています。",
+                'track-stars-desc': "決意を鼓舞するためにデザインされた、エネルギッシュでリズミカルなアンセム。力強いリード女性ボーカルとダイナミックな子供たちのコーラスが特徴で、ドライヴ感のあるシンセサイザーと際立ったピアノのリズムが融合しています。力強く、高揚感のあるスタイルは、現代のアニソンやアニメのテーマ曲を彷彿とさせ、リズミカルでエネルギッシュな楽曲をお届けします。"
             }
         };
 
-        /**
-         * Fetches the translated string for a given key.
-         */
-        function t(key) {
-            return TRANSLATIONS[currentLanguage][key] || key;
-        }
-
-        /**
-         * Sets the application language and re-renders translatable elements.
-         */
-        function setLanguage(lang) {
-            currentLanguage = lang;
-            
-            // 1. Update Language Buttons Styling
-            document.getElementById('lang-en').classList.remove('text-primary-accent', 'text-gray-400');
-            document.getElementById('lang-jp').classList.remove('text-primary-accent', 'text-gray-400');
-            
-            if (lang === 'en') {
-                document.getElementById('lang-en').classList.add('text-primary-accent');
-                document.getElementById('lang-jp').classList.add('text-gray-400');
-            } else {
-                document.getElementById('lang-jp').classList.add('text-primary-accent');
-                document.getElementById('lang-en').classList.add('text-gray-400');
-            }
-
-            // 2. Translate Static Elements
-            document.getElementById('gallery-title').textContent = t('gallery-title');
-            
-            // 3. Re-render Dynamic Content
-            if (RELEASES_DATA.length > 0 && selectedReleaseIndex !== null) {
-                displayDetails(selectedReleaseIndex);
-            } else {
-                document.getElementById('initial-prompt').textContent = t('initial-prompt');
-            }
-        }
-
-        // --- 2. CONFIGURATION & STATE ---
-        // Start by displaying the details for the second album in the list (index 1)
-        let selectedReleaseIndex = 1; 
-        
         const SOCIAL_LINKS = [
-            { 
-                name: "Instagram", 
-                url: "https://www.instagram.com/tr_tenrise/", 
-                iconUrl: "https://i.imgur.com/RHS4HTR.png"
-            },
-            { 
-                name: "TikTok", 
-                url: "https://www.tiktok.com/@tr_tenrise", 
-                iconUrl: "https://i.imgur.com/kOu4UG7.png" 
-            },
-            { 
-                name: "X (Twitter)", 
-                url: "https://x.com/TR_TenRise", 
-                iconUrl: "https://i.imgur.com/Yd5oBVX.png" 
-            },
+            { name: "Instagram", url: "https://www.instagram.com/tr_tenrise/", iconUrl: "https://i.imgur.com/RHS4HTR.png" },
+            { name: "TikTok", url: "https://www.tiktok.com/@tr_tenrise", iconUrl: "https://i.imgur.com/kOu4UG7.png" },
+            { name: "X (Twitter)", url: "https://x.com/TR_TenRise", iconUrl: "https://i.imgur.com/Yd5oBVX.png" }
         ];
-        
+
         const RELEASES_DATA = [
-            // --- ORIGINAL TRACKS (3) ---
             {
-                id: 'track-journey',
-                title: "光の旅路 Journey of Light",
-                artist: "Ten Rise",
-                label: "Ten Rise Records",
-                image: "https://i.imgur.com/dFLGglK.jpeg",
-                duration: "5:07",
-                descriptionKey: 'track-journey-desc', 
+                id: 'track-journey', title: "光の旅路 Journey of Light", artist: "Ten Rise", label: "Ten Rise Records",
+                image: "https://i.imgur.com/dFLGglK.jpeg", duration: "5:07", descriptionKey: 'track-journey-desc',
                 genres: ["J-Pop", "Anisong", "Anime OST", "Female Vocal", "Cinematic Uplifting Trance (Ballad)", "Piano"],
-                releaseDate: "September 25, 2025", 
+                releaseDate: "September 25, 2025",
+                youtubeId: "ww_blgytmmA",
                 streamingLinks: [
                     { name: "Spotify", url: "https://open.spotify.com/album/4T2dI4Gtwv62TbtWwNUzcR", iconUrl: "https://i.imgur.com/C1Sa9gR.png"},
                     { name: "Apple Music", url: "https://music.apple.com/jp/album/journey-of-light-single/1840632415?at=10l7qr", iconUrl: "https://i.imgur.com/VEq0YKj.png"},
@@ -311,19 +478,15 @@
                     { name: "Mora", url: "https://mora.jp/package/43000074/TCJPR0001494929/", iconUrl: "https://i.imgur.com/sPIBy5J.png"},
                     { name: "Music.jp", url: "https://music-book.jp/Search?Keyword=Ten%20Rise%20%E5%85%89%E3%81%AE%E6%97%85%E8%B7%AF", iconUrl: "https://i.imgur.com/sPIBy5J.png"},
                     { name: "Rakuten Music", url: "https://music.rakuten.co.jp/link/search?q=%20%E5%85%89%E3%81%AE%E6%97%85%E8%B7%AF", iconUrl: "https://i.imgur.com/AhUEhy2.png"},
-                    { name: "Recochoku", url: "https://recochoku.jp/album/A2005723996", iconUrl: "https://i.imgur.com/tjVsvF2.png"},
-                ],
+                    { name: "Recochoku", url: "https://recochoku.jp/album/A2005723996", iconUrl: "https://i.imgur.com/tjVsvF2.png"}
+                ]
             },
             {
-                id: 'track-stars',
-                title: "星の彼方へ Beyond the Stars",
-                artist: "Ten Rise",
-                label: "Ten Rise Records",
-                image: "https://i.imgur.com/mcMAj8X.jpeg", 
-                duration: "6:33",
-                descriptionKey: 'track-stars-desc',
-                genres: ["J-Pop", "Anisong", "Anime OST", "Female Vocal", "Cinematic Uplifting Trance (Ballad)", "Piano"], 
+                id: 'track-stars', title: "星の彼方へ Beyond the Stars", artist: "Ten Rise", label: "Ten Rise Records",
+                image: "https://i.imgur.com/mcMAj8X.jpeg", duration: "6:33", descriptionKey: 'track-stars-desc',
+                genres: ["J-Pop", "Anisong", "Anime OST", "Female Vocal", "Cinematic Uplifting Trance (Ballad)", "Piano"],
                 releaseDate: "October 2, 2025",
+                youtubeId: "TyZnEaDB4KM",
                 streamingLinks: [
                     { name: "Apple Music", url: "https://music.apple.com/jp/album/beyond-the-stars-single/1843268720", iconUrl: "https://i.imgur.com/VEq0YKj.png"},
                     { name: "Spotify", url: "https://open.spotify.com/album/6UztNcNTQuTbKeQmO5v64I", iconUrl: "https://i.imgur.com/C1Sa9gR.png"},
@@ -335,427 +498,509 @@
                     { name: "Mora", url: "https://mora.jp/package/43000074/TCJPR0001494928/", iconUrl: "https://i.imgur.com/sPIBy5J.png"},
                     { name: "KKBOX", url: "https://www.kkbox.com/jp/ja/album/-rlURCfJ1XBjKrt77US", iconUrl: "https://i.imgur.com/noe1VXg.png"},
                     { name: "Dhit Docomo", url: "https://dhits.docomo.ne.jp/search/freeword/musics?k_q=Ten%20Rise%20%E6%98%9F%E3%81%AE%E5%BD%BC%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/nheUqcV.png" },
-                    { name: "Music.jp", url: "https://music-book.jp/Search?Keyword=Ten%20Rise%20%E6%98%9F%E3%81%AE%E5%BD%BC%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/sPIBy5J.png"},
-                    { name: "Rakuten Music", url: "https://music.rakuten.co.jp/link/search?q=%20%E6%98%9F%E3%81%AE%E5%BD%BC%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/AhUEhy2.png"},
-                ],
-            },
-            {
-                id: 'single-neon',
-                title: "Neon Dawn (Radio Edit)",
-                artist: "Ten Rise",
-                label: "Ten Rise Records",
-                image: "https://placehold.co/400x400/06b6d4/ffffff?text=First+Light+Single",
-                duration: "3:45",
-                descriptionKey: 'single-neon-desc',
-                genres: ["Uplifting Trance", "Radio Edit", "Instrumental", "Synthesizer"],
-                releaseDate: "TBA",
-                streamingLinks: [
-                    { name: "Spotify", url: "https://mockup-spotify.com/single-first", iconUrl: "https://placehold.co/40x40/1DB954/ffffff?text=S" },
-                    { name: "Bandcamp", url: "https://mockup-bandcamp.com/single-first", iconUrl: "https://placehold.co/40x40/1ed179/ffffff?text=BC" },
-                    { name: "Line Music", url: "https://mockup-line.com/single-first", iconUrl: "https://placehold.co/40x40/3b82f6/ffffff?text=L" }, 
-                ],
-            },
-
-            // --- MOCK TRACKS (10) FOR TESTING GALLERY SCROLLING ---
-            {
-                id: 'mock-starlight',
-                title: "Starlight Nexus",
-                artist: "Ten Rise",
-                label: "Test Label",
-                image: "https://placehold.co/400x400/9333ea/ffffff?text=STARLIGHT+NEXUS", // Pink/Purple
-                duration: "4:12",
-                descriptionKey: 'mock-starlight-desc',
-                genres: ["EDM", "Progressive Trance", "Instrumental", "Synthesizer", "Bassline"],
-                releaseDate: "2026",
-                streamingLinks: [],
-            },
-            {
-                id: 'mock-echoes',
-                title: "Echoes of Tomorrow",
-                artist: "Ten Rise",
-                label: "Test Label",
-                image: "https://placehold.co/400x400/3b82f6/ffffff?text=ECHOES+OF+TOMORROW", // Blue/White
-                duration: "5:50",
-                descriptionKey: 'mock-echoes-desc',
-                genres: ["Ambient", "Orchestral", "Male Vocal", "Strings"],
-                releaseDate: "2026",
-                streamingLinks: [],
-            },
-            {
-                id: 'mock-crimson',
-                title: "Crimson Flash",
-                artist: "Ten Rise",
-                label: "Test Label",
-                image: "https://placehold.co/400x400/ef4444/ffffff?text=CRIMSON+FLASH", // Red/Black
-                duration: "3:20",
-                descriptionKey: 'mock-crimson-desc',
-                genres: ["J-Rock", "Anime", "Heavy Guitar", "Dual Vocal", "Drums"],
-                releaseDate: "2026",
-                streamingLinks: [],
-            },
-            {
-                id: 'mock-silent',
-                title: "Silent Garden",
-                artist: "Ten Rise",
-                label: "Test Label",
-                image: "https://placehold.co/400x400/10b981/ffffff?text=SILENT+GARDEN", // Green/Brown
-                duration: "2:45",
-                descriptionKey: 'mock-silent-desc',
-                genres: ["Lo-Fi", "Instrumental", "Piano", "Chillhop", "Percussion"],
-                releaseDate: "2027",
-                streamingLinks: [],
-            },
-            {
-                id: 'mock-cyber',
-                title: "Cyber Rain",
-                artist: "Ten Rise",
-                label: "Test Label",
-                image: "https://placehold.co/400x400/0891b2/000000?text=CYBER+RAIN", // Neon Cyan/Black
-                duration: "4:55",
-                descriptionKey: 'mock-cyber-desc',
-                genres: ["Synthwave", "80s Pop", "Instrumental", "Retro", "Synthesizer"],
-                releaseDate: "2027",
-                streamingLinks: [],
-            },
-            {
-                id: 'mock-lunar',
-                title: "Lunar Drift",
-                artist: "Ten Rise",
-                label: "Test Label",
-                image: "https://placehold.co/400x400/6b7280/ffffff?text=LUNAR+DRIFT", // Gray/Silver
-                duration: "6:01",
-                descriptionKey: 'mock-lunar-desc',
-                genres: ["Minimal Techno", "Experimental", "Ambient", "Sub-Bass"],
-                releaseDate: "2028",
-                streamingLinks: [],
-            },
-            {
-                id: 'mock-clockwork',
-                title: "Clockwork Heart",
-                artist: "Ten Rise",
-                label: "Test Label",
-                image: "https://placehold.co/400x400/92400e/ffffff?text=CLOCKWORK+HEART", // Bronze/Gears
-                duration: "3:40",
-                descriptionKey: 'mock-clockwork-desc',
-                genres: ["Industrial Metal", "Electronic", "Aggressive", "Drums"],
-                releaseDate: "2028",
-                streamingLinks: [],
-            },
-            {
-                id: 'mock-golden',
-                title: "Golden Hour",
-                artist: "Ten Rise",
-                label: "Test Label",
-                image: "https://placehold.co/400x400/f59e0b/ffffff?text=GOLDEN+HOUR", // Yellow/Orange
-                duration: "3:10",
-                descriptionKey: 'mock-golden-desc',
-                genres: ["Acoustic", "Folk Pop", "Vocal Harmony", "Guitar", "Percussion"],
-                releaseDate: "2029",
-                streamingLinks: [],
-            },
-            {
-                id: 'mock-architect',
-                title: "The Architect's Dream",
-                artist: "Ten Rise",
-                label: "Test Label",
-                image: "https://placehold.co/400x400/1f2937/ffffff?text=ARCHITECTS+DREAM", // Geometric shapes
-                duration: "7:05",
-                descriptionKey: 'mock-architect-desc',
-                genres: ["Progressive House", "Trance", "Instrumental", "Synthesizer"],
-                releaseDate: "2029",
-                streamingLinks: [],
-            },
-            {
-                id: 'mock-deepsea',
-                title: "Deep Sea Waltz",
-                artist: "Ten Rise",
-                label: "Test Label",
-                image: "https://placehold.co/400x400/1d4ed8/ffffff?text=DEEP+SEA+WALTZ", // Dark Blue/Ocean
-                duration: "4:30",
-                descriptionKey: 'mock-deepsea-desc',
-                genres: ["Classical Crossover", "Waltz", "String Quartet", "Melancholic"],
-                releaseDate: "2030",
-                streamingLinks: [],
-            },
+                    { name: "Music.jp", url: "https://music-book.jp/Search?Keyword=Ten%20Rise%20%E6%98%9F%E3%81%AE%E5%BD%BC%E6%96%B9%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/sPIBy5J.png"},
+                    { name: "Rakuten Music", url: "https://music.rakuten.co.jp/link/search?q=%20%E6%98%9F%E3%81%AE%E5%BD%BC%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/AhUEhy2.png"}
+                ]
+            }
         ];
-        
-        // --- 3. STATE MANAGEMENT & UTILITIES ---
 
-        /**
-         * Opens the full-screen selection modal.
-         */
-        function openSelectionModal() {
-            document.getElementById('selection-modal').classList.remove('hidden');
-            // Ensure the gallery is rendered and selected state is correct when opening
-            renderGallery(RELEASES_DATA, document.getElementById('modal-release-grid'));
-            document.getElementById('modal-search-input').value = ''; // Clear search on open
-        }
-
-        /**
-         * Closes the full-screen selection modal.
-         */
-        function closeSelectionModal() {
-            document.getElementById('selection-modal').classList.add('hidden');
-        }
-
-        /**
-         * Displays a temporary message box.
-         */
-        function showMessage(message, type = 'info') {
-            const box = document.getElementById('message-box');
-            let bgColor = 'bg-yellow-900';
-            let borderColor = 'border-yellow-700';
-            let textColor = 'text-yellow-300';
+        // Simulated Visualizer Functions
+        function createVisualizer() {
+            const container = document.getElementById('visualizer-container');
+            if (!container) return;
             
-            if (type === 'success') {
-                bgColor = 'bg-green-900';
-                borderColor = 'border-green-700';
-                textColor = 'text-green-300';
-            } else if (type === 'error') {
-                bgColor = 'bg-red-900';
-                borderColor = 'border-red-700';
-                textColor = 'text-red-300';
+            container.innerHTML = '';
+            CONFIG.visualizerBars = [];
+            
+            const barCount = 28;
+            for (let i = 0; i < barCount; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'visualizer-bar';
+                bar.style.height = '2px';
+                container.appendChild(bar);
+                CONFIG.visualizerBars.push(bar);
             }
             
-            box.className = `fixed bottom-4 right-4 p-4 border rounded-lg text-sm transition-all duration-300 shadow-lg z-50 ${bgColor} ${borderColor} ${textColor}`;
-            box.textContent = message;
-            box.style.display = 'block';
-
-            clearTimeout(box.timeout);
-            box.timeout = setTimeout(() => {
-                box.style.display = 'none';
-            }, 5000);
+            startVisualizerAnimation();
         }
-        
-        /**
-         * Renders the social media links in the header bar.
-         */
-        function renderSocialLinks() {
-            const container = document.getElementById('social-links-bar');
-            container.innerHTML = '';
 
-            SOCIAL_LINKS.forEach(link => {
-                const linkElement = document.createElement('a');
-                linkElement.href = link.url;
-                linkElement.target = '_blank';
-                linkElement.title = `Visit Ten Rise on ${link.name}`;
-                linkElement.className = 'mx-3 transition-opacity duration-200 opacity-80 hover:opacity-100 hover:scale-105'; 
+        function startVisualizerAnimation() {
+            if (CONFIG.visualizerInterval) clearInterval(CONFIG.visualizerInterval);
+            
+            CONFIG.visualizerInterval = setInterval(() => {
+                if (!CONFIG.isPlaying) return;
                 
-                const iconImg = document.createElement('img');
-                iconImg.src = link.iconUrl;
-                iconImg.alt = `${link.name} icon`;
-                iconImg.className = 'w-14 h-14 object-contain rounded-lg'; 
-                
-                iconImg.onerror = function() {
-                    this.onerror=null;
-                    this.src='https://placehold.co/40x40/9ca3af/ffffff?text=?';
-                }
+                CONFIG.visualizerBars.forEach((bar, index) => {
+                    const time = Date.now() * 0.002;
+                    const wave = Math.sin(time + index * 0.3) * 0.5 + 0.5;
+                    const random = Math.random() * 0.3;
+                    const height = 2 + (wave + random) * 45;
+                    
+                    bar.style.height = `${height}px`;
+                    bar.classList.toggle('active', height > 25);
+                });
+            }, 100);
+        }
 
-                linkElement.appendChild(iconImg);
-                container.appendChild(linkElement);
+        function stopVisualizer() {
+            if (CONFIG.visualizerInterval) {
+                clearInterval(CONFIG.visualizerInterval);
+                CONFIG.visualizerInterval = null;
+            }
+            
+            CONFIG.visualizerBars.forEach(bar => {
+                bar.style.height = '2px';
+                bar.classList.remove('active');
             });
         }
 
+        // Progress update functions
+        function startProgressUpdates() {
+            stopProgressUpdates();
+            CONFIG.progressInterval = setInterval(updateProgressBar, 100);
+        }
 
-        /**
-         * Renders the release grid into the target container.
-         * @param {Array} releases The array of releases to display.
-         * @param {HTMLElement} container The DOM element to render into.
-         */
-        function renderGallery(releases, container) {
-            container.innerHTML = '';
+        function stopProgressUpdates() {
+            if (CONFIG.progressInterval) {
+                clearInterval(CONFIG.progressInterval);
+                CONFIG.progressInterval = null;
+            }
+        }
+
+        // YouTube Player API
+        function onYouTubeIframeAPIReady() {
+            CONFIG.youtubePlayer = new YT.Player('youtube-player', {
+                height: '1',
+                width: '1',
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            console.log('YouTube player ready');
+        }
+
+        function onPlayerStateChange(event) {
+            const playIcon = document.getElementById('play-icon');
+            const pauseIcon = document.getElementById('pause-icon');
+            const loadingSpinner = document.getElementById('loading-spinner');
             
-            if (releases.length === 0) {
+            switch(event.data) {
+                case YT.PlayerState.PLAYING:
+                    CONFIG.isPlaying = true;
+                    loadingSpinner.style.display = 'none';
+                    pauseIcon.style.display = 'block';
+                    playIcon.style.display = 'none';
+                    
+                    createVisualizer();
+                    startProgressUpdates();
+                    break;
+                    
+                case YT.PlayerState.PAUSED:
+                    CONFIG.isPlaying = false;
+                    playIcon.style.display = 'block';
+                    pauseIcon.style.display = 'none';
+                    loadingSpinner.style.display = 'none';
+                    stopVisualizer();
+                    stopProgressUpdates();
+                    break;
+                    
+                case YT.PlayerState.ENDED:
+                    CONFIG.isPlaying = false;
+                    playIcon.style.display = 'block';
+                    pauseIcon.style.display = 'none';
+                    loadingSpinner.style.display = 'none';
+                    document.getElementById('progress').style.width = '0%';
+                    stopVisualizer();
+                    stopProgressUpdates();
+                    break;
+                    
+                case YT.PlayerState.BUFFERING:
+                    loadingSpinner.style.display = 'block';
+                    playIcon.style.display = 'none';
+                    pauseIcon.style.display = 'none';
+                    break;
+            }
+            updateProgressBar();
+        }
+
+        // Media Player Functions
+        function togglePlayPause() {
+            const playIcon = document.getElementById('play-icon');
+            const pauseIcon = document.getElementById('pause-icon');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            
+            if (!CONFIG.youtubePlayer || !CONFIG.currentTrackId) {
+                showMessage('Please select a track first.', 'error');
+                return;
+            }
+            
+            if (CONFIG.isPlaying) {
+                CONFIG.youtubePlayer.pauseVideo();
+                stopVisualizer();
+                stopProgressUpdates();
+            } else {
+                loadingSpinner.style.display = 'block';
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'none';
+                
+                if (CONFIG.youtubePlayer.getVideoData().video_id !== CONFIG.currentTrackId) {
+                    CONFIG.youtubePlayer.loadVideoById(CONFIG.currentTrackId);
+                } else {
+                    CONFIG.youtubePlayer.playVideo();
+                }
+            }
+        }
+
+        function updateProgressBar() {
+            if (!CONFIG.youtubePlayer || !CONFIG.isPlaying) return;
+            
+            const progress = document.getElementById('progress');
+            const currentTime = document.getElementById('current-time');
+            const duration = document.getElementById('duration');
+            
+            const current = CONFIG.youtubePlayer.getCurrentTime();
+            const total = CONFIG.youtubePlayer.getDuration();
+            
+            if (total > 0) {
+                const percent = (current / total) * 100;
+                progress.style.width = percent + '%';
+                
+                currentTime.textContent = formatTime(current);
+                duration.textContent = formatTime(total);
+            }
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        function seekAudio(event) {
+            if (!CONFIG.youtubePlayer) return;
+            
+            const progressBar = document.getElementById('progress-bar');
+            const rect = progressBar.getBoundingClientRect();
+            const percent = (event.clientX - rect.left) / rect.width;
+            const newTime = percent * CONFIG.youtubePlayer.getDuration();
+            
+            CONFIG.youtubePlayer.seekTo(newTime, true);
+        }
+
+        function setVolume(event) {
+            if (!CONFIG.youtubePlayer) return;
+            CONFIG.youtubePlayer.setVolume(event.target.value);
+        }
+
+        function loadTrack(youtubeId) {
+            if (CONFIG.youtubePlayer && CONFIG.isPlaying) {
+                CONFIG.youtubePlayer.stopVideo();
+                CONFIG.isPlaying = false;
+                stopVisualizer();
+                stopProgressUpdates();
+            }
+            
+            CONFIG.currentTrackId = youtubeId;
+            
+            const playIcon = document.getElementById('play-icon');
+            const pauseIcon = document.getElementById('pause-icon');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
+            loadingSpinner.style.display = 'none';
+            document.getElementById('progress').style.width = '0%';
+            document.getElementById('current-time').textContent = '0:00';
+            document.getElementById('duration').textContent = RELEASES_DATA.find(release => release.youtubeId === youtubeId)?.duration || '0:00';
+        }
+
+        // UI Functions
+        function showMessage(message, type = 'info') {
+            const box = document.getElementById('message-box');
+            const colors = {
+                info: 'bg-yellow-900 border-yellow-700 text-yellow-300',
+                success: 'bg-green-900 border-green-700 text-green-300',
+                error: 'bg-red-900 border-red-700 text-red-300'
+            };
+            box.className = `fixed bottom-4 right-4 p-4 border rounded-lg text-sm transition-all duration-300 shadow-lg z-50 ${colors[type]}`;
+            box.textContent = message;
+            box.classList.remove('hidden');
+            clearTimeout(box.timeout);
+            box.timeout = setTimeout(() => box.classList.add('hidden'), 5000);
+        }
+
+        // Core Functions
+        function t(key) {
+            return TRANSLATIONS[CONFIG.currentLanguage][key] || key;
+        }
+
+        function showPage(pageName) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            const targetPage = document.getElementById(`page-${pageName}`);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                window.location.hash = `#${pageName}`;
+                if (pageName === 'showcase') {
+                    renderSocialLinks();
+                    renderInitialSummary();
+                }
+            }
+        }
+
+        function setLanguage(lang) {
+            CONFIG.currentLanguage = lang;
+            const langPairs = [['lang-en', 'lang-jp'], ['lang-en-contact', 'lang-jp-contact'], ['lang-en-donation', 'lang-jp-donation']];
+            
+            langPairs.forEach(([enId, jpId]) => {
+                const enBtn = document.getElementById(enId);
+                const jpBtn = document.getElementById(jpId);
+                if (enBtn && jpBtn) {
+                    if (lang === 'en') {
+                        enBtn.classList.remove('text-gray-400');
+                        enBtn.classList.add('text-primary-accent');
+                        jpBtn.classList.remove('text-primary-accent');
+                        jpBtn.classList.add('text-gray-400');
+                    } else {
+                        jpBtn.classList.remove('text-gray-400');
+                        jpBtn.classList.add('text-primary-accent');
+                        enBtn.classList.remove('text-primary-accent');
+                        enBtn.classList.add('text-gray-400');
+                    }
+                }
+            });
+
+            document.getElementById('gallery-title').textContent = t('gallery-title');
+            if (RELEASES_DATA.length > 0) {
+                if (CONFIG.selectedReleaseIndex !== null) {
+                    displayDetails(CONFIG.selectedReleaseIndex);
+                } else {
+                    renderInitialSummary();
+                }
+            }
+        }
+
+        function openModal() {
+            const modal = document.getElementById('selection-modal');
+            const modalContent = document.getElementById('modalContent');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.add('opacity-100');
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+            renderGallery();
+            document.getElementById('modal-search-input').value = '';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('selection-modal');
+            const modalContent = document.getElementById('modalContent');
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            modal.classList.remove('opacity-100');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }, 300);
+        }
+
+        function renderSocialLinks() {
+            const container = document.getElementById('social-links-bar');
+            if (!container) return;
+            container.innerHTML = SOCIAL_LINKS.map(link => 
+                `<a href="${link.url}" target="_blank" title="Visit Ten Rise on ${link.name}" class="mx-3 transition-opacity duration-200 opacity-80 hover:opacity-100 hover:scale-105">
+                    <img src="${link.iconUrl}" alt="${link.name} icon" class="w-14 h-14 object-contain rounded-lg" onerror="this.src='https://placehold.co/40x40/9ca3af/ffffff?text=?'">
+                </a>`
+            ).join('');
+        }
+
+        function renderGallery(releases = RELEASES_DATA) {
+            const container = document.getElementById('modal-release-grid');
+            if (!releases.length) {
                 container.innerHTML = '<p class="text-gray-500 text-center w-full col-span-full py-12">No releases found matching your search criteria.</p>';
                 return;
             }
-
-            releases.forEach((release) => {
-                // Find the original index to correctly match the selectedReleaseIndex
+            container.innerHTML = releases.map((release, index) => {
                 const originalIndex = RELEASES_DATA.findIndex(r => r.id === release.id);
-                
-                const wrapper = document.createElement('div');
-                wrapper.className = 'flex flex-col items-center group';
-                
-                const img = document.createElement('img');
-                img.src = release.image;
-                img.alt = `Cover for ${release.title}`; 
-                // Grid layout styling - full width for grid cell
-                img.className = `album-cover w-full object-cover rounded-xl cursor-pointer shadow-lg`; 
-                img.setAttribute('data-index', originalIndex);
-                img.onclick = () => {
-                    displayDetails(originalIndex);
-                    closeSelectionModal(); // Close modal on selection
-                };
-                
-                const title = document.createElement('p');
-                // Use group-hover to highlight the text when hovering the wrapper
-                title.className = 'text-sm text-gray-400 mt-3 text-center w-full truncate group-hover:text-primary-accent transition-colors duration-200';
-                title.textContent = release.title;
-
-                // Apply selected style if it is the currently selected release
-                if (originalIndex === selectedReleaseIndex) {
-                    img.classList.add('selected');
-                } else {
-                    img.classList.remove('selected');
-                }
-
-                img.onerror = function() {
-                    this.onerror = null;
-                    this.src = `https://placehold.co/400x400/9ca3af/111827?text=${release.title.substring(0, 10)}`;
-                }
-
-                wrapper.appendChild(img);
-                wrapper.appendChild(title);
-                container.appendChild(wrapper);
-            });
+                return `<div class="flex flex-col items-center group">
+                    <img src="${release.image}" alt="Cover for ${release.title}" data-index="${originalIndex}" onclick="displayDetails(${originalIndex}); closeModal();" 
+                         class="album-cover w-full object-cover rounded-xl cursor-pointer shadow-lg ${originalIndex === CONFIG.selectedReleaseIndex ? 'selected' : ''}"
+                         onerror="this.src='https://placehold.co/400x400/9ca3af/111827?text=${release.title.substring(0, 10)}'">
+                    <p class="text-sm text-gray-400 mt-3 text-center w-full truncate group-hover:text-primary-accent transition-colors duration-200">${release.title}</p>
+                </div>`;
+            }).join('');
         }
-        
-        /**
-         * Filters the list of releases based on the search input value in the modal.
-         */
-        function filterReleases() {
-            const input = document.getElementById('modal-search-input');
-            const query = input.value.toLowerCase().trim();
-            
-            const targetContainer = document.getElementById('modal-release-grid');
 
-            if (query === '') {
-                renderGallery(RELEASES_DATA, targetContainer);
+        function renderInitialSummary() {
+            const container = document.getElementById('current-selection-summary');
+            if (!container) return;
+            const covers = RELEASES_DATA.slice(0, 6).map((release, index) => 
+                `<img src="${release.image}" alt="Cover for ${release.title}" data-index="${index}" onclick="displayDetails(${index})" 
+                      class="w-16 h-16 object-cover rounded-md shadow-lg border-2 border-gray-700 transition-transform duration-300 hover:scale-110 cursor-pointer"
+                      onerror="this.src='https://placehold.co/64x64/1f2937/ffffff?text=TR'">`
+            ).join('');
+            
+            container.innerHTML = `<div class="flex items-center space-x-3">
+                <p class="text-sm font-semibold text-gray-400 mr-2 hidden sm:block">${t('available-releases')}:</p>
+                <div class="flex space-x-2">${covers}</div>
+            </div>
+            <div class="text-right text-xs text-gray-500 hidden sm:block">${t('click-to-view')}</div>
+            <div class="text-right text-xs text-gray-500 sm:hidden"><p>${t('available-releases')}</p><p class="text-primary-accent font-semibold">View All →</p></div>`;
+            
+            document.getElementById('detail-content').innerHTML = `<p id="initial-prompt" class="text-gray-400 text-xl animate-pulse">${t('initial-prompt')}</p>`;
+        }
+
+        function filterReleases() {
+            const query = document.getElementById('modal-search-input').value.toLowerCase().trim();
+            const filtered = query ? RELEASES_DATA.filter(release => 
+                release.title.toLowerCase().includes(query) || 
+                release.artist.toLowerCase().includes(query) ||
+                release.genres.some(genre => genre.toLowerCase().includes(query)) ||
+                t(release.descriptionKey).toLowerCase().includes(query) ||
+                release.releaseDate.includes(query)
+            ) : RELEASES_DATA;
+            renderGallery(filtered);
+        }
+
+        function displayDetails(index) {
+            if (index == null) {
+                CONFIG.selectedReleaseIndex = null;
+                renderInitialSummary();
                 return;
             }
-
-            const filtered = RELEASES_DATA.filter(release => {
-                // Get the current language's description content for searching
-                const descriptionContent = t(release.descriptionKey).toLowerCase();
-
-                // Check multiple fields for robustness
-                return release.title.toLowerCase().includes(query) ||
-                       release.artist.toLowerCase().includes(query) ||
-                       release.genres.some(genre => genre.toLowerCase().includes(query)) ||
-                       descriptionContent.includes(query) ||
-                       release.releaseDate.substring(release.releaseDate.length - 4).includes(query); // Search by Year
-            });
-
-            renderGallery(filtered, targetContainer);
-        }
-
-
-        /**
-         * Renders the details and links for the selected single track, using current language.
-         */
-        function displayDetails(index) {
-            selectedReleaseIndex = index;
+            if (index < 0 || index >= RELEASES_DATA.length) index = 0;
+            CONFIG.selectedReleaseIndex = index;
             const release = RELEASES_DATA[index];
-            const detailContainer = document.getElementById('detail-content');
-            const summaryContainer = document.getElementById('current-selection-summary');
-
-            // Update all album covers in the modal to remove/add 'selected' class
-            const allCovers = document.querySelectorAll('.album-cover');
-            allCovers.forEach(cover => {
-                if (parseInt(cover.getAttribute('data-index')) === index) {
-                    cover.classList.add('selected');
-                } else {
-                    cover.classList.remove('selected');
-                }
+            
+            document.querySelectorAll('.album-cover').forEach(cover => {
+                cover.classList.toggle('selected', parseInt(cover.getAttribute('data-index')) === index);
             });
 
-            
-            // 1. Update Current Selection Summary
-            summaryContainer.innerHTML = `
-                <img src="${release.image}" 
-                     alt="Cover for ${release.title}" 
-                     class="w-16 h-16 object-cover rounded-md shadow-lg border-2 border-primary-accent"
-                     onerror="this.onerror=null;this.src='https://placehold.co/48x48/06b6d4/ffffff?text=TR';"
-                >
-                <div class="truncate">
-                    <p class="text-sm font-semibold text-gray-300">${t('current-selection')}</p>
+            document.getElementById('current-selection-summary').innerHTML = 
+                `<img src="${release.image}" alt="Cover for ${release.title}" class="w-16 h-16 object-cover rounded-md shadow-lg border-2 border-primary-accent" onerror="this.src='https://placehold.co/48x48/06b6d4/ffffff?text=TR'">
+                 <div class="truncate flex-grow">
+                    <p class="text-sm font-semibold text-gray-400">${t('current-selection')}</p>
                     <p class="text-xl font-bold text-gray-100 truncate">${release.title}</p>
-                </div>
-            `;
-            
-            // 2. Get translated description
-            const description = t(release.descriptionKey);
+                 </div>
+                 <div class="hidden sm:block text-right">
+                    <p class="text-xs text-gray-500">${release.artist}</p>
+                    <p class="text-sm text-primary-accent">${release.duration}</p>
+                 </div>`;
 
-            // 3. Build Detail Panel HTML - USING TRANSLATION KEYS
-            detailContainer.innerHTML = `
-                <!-- Track Art Column -->
-                <div class="w-full lg:w-1/3 flex flex-col items-center">
-                    <img src="${release.image}" alt="Cover for ${release.title}" 
-                        class="w-full max-w-xs h-auto object-cover rounded-xl shadow-xl mb-6"
-                        onerror="this.onerror=null;this.src='https://placehold.co/400x400/9ca3af/ffffff?text=${release.title.substring(0, 10)}';"
-                    >
+            document.getElementById('detail-content').innerHTML = 
+                `<div class="w-full lg:w-1/3 flex flex-col items-center">
+                    <img src="${release.image}" alt="Cover for ${release.title}" class="w-full max-w-xs h-auto object-cover rounded-xl shadow-xl mb-6" onerror="this.src='https://placehold.co/400x400/9ca3af/ffffff?text=${release.title.substring(0, 10)}'">
                     
-                    <!-- Streaming Links Container -->
+                    <!-- Media Player -->
+                    <div class="media-player w-full max-w-xs mb-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <button id="play-button" onclick="togglePlayPause()" class="play-button">
+                                <svg id="play-icon" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                                <svg id="pause-icon" style="display: none;" width="24" height="24" viewBox="0 0 24 24" fill="white">
+                                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                                </svg>
+                                <div id="loading-spinner" class="loading-spinner"></div>
+                            </button>
+                            <div class="flex-1 mx-4">
+                                <div class="text-sm font-semibold text-gray-100 truncate">${release.title}</div>
+                                <div class="text-xs text-gray-400">${release.artist}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-2 mb-2">
+                            <span id="current-time" class="time-display">0:00</span>
+                            <div id="progress-bar" class="progress-bar flex-1" onclick="seekAudio(event)">
+                                <div id="progress" class="progress"></div>
+                            </div>
+                            <span id="duration" class="time-display">${release.duration}</span>
+                        </div>
+                        
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="#9ca3af">
+                                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                                </svg>
+                                <input type="range" min="0" max="100" value="70" class="volume-slider" oninput="setVolume(event)">
+                            </div>
+                            <a href="${release.streamingLinks.find(link => link.name === 'YouTube Music').url}" target="_blank" class="text-xs text-primary-accent hover:underline">Open in YouTube Music</a>
+                        </div>
+                        
+                        <!-- Audio Visualizer - Now fills full width -->
+                        <div class="visualizer-container" id="visualizer-container">
+                            <!-- Visualizer bars will be generated here -->
+                        </div>
+                    </div>
+                    
                     <p class="text-sm font-semibold text-gray-400 mb-4 text-center">${t('listen-prompt')}</p>
                     <div id="links-container" class="w-full max-w-xs grid grid-cols-6 gap-1 mt-2 p-0">
-                        <!-- Links will go here -->
+                        ${release.streamingLinks.map(link => 
+                            `<a href="${link.url}" target="_blank" title="Listen on ${link.name}" class="flex flex-col items-center justify-center transition-transform duration-150 hover:scale-110 p-1 rounded-lg focus:ring-2 focus:ring-primary-accent">
+                                <img src="${link.iconUrl}" alt="${link.name} icon" class="w-8 h-8 object-contain rounded-lg shadow-md" onerror="this.src='https://placehold.co/40x40/9ca3af/ffffff?text=?'">
+                             </a>`
+                        ).join('')}
                     </div>
                 </div>
-
-                <!-- Details Column: Focus on Single Track Metadata -->
                 <div class="w-full lg:w-2/3">
                     <p class="text-xl text-primary-accent font-light uppercase tracking-wider mb-1">${t('details-heading')}</p>
-                    
                     <h2 class="text-4xl font-extrabold text-gray-100 mb-4">${release.title}</h2>
-                    
-                    <!-- Track specific info (using t() for labels) -->
                     <div class="text-lg text-gray-300 space-y-2 mb-6 border-b border-gray-700 pb-4">
                         <p><strong class="text-gray-400">${t('artist')}:</strong> ${release.artist}</p>
                         <p><strong class="text-gray-400">${t('duration')}:</strong> ${release.duration}</p>
                         <p><strong class="text-gray-400">${t('label')}:</strong> ${release.label}</p>
-                        
-                        <!-- Joining genres with the requested separator -->
                         ${release.genres ? `<p><strong class="text-gray-400">${t('style')}:</strong> ${release.genres.join(' / ')}</p>` : ''}
-                        
                         <p><strong class="text-gray-400">${t('release_date')}:</strong> ${release.releaseDate}</p>
                     </div>
-
                     <h3 class="text-xl font-bold text-primary-accent mb-3">${t('desc_heading')}</h3>
-                    <p class="text-gray-300 text-base">${description}</p>
-                </div>
-            `;
+                    <p class="text-gray-300 text-base">${t(release.descriptionKey)}</p>
+                </div>`;
             
-            // 4. Render Links
-            const linksContainer = document.getElementById('links-container');
-            
-            release.streamingLinks.forEach(link => {
-                const linkElement = document.createElement('a');
-                linkElement.href = link.url;
-                linkElement.target = '_blank';
-                linkElement.title = `Listen on ${link.name}`; 
-                linkElement.className = 'flex flex-col items-center justify-center transition-transform duration-150 hover:scale-110 p-1 rounded-lg focus:ring-2 focus:ring-primary-accent'; 
-                
-                const iconHtml = document.createElement('img');
-                iconHtml.src = link.iconUrl;
-                iconHtml.alt = `${link.name} icon`; 
-                iconHtml.className = 'w-8 h-8 object-contain rounded-lg shadow-md'; 
-                
-                iconHtml.onerror = function() {
-                    this.onerror=null;
-                    this.src='https://placehold.co/40x40/9ca3af/ffffff?text=?';
-                    this.classList.remove('rounded-lg');
-                }
-
-                linkElement.appendChild(iconHtml);
-                linksContainer.appendChild(linkElement);
-            });
+            loadTrack(release.youtubeId);
         }
 
-        // --- 4. INITIALIZATION ---
+        // Event Listeners
         document.addEventListener('DOMContentLoaded', () => {
-            renderSocialLinks();
+            const hash = window.location.hash.replace('#', '') || 'home';
+            showPage(['showcase', 'contact', 'donation'].includes(hash) ? hash : 'home');
             
-            // Set default language to English and apply styling/translations
-            setLanguage('en'); 
+            document.getElementById('contact-form').addEventListener('submit', e => {
+                e.preventDefault();
+                showMessage('Thank you for your message! We will get back to you soon.', 'success');
+                e.target.reset();
+            });
 
-            // Automatically display details for the currently selected release index.
-            if (RELEASES_DATA.length > 0) {
-                // Keep the original track selected, which is index 1.
-                displayDetails(selectedReleaseIndex); 
+            // Close modal by clicking anywhere outside the modal box:
+            // - Clicks on modalContent do NOT bubble to the overlay (stopPropagation).
+            // - Clicks on the overlay backdrop will bubble to overlay and close.
+            const overlay = document.getElementById('selection-modal');
+            const modalContent = document.getElementById('modalContent');
+            if (overlay && modalContent) {
+                modalContent.addEventListener('click', (e) => e.stopPropagation());
+                overlay.addEventListener('click', () => closeModal());
             }
+            
+            document.addEventListener('keydown', e => {
+                const modal = document.getElementById('selection-modal');
+                if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+                    closeModal();
+                }
+            });
+            
+            window.addEventListener('hashchange', () => {
+                const newHash = window.location.hash.replace('#', '');
+                showPage(['home', 'showcase', 'contact', 'donation'].includes(newHash) ? newHash : 'home');
+            });
+            
+            renderSocialLinks();
+            renderInitialSummary();
         });
-
     </script>
 </body>
 </html>
