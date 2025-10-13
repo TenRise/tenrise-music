@@ -179,10 +179,11 @@
       width: 1px; height: 1px;
     }
 
+    /* Visualizer: increased height */
     .visualizer-container {
       position: relative;
       margin-top: 16px;
-      height: 60px;
+      height: 100px; /* increased height */
       display: flex;
       align-items: end;
       justify-content: space-between;
@@ -200,11 +201,12 @@
       background: linear-gradient(to top, #06b6d4, #0891b2, #0e7490);
       border-radius: 2px 2px 0 0;
       transition: height 0.1s ease;
-      min-height: 2px; max-height: 50px;
+      min-height: 2px;
+      max-height: 96px; /* allow bars to grow taller inside the taller container */
     }
     .visualizer-bar.active { box-shadow: 0 0 6px rgba(6, 182, 212, 0.7); }
 
-    /* Mobile adjustments for Music detail view */
+    /* Mobile adjustments: increase height so it isn't cut off on phones */
     @media (max-width: 640px) {
       .media-player {
         transform: none;
@@ -214,8 +216,8 @@
           0 0 6px 1px rgba(6, 182, 212, 0.7),
           0 0 12px 3px rgba(6, 182, 212, 0.4);
       }
-      .visualizer-container { height: 36px; padding: 6px; }
-      .visualizer-bar { max-height: 28px; }
+      .visualizer-container { height: 72px; padding: 6px; }
+      .visualizer-bar { max-height: 68px; }
     }
   </style>
   <script>
@@ -461,7 +463,7 @@
           { name: "KKBOX", url: "https://www.kkbox.com/jp/ja/album/-rlURCfJ1XBjKrt77US", iconUrl: "https://i.imgur.com/noe1VXg.png"},
           { name: "Dhit Docomo", url: "https://dhits.docomo.ne.jp/search/freeword/musics?k_q=Ten%20Rise%20%E6%98%9F%E3%81%AE%E5%BD%BC%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/nheUqcV.png" },
           { name: "Music.jp", url: "https://music-book.jp/Search?Keyword=Ten%20Rise%20%E6%98%9F%E3%81%AE%E5%BD%BC%E6%96%B9%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/sPIBy5J.png"},
-          { name: "Rakuten Music", url: "https://music.rakuten.co.jp/link/search?q=%20%E6%98%9F%E3%81%AE%E5%BD%90%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/AhUEhy2.png"}
+          { name: "Rakuten Music", url: "https://music.rakuten.co.jp/link/search?q=%20%E6%98%9F%E3%81%AE%E5%BD%BC%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/AhUEhy2.png"}
         ]
       }
     ];
@@ -490,7 +492,7 @@
           const time = Date.now() * 0.002;
           const wave = Math.sin(time + index * 0.3) * 0.5 + 0.5;
           const random = Math.random() * 0.3;
-          const height = 2 + (wave + random) * 45;
+          const height = 2 + (wave + random) * 45; // no change; taller container now displays it fully
           bar.style.height = `${height}px`;
           bar.classList.toggle('active', height > 25);
         });
@@ -746,7 +748,6 @@
       <div class="text-right text-xs text-gray-500 hidden sm:block">${t('click-to-view')}</div>
       <div class="text-right text-xs text-gray-500 sm:hidden"><p>${t('available-releases')}</p><p class="text-primary-accent font-semibold">View All →</p></div>`;
 
-      // Reset detail container to centered initial prompt state
       const dc = document.getElementById('detail-content');
       dc.className = 'w-full flex justify-center items-center h-full min-h-[300px]';
       dc.innerHTML = `<p id="initial-prompt" class="text-gray-400 text-xl animate-pulse">${t('initial-prompt')}</p>`;
@@ -785,7 +786,6 @@
             <p class="text-sm text-primary-accent">${release.duration}</p>
          </div>`;
 
-      // Set detail container to responsive, top-aligned layout for details
       const dc = document.getElementById('detail-content');
       dc.className = 'w-full flex flex-col lg:flex-row items-start gap-6 lg:gap-10';
 
@@ -824,6 +824,7 @@
                 <a href="${release.streamingLinks.find(link => link.name === 'YouTube Music').url}" target="_blank" class="text-xs text-primary-accent hover:underline">Open in YouTube Music</a>
               </div>
 
+              <!-- Taller Audio Visualizer -->
               <div class="visualizer-container" id="visualizer-container"></div>
             </div>
 
@@ -865,7 +866,7 @@
         e.target.reset();
       });
 
-      // Modal outside click (overlay) + stop propagation inside content
+      // Modal outside click handling
       const overlay = document.getElementById('selection-modal');
       const modalContent = document.getElementById('modalContent');
       if (overlay && modalContent) {
