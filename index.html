@@ -1,9 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ten Rise: Official Music Showcase</title>
+
+  <!-- Background SEO (no visible changes) -->
+  <meta name="robots" content="index, follow">
+  <meta name="description" content="Ten Rise official site. Explore tracks and releases.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:site_name" content="Ten Rise">
+  <meta property="og:title" content="Ten Rise">
+  <meta property="og:description" content="Ten Rise official site. Explore tracks and releases.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ten Rise">
+  <meta name="twitter:description" content="Ten Rise official site. Explore tracks and releases.">
+  <!-- Optional: replace with your live domain -->
+  <link rel="canonical" href="https://your-domain.example/" />
+
+  <!-- JSON-LD: MusicGroup (background only) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MusicGroup",
+    "name": "Ten Rise",
+    "description": "Japanese Vocaloid and Anime Music (Anisong) Composer/Artist. Specializes in Soundtrack and OST for Manga, Anime, Film, and Cinema Sync Licensing.",
+    "genre": ["Anisong", "Anime Soundtrack", "Vocaloid", "OST", "Soundtrack", "Manga Music", "J-Pop", "Cinematic", "Futuristic"],
+    "sameAs": [
+      "https://www.instagram.com/tr_tenrise/",
+      "https://www.tiktok.com/@tr_tenrise",
+      "https://x.com/TR_TenRise",
+      "https://music.apple.com/jp/",
+      "https://open.spotify.com/",
+      "https://music.youtube.com/",
+      "https://music.line.me/",
+      "https://s.awa.fm/",
+      "https://recochoku.jp/",
+      "https://mora.jp/",
+      "https://www.kkbox.com/",
+      "https://music.rakuten.co.jp/"
+    ]
+  }
+  </script>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://www.youtube.com/iframe_api"></script>
   <style>
@@ -176,7 +217,6 @@
       width: 1px; height: 1px;
     }
 
-    /* Visualizer: increased height */
     .visualizer-container {
       position: relative;
       margin-top: 16px;
@@ -203,7 +243,6 @@
     }
     .visualizer-bar.active { box-shadow: 0 0 6px rgba(6, 182, 212, 0.7); }
 
-    /* Mobile adjustments */
     @media (max-width: 640px) {
       .media-player {
         transform: none;
@@ -356,14 +395,6 @@
           <p class="text-primary-accent font-semibold">Coming Soon: Donation Options</p>
           <p class="text-sm text-gray-400">We're setting up secure donation methods. Check back soon!</p>
         </div>
-        <div class="mt-8 p-6 bg-gray-800/50 rounded-lg border border-gray-700 text-center">
-          <p class="text-gray-400 mb-4">Donation options will appear here soon</p>
-          <div class="flex justify-center space-x-4 opacity-50">
-            <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center"><span class="text-gray-500 text-xs">PayPal</span></div>
-            <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center"><span class="text-gray-500 text-xs">Stripe</span></div>
-            <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center"><span class="text-gray-500 text-xs">Bank</span></div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -391,7 +422,54 @@
   <!-- JavaScript -->
   <script>
     const CONTACT_EMAIL = 'gregory.benne@edhec.com';
-    const ENABLE_MAILTO_FALLBACK = false; // set to true only if you want email client fallback
+    const ENABLE_MAILTO_FALLBACK = false; // keep false to avoid popup fallback
+
+    // Background SEO: titles + descriptions per page (no visible UI changes)
+    const PAGE_SEO = {
+      home: {
+        title: 'Ten Rise | 日本語 Vocaloid, Anisong & Soundtrack Artist – Official',
+        desc: 'Official website for Ten Rise, the Japanese Anime Music and Vocaloid artist. Explore Anisong-style tracks, OST, cinematic ballads, and sync placement for Manga, Anime, and media.'
+      },
+      showcase: {
+        title: 'Ten Rise Showcase | Anime OST, Vocaloid Tracks – Spotify, Awa, KKBOX',
+        desc: 'Stream Ten Rise releases distributed in Japan. Music fit for Anime Soundtrack/OST, with Vocaloid elements, piano, and synthesizer design.'
+      },
+      contact: {
+        title: 'Contact Ten Rise | Sync Licensing, Anime, Cinema, OST & Partnerships',
+        desc: 'Professional contact for sync, Anisong/OST collaborations, music publishing, and partnerships in Anime, Manga, Cinema, and Film.'
+      },
+      donation: {
+        title: 'Support Ten Rise Universe | Fund the Rise Galaxy Video Development',
+        desc: 'Donate to help develop the Ten Rise Universe and Rise Galaxy visual franchise. Support new futuristic music and Japanese storytelling media.'
+      }
+    };
+    function ensureMeta(selector, attrs) {
+      let tag = document.querySelector(selector);
+      const isOg = attrs.property && attrs.property.startsWith('og:');
+      if (!tag) {
+        tag = document.createElement('meta');
+        if (isOg) tag.setAttribute('property', attrs.property);
+        else if (attrs.name) tag.setAttribute('name', attrs.name);
+        document.head.appendChild(tag);
+      }
+      Object.entries(attrs).forEach(([k, v]) => tag.setAttribute(k, v));
+      return tag;
+    }
+    function updateMeta(pageKey) {
+      const cfg = PAGE_SEO[pageKey] || PAGE_SEO.home;
+      document.title = cfg.title;
+      let desc = document.querySelector('meta[name="description"]');
+      if (!desc) {
+        desc = document.createElement('meta');
+        desc.setAttribute('name', 'description');
+        document.head.appendChild(desc);
+      }
+      desc.setAttribute('content', cfg.desc);
+      ensureMeta('meta[property="og:title"]', { property: 'og:title', content: cfg.title });
+      ensureMeta('meta[property="og:description"]', { property: 'og:description', content: cfg.desc });
+      ensureMeta('meta[name="twitter:title"]', { name: 'twitter:title', content: cfg.title });
+      ensureMeta('meta[name="twitter:description"]', { name: 'twitter:description', content: cfg.desc });
+    }
 
     // App state
     const CONFIG = {
@@ -430,16 +508,10 @@
       { name: "X (Twitter)", url: "https://x.com/TR_TenRise", iconUrl: "https://i.imgur.com/Yd5oBVX.png" }
     ];
 
-    // Streaming links data (order unified, icons set, KKBOX/Rakuten fixed)
     const RELEASES_DATA = [
       {
-        id: 'track-journey',
-        title: "光の旅路 Journey of Light",
-        artist: "Ten Rise",
-        label: "Ten Rise Records",
-        image: "https://i.imgur.com/dFLGglK.jpeg",
-        duration: "5:07",
-        descriptionKey: 'track-journey-desc',
+        id: 'track-journey', title: "光の旅路 Journey of Light", artist: "Ten Rise", label: "Ten Rise Records",
+        image: "https://i.imgur.com/dFLGglK.jpeg", duration: "5:07", descriptionKey: 'track-journey-desc',
         genres: ["J-Pop", "Anisong", "Anime OST", "Female Vocal", "Cinematic Uplifting Trance (Ballad)", "Piano"],
         releaseDate: "September 25, 2025",
         youtubeId: "ww_blgytmmA",
@@ -459,13 +531,8 @@
         ]
       },
       {
-        id: 'track-stars',
-        title: "星の彼方へ Beyond the Stars",
-        artist: "Ten Rise",
-        label: "Ten Rise Records",
-        image: "https://i.imgur.com/mcMAj8X.jpeg",
-        duration: "6:33",
-        descriptionKey: 'track-stars-desc',
+        id: 'track-stars', title: "星の彼方へ Beyond the Stars", artist: "Ten Rise", label: "Ten Rise Records",
+        image: "https://i.imgur.com/mcMAj8X.jpeg", duration: "6:33", descriptionKey: 'track-stars-desc',
         genres: ["J-Pop", "Anisong", "Anime OST", "Female Vocal", "Cinematic Uplifting Trance (Ballad)", "Piano"],
         releaseDate: "October 2, 2025",
         youtubeId: "TyZnEaDB4KM",
@@ -486,7 +553,7 @@
       }
     ];
 
-    // Visualizer (unchanged)
+    // Visualizer
     function createVisualizer() {
       const container = document.getElementById('visualizer-container');
       if (!container) return;
@@ -527,7 +594,7 @@
       });
     }
 
-    // Player progress (unchanged)
+    // Progress
     function startProgressUpdates() { stopProgressUpdates(); CONFIG.progressInterval = setInterval(updateProgressBar, 100); }
     function stopProgressUpdates() { if (CONFIG.progressInterval) { clearInterval(CONFIG.progressInterval); CONFIG.progressInterval = null; } }
 
@@ -546,33 +613,34 @@
       switch(event.data) {
         case YT.PlayerState.PLAYING:
           CONFIG.isPlaying = true;
-          loadingSpinner.style.display = 'none';
-          pauseIcon.style.display = 'block';
-          playIcon.style.display = 'none';
+          if (loadingSpinner) loadingSpinner.style.display = 'none';
+          if (pauseIcon) pauseIcon.style.display = 'block';
+          if (playIcon) playIcon.style.display = 'none';
           createVisualizer();
           startProgressUpdates();
           break;
         case YT.PlayerState.PAUSED:
           CONFIG.isPlaying = false;
-          playIcon.style.display = 'block';
-          pauseIcon.style.display = 'none';
-          loadingSpinner.style.display = 'none';
+          if (playIcon) playIcon.style.display = 'block';
+          if (pauseIcon) pauseIcon.style.display = 'none';
+          if (loadingSpinner) loadingSpinner.style.display = 'none';
           stopVisualizer();
           stopProgressUpdates();
           break;
         case YT.PlayerState.ENDED:
           CONFIG.isPlaying = false;
-          playIcon.style.display = 'block';
-          pauseIcon.style.display = 'none';
-          loadingSpinner.style.display = 'none';
-          document.getElementById('progress').style.width = '0%';
+          if (playIcon) playIcon.style.display = 'block';
+          if (pauseIcon) pauseIcon.style.display = 'none';
+          if (loadingSpinner) loadingSpinner.style.display = 'none';
+          const progressEl = document.getElementById('progress');
+          if (progressEl) progressEl.style.width = '0%';
           stopVisualizer();
           stopProgressUpdates();
           break;
         case YT.PlayerState.BUFFERING:
-          loadingSpinner.style.display = 'block';
-          playIcon.style.display = 'none';
-          pauseIcon.style.display = 'none';
+          if (loadingSpinner) loadingSpinner.style.display = 'block';
+          if (playIcon) playIcon.style.display = 'none';
+          if (pauseIcon) pauseIcon.style.display = 'none';
           break;
       }
       updateProgressBar();
@@ -589,10 +657,11 @@
         CONFIG.youtubePlayer.pauseVideo();
         stopVisualizer(); stopProgressUpdates();
       } else {
-        loadingSpinner.style.display = 'block';
-        playIcon.style.display = 'none';
-        pauseIcon.style.display = 'none';
-        if (CONFIG.youtubePlayer.getVideoData().video_id !== CONFIG.currentTrackId) {
+        if (loadingSpinner) loadingSpinner.style.display = 'block';
+        if (playIcon) playIcon.style.display = 'none';
+        if (pauseIcon) pauseIcon.style.display = 'none';
+        const vd = CONFIG.youtubePlayer.getVideoData();
+        if (!vd || vd.video_id !== CONFIG.currentTrackId) {
           CONFIG.youtubePlayer.loadVideoById(CONFIG.currentTrackId);
         } else {
           CONFIG.youtubePlayer.playVideo();
@@ -607,9 +676,9 @@
       const current = CONFIG.youtubePlayer.getCurrentTime();
       const total = CONFIG.youtubePlayer.getDuration();
       if (total > 0) {
-        progress.style.width = `${(current/total)*100}%`;
-        currentTime.textContent = formatTime(current);
-        duration.textContent = formatTime(total);
+        if (progress) progress.style.width = `${(current/total)*100}%`;
+        if (currentTime) currentTime.textContent = formatTime(current);
+        if (duration) duration.textContent = formatTime(total);
       }
     }
     function formatTime(seconds) {
@@ -619,12 +688,17 @@
       return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
     }
     function seekAudio(event) {
-      if (!CONFIG.youtubePlayer) return;
       const progressBar = document.getElementById('progress-bar');
+      if (!CONFIG.youtubePlayer || !progressBar) return;
       const rect = progressBar.getBoundingClientRect();
-      const percent = (event.clientX - rect.left) / rect.width;
-      const newTime = percent * CONFIG.youtubePlayer.getDuration();
-      CONFIG.youtubePlayer.seekTo(newTime, true);
+      let percent = (event.clientX - rect.left) / rect.width;
+      if (percent < 0) percent = 0;
+      if (percent > 1) percent = 1;
+      const duration = CONFIG.youtubePlayer.getDuration();
+      if (duration > 0) {
+        const newTime = percent * duration;
+        CONFIG.youtubePlayer.seekTo(newTime, true);
+      }
     }
     function setVolume(event) {
       if (!CONFIG.youtubePlayer) return;
@@ -640,13 +714,20 @@
       const playIcon = document.getElementById('play-icon');
       const pauseIcon = document.getElementById('pause-icon');
       const loadingSpinner = document.getElementById('loading-spinner');
-      playIcon.style.display = 'block';
-      pauseIcon.style.display = 'none';
-      loadingSpinner.style.display = 'none';
-      document.getElementById('progress').style.width = '0%';
-      document.getElementById('current-time').textContent = '0:00';
-      document.getElementById('duration').textContent =
-        RELEASES_DATA.find(r => r.youtubeId === youtubeId)?.duration || '0:00';
+      if (playIcon && pauseIcon && loadingSpinner) {
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
+        loadingSpinner.style.display = 'none';
+      }
+      const progress = document.getElementById('progress');
+      const currentTime = document.getElementById('current-time');
+      const duration = document.getElementById('duration');
+      if (progress) progress.style.width = '0%';
+      if (currentTime) currentTime.textContent = '0:00';
+      if (duration) {
+        duration.textContent =
+          RELEASES_DATA.find(r => r.youtubeId === youtubeId)?.duration || '0:00';
+      }
     }
 
     // UI helpers
@@ -657,6 +738,7 @@
         success: 'bg-green-900 border-green-700 text-green-300',
         error: 'bg-red-900 border-red-700 text-red-300'
       };
+      if (!box) return;
       box.className = `fixed bottom-4 right-4 p-4 border rounded-lg text-sm transition-all duration-300 shadow-lg z-50 ${colors[type]}`;
       box.textContent = message;
       box.classList.remove('hidden');
@@ -665,6 +747,7 @@
     }
     function t(key) { return TRANSLATIONS[CONFIG.currentLanguage][key] || key; }
 
+    // SEO-aware page switch (calls updateMeta without changing visible UI)
     function showPage(pageName) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       const targetPage = document.getElementById(`page-${pageName}`);
@@ -676,12 +759,21 @@
           renderInitialSummary();
         }
       }
+      updateMeta(pageName);
     }
 
     function setLanguage(lang) {
       CONFIG.currentLanguage = lang;
-      const pairs = [['lang-en', 'lang-jp'], ['lang-en-contact', 'lang-jp-contact'], ['lang-en-donation', 'lang-jp-donation']];
-      pairs.forEach(([enId, jpId]) => {
+
+      // Invisible SEO improvement: keep document language tag and OG locale consistent with user choice
+      document.documentElement.lang = (lang === 'jp' ? 'ja' : 'en');
+      ensureMeta('meta[property="og:locale"]', {
+        property: 'og:locale',
+        content: (lang === 'jp' ? 'ja_JP' : 'en_US')
+      });
+
+      const langPairs = [['lang-en', 'lang-jp'], ['lang-en-contact', 'lang-jp-contact'], ['lang-en-donation', 'lang-jp-donation']];
+      langPairs.forEach(([enId, jpId]) => {
         const enBtn = document.getElementById(enId);
         const jpBtn = document.getElementById(jpId);
         if (enBtn && jpBtn) {
@@ -694,7 +786,8 @@
           }
         }
       });
-      document.getElementById('gallery-title').textContent = t('gallery-title');
+      const galleryTitle = document.getElementById('gallery-title');
+      if (galleryTitle) galleryTitle.textContent = t('gallery-title');
       if (RELEASES_DATA.length > 0) {
         if (CONFIG.selectedReleaseIndex !== null) displayDetails(CONFIG.selectedReleaseIndex);
         else renderInitialSummary();
@@ -704,6 +797,7 @@
     function openModal() {
       const modal = document.getElementById('selection-modal');
       const modalContent = document.getElementById('modalContent');
+      if (!modal || !modalContent) return;
       modal.classList.remove('hidden');
       setTimeout(() => {
         modal.classList.add('opacity-100');
@@ -712,11 +806,13 @@
       }, 10);
       document.body.style.overflow = 'hidden';
       renderGallery();
-      document.getElementById('modal-search-input').value = '';
+      const search = document.getElementById('modal-search-input');
+      if (search) search.value = '';
     }
     function closeModal() {
       const modal = document.getElementById('selection-modal');
       const modalContent = document.getElementById('modalContent');
+      if (!modal || !modalContent) return;
       modalContent.classList.remove('scale-100','opacity-100');
       modalContent.classList.add('scale-95','opacity-0');
       modal.classList.remove('opacity-100');
@@ -735,6 +831,7 @@
 
     function renderGallery(releases = RELEASES_DATA) {
       const container = document.getElementById('modal-release-grid');
+      if (!container) return;
       if (!releases.length) {
         container.innerHTML = '<p class="text-gray-500 text-center w-full col-span-full py-12">No releases found matching your search criteria.</p>';
         return;
@@ -767,12 +864,15 @@
       <div class="text-right text-xs text-gray-500 sm:hidden"><p>${t('available-releases')}</p><p class="text-primary-accent font-semibold">View All →</p></div>`;
 
       const dc = document.getElementById('detail-content');
-      dc.className = 'w-full flex justify-center items-center h-full min-h-[300px]';
-      dc.innerHTML = `<p id="initial-prompt" class="text-gray-400 text-xl animate-pulse">${t('initial-prompt')}</p>`;
+      if (dc) {
+        dc.className = 'w-full flex justify-center items-center h-full min-h-[300px]';
+        dc.innerHTML = `<p id="initial-prompt" class="text-gray-400 text-xl animate-pulse">${t('initial-prompt')}</p>`;
+      }
     }
 
     function filterReleases() {
-      const query = document.getElementById('modal-search-input').value.toLowerCase().trim();
+      const input = document.getElementById('modal-search-input');
+      const query = (input?.value || '').toLowerCase().trim();
       const filtered = query ? RELEASES_DATA.filter(release =>
         release.title.toLowerCase().includes(query) ||
         release.artist.toLowerCase().includes(query) ||
@@ -793,20 +893,23 @@
         cover.classList.toggle('selected', parseInt(cover.getAttribute('data-index')) === index);
       });
 
-      document.getElementById('current-selection-summary').innerHTML =
-        `<img src="${release.image}" alt="Cover for ${release.title}" class="w-16 h-16 object-cover rounded-md shadow-lg border-2 border-primary-accent" onerror="this.src='https://placehold.co/48x48/06b6d4/ffffff?text=TR'">
-         <div class="truncate flex-grow">
-            <p class="text-sm font-semibold text-gray-400">${t('current-selection')}</p>
-            <p class="text-xl font-bold text-gray-100 truncate">${release.title}</p>
-         </div>
-         <div class="hidden sm:block text-right">
-            <p class="text-xs text-gray-500">${release.artist}</p>
-            <p class="text-sm text-primary-accent">${release.duration}</p>
-         </div>`;
+      const summary = document.getElementById('current-selection-summary');
+      if (summary) {
+        summary.innerHTML =
+          `<img src="${release.image}" alt="Cover for ${release.title}" class="w-16 h-16 object-cover rounded-md shadow-lg border-2 border-primary-accent" onerror="this.src='https://placehold.co/48x48/06b6d4/ffffff?text=TR'">
+           <div class="truncate flex-grow">
+              <p class="text-sm font-semibold text-gray-400">${t('current-selection')}</p>
+              <p class="text-xl font-bold text-gray-100 truncate">${release.title}</p>
+           </div>
+           <div class="hidden sm:block text-right">
+              <p class="text-xs text-gray-500">${release.artist}</p>
+              <p class="text-sm text-primary-accent">${release.duration}</p>
+           </div>`;
+      }
 
       const dc = document.getElementById('detail-content');
+      if (!dc) return;
       dc.className = 'w-full flex flex-col lg:flex-row items-start gap-6 lg:gap-10';
-
       dc.innerHTML =
         `<div class="w-full lg:w-1/3 flex flex-col items-center lg:items-start">
             <img src="${release.image}" alt="Cover for ${release.title}"
@@ -868,11 +971,10 @@
             <h3 class="text-base sm:text-xl font-bold text-primary-accent mb-2 sm:mb-3">${t('desc_heading')}</h3>
             <p class="text-gray-300 text-sm sm:text-base leading-relaxed break-words">${t(release.descriptionKey)}</p>
          </div>`;
-
       loadTrack(release.youtubeId);
     }
 
-    // Contact form submit to Netlify (with optional mailto fallback disabled by default)
+    // Contact form submit to Netlify (with mailto fallback disabled)
     async function handleContactSubmit(e) {
       e.preventDefault();
       const form = e.currentTarget;
