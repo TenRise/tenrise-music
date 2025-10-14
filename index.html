@@ -730,6 +730,32 @@
       }
     }
 
+    // Routing helpers (path-based; invisible to users)
+    const VALID_PAGES = ['home','showcase','contact','donation'];
+    function normalizePathname() {
+      return window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
+    }
+    function getRequestedPage() {
+      const hashPage = window.location.hash.replace('#', '').toLowerCase();
+      const pathPage = normalizePathname();
+      if (VALID_PAGES.includes(hashPage)) return hashPage;
+      if (VALID_PAGES.includes(pathPage)) return pathPage;
+      return 'home';
+    }
+    function updateUrlForPage(pageName, replace = false) {
+      const targetPath = pageName === 'home' ? '/' : `/${pageName}`;
+      const currentPath = window.location.pathname;
+      if (replace) {
+        window.history.replaceState({ page: pageName }, '', targetPath);
+      } else if (currentPath !== targetPath) {
+        window.history.pushState({ page: pageName }, '', targetPath);
+      }
+      // Clean any old hash remnants
+      if (window.location.hash) {
+        window.history.replaceState({ page: pageName }, '', targetPath);
+      }
+    }
+
     // UI helpers
     function showMessage(message, type = 'info') {
       const box = document.getElementById('message-box');
@@ -747,25 +773,25 @@
     }
     function t(key) { return TRANSLATIONS[CONFIG.currentLanguage][key] || key; }
 
-    // SEO-aware page switch (calls updateMeta without changing visible UI)
-    function showPage(pageName) {
+    // Page switch (path-based routing; no visible UI changes)
+    function showPage(pageName, options = { updateUrl: true }) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       const targetPage = document.getElementById(`page-${pageName}`);
       if (targetPage) {
         targetPage.classList.add('active');
-        window.location.hash = `#${pageName}`;
         if (pageName === 'showcase') {
           renderSocialLinks();
           renderInitialSummary();
         }
       }
       updateMeta(pageName);
+      if (options.updateUrl) updateUrlForPage(pageName);
     }
 
     function setLanguage(lang) {
       CONFIG.currentLanguage = lang;
 
-      // Invisible SEO improvement: keep document language tag and OG locale consistent with user choice
+      // Invisible SEO improvement: keep document language tag and OG locale consistent
       document.documentElement.lang = (lang === 'jp' ? 'ja' : 'en');
       ensureMeta('meta[property="og:locale"]', {
         property: 'og:locale',
@@ -1032,8 +1058,10 @@ Sent from: ${window.location.href}`
 
     // Events
     document.addEventListener('DOMContentLoaded', () => {
-      const hash = window.location.hash.replace('#', '') || 'home';
-      showPage(['showcase', 'contact', 'donation'].includes(hash) ? hash : 'home');
+      // Resolve initial route from path or hash; clean hash if present
+      const initialPage = getRequestedPage();
+      showPage(initialPage, { updateUrl: false });
+      updateUrlForPage(initialPage, true); // normalize URL to path, remove hash
 
       const contactForm = document.getElementById('contact-form');
       if (contactForm) contactForm.addEventListener('submit', handleContactSubmit);
@@ -1050,9 +1078,16 @@ Sent from: ${window.location.href}`
         if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) closeModal();
       });
 
+      // Handle browser back/forward
+      window.addEventListener('popstate', () => {
+        const page = getRequestedPage();
+        showPage(page, { updateUrl: false });
+      });
+
+      // Back-compat: if some legacy links still change hash, normalize to path
       window.addEventListener('hashchange', () => {
-        const newHash = window.location.hash.replace('#', '');
-        showPage(['home', 'showcase', 'contact', 'donation'].includes(newHash) ? newHash : 'home');
+        const page = getRequestedPage();
+        showPage(page, { updateUrl: true });
       });
 
       renderSocialLinks();
