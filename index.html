@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ten Rise: Official Music Showcase</title>
+  <title>Ten Rise | Official Music Gallery</title>
 
   <!-- Background SEO (no visible changes) -->
   <meta name="robots" content="index, follow">
-  <meta name="description" content="Ten Rise official site. Explore tracks and releases.">
+  <meta name="description" content="Ten Rise Music: Immersive, story-driven songs inspired by Anime and J-Pop. Explore the official music gallery. (日本語アニソン、J-Pop、OST、楽曲)">
   <meta property="og:type" content="website">
-  <meta property="og:locale" content="ja_JP">
-  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ja_JP">
   <meta property="og:site_name" content="Ten Rise">
-  <meta property="og:title" content="Ten Rise">
-  <meta property="og:description" content="Ten Rise official site. Explore tracks and releases.">
+  <meta property="og:title" content="Ten Rise | Official Music Gallery">
+  <meta property="og:description" content="Ten Rise Music: Immersive, story-driven songs inspired by Anime and J-Pop. Explore the official music gallery. (日本語アニソン、J-Pop、OST、楽曲)">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Ten Rise">
-  <meta name="twitter:description" content="Ten Rise official site. Explore tracks and releases.">
+  <meta name="twitter:title" content="Ten Rise | Official Music Gallery">
+  <meta name="twitter:description" content="Ten Rise Music: Immersive, story-driven songs inspired by Anime and J-Pop. Explore the official music gallery. (日本語アニソン、J-Pop、OST、楽曲)">
   <!-- Optional: replace with your live domain -->
   <link rel="canonical" href="https://your-domain.example/" />
 
@@ -84,22 +84,22 @@
     }
     .album-cover:hover { transform: scale(1.03); }
     .album-cover.selected {
-      border-color: #06b6d4;
+      border-color: #2cffff;
       transform: scale(1.05);
       box-shadow:
-        0 0 8px 2px rgba(6, 182, 212, 1),
-        0 0 20px 5px rgba(6, 182, 212, 0.6);
+        0 0 8px 2px rgba(44, 255, 255, 1),
+        0 0 20px 5px rgba(44, 255, 255, 0.6);
     }
 
     #modal-search-input:focus {
       outline: none;
-      border-color: #06b6d4;
-      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.5);
+      border-color: #2cffff;
+      box-shadow: 0 0 0 3px rgba(44, 255, 255, 0.5);
     }
 
     .modal-scrollable::-webkit-scrollbar { width: 8px; }
     .modal-scrollable::-webkit-scrollbar-thumb {
-      background-color: #06b6d4;
+      background-color: #2cffff;
       border-radius: 4px;
     }
     .modal-scrollable::-webkit-scrollbar-track { background-color: #374151; }
@@ -118,10 +118,10 @@
     .nav-panel {
       background: rgba(17, 24, 39, 0.5);
       backdrop-filter: blur(8px);
-      border: 1px solid rgba(6, 182, 212, 0.2);
+      border: 1px solid rgba(44, 255, 255, 0.2);
       box-shadow: 0 8px 32px rgba(0,0,0,0.3);
     }
-    .nav-icon { transition: all 0.3s ease; color: #06b6d4; }
+    .nav-icon { transition: all 0.3s ease; color: #2cffff; }
     .nav-button {
       transition: all 0.3s ease;
       background: transparent;
@@ -129,34 +129,34 @@
     }
     .nav-button:hover {
       transform: translateY(-2px);
-      background: rgba(6,182,212,0.15);
-      border-color: rgba(6,182,212,0.4);
-      box-shadow: 0 0 20px rgba(6,182,212,0.4);
+      background: rgba(44, 255, 255, 0.15);
+      border-color: rgba(44, 255, 255, 0.4);
+      box-shadow: 0 0 20px rgba(44, 255, 255, 0.4);
     }
     .nav-button:hover .nav-icon {
-      filter: drop-shadow(0 0 8px rgba(6,182,212,0.8));
+      filter: drop-shadow(0 0 8px rgba(44, 255, 255, 0.8));
     }
 
     .media-player {
       background: rgba(31, 41, 55, 0.7);
-      border: 4px solid #06b6d4;
+      border: 4px solid #2cffff;
       border-radius: 12px;
       padding: 16px;
       transition: all 0.3s ease;
       backdrop-filter: blur(8px);
       transform: scale(1.05);
       box-shadow:
-        0 0 8px 2px rgba(6, 182, 212, 1),
-        0 0 20px 5px rgba(6, 182, 212, 0.6);
+        0 0 8px 2px rgba(44, 255, 255, 1),
+        0 0 20px 5px rgba(44, 255, 255, 0.6);
     }
     .media-player:focus-within {
-      border-color: #06b6d4;
+      border-color: #2cffff;
       box-shadow:
-        0 0 12px 3px rgba(6, 182, 212, 1),
-        0 0 25px 8px rgba(6, 182, 212, 0.8);
+        0 0 12px 3px rgba(44, 255, 255, 1),
+        0 0 25px 8px rgba(44, 255, 255, 0.8);
     }
     .play-button {
-      background: #06b6d4;
+      background: #2cffff;
       border: none;
       border-radius: 50%;
       width: 50px; height: 50px;
@@ -165,9 +165,9 @@
       cursor: pointer;
     }
     .play-button:hover {
-      background: #0891b2;
+      background: #23cccc;
       transform: scale(1.05);
-      box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+      box-shadow: 0 0 15px rgba(44, 255, 255, 0.5);
     }
 
     .progress-bar {
@@ -178,7 +178,7 @@
       cursor: pointer;
     }
     .progress {
-      background: #06b6d4;
+      background: #2cffff;
       height: 100%;
       width: 0%;
       transition: width 0.1s ease;
@@ -189,13 +189,13 @@
       width: 100px; height: 4px;
       border-radius: 2px;
       background: rgba(255, 255, 255, 0.2);
-      outline: none;
+      outline: none.
     }
     .volume-slider::-webkit-slider-thumb {
       -webkit-appearance: none;
       width: 14px; height: 14px;
       border-radius: 50%;
-      background: #06b6d4;
+      background: #2cffff;
       cursor: pointer;
     }
 
@@ -205,7 +205,7 @@
       display: none;
       width: 20px; height: 20px;
       border: 2px solid #f3f4f6;
-      border-top: 2px solid #06b6d4;
+      border-top: 2px solid #2cffff;
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -228,20 +228,20 @@
       padding: 8px;
       border-radius: 8px;
       background: rgba(17, 24, 39, 0.3);
-      border: 1px solid rgba(6, 182, 212, 0.3);
+      border: 1px solid rgba(44, 255, 255, 0.3);
       overflow: hidden;
       width: 100%;
     }
     .visualizer-bar {
       flex: 1;
       min-width: 3px;
-      background: linear-gradient(to top, #06b6d4, #0891b2, #0e7490);
+      background: linear-gradient(to top, #2cffff, #23cccc, #1a9999);
       border-radius: 2px 2px 0 0;
       transition: height 0.1s ease;
       min-height: 2px;
       max-height: 96px;
     }
-    .visualizer-bar.active { box-shadow: 0 0 6px rgba(6, 182, 212, 0.7); }
+    .visualizer-bar.active { box-shadow: 0 0 6px rgba(44, 255, 255, 0.7); }
 
     @media (max-width: 640px) {
       .media-player {
@@ -249,8 +249,8 @@
         border-width: 2px;
         padding: 12px;
         box-shadow:
-          0 0 6px 1px rgba(6, 182, 212, 0.7),
-          0 0 12px 3px rgba(6, 182, 212, 0.4);
+          0 0 6px 1px rgba(44, 255, 255, 0.7),
+          0 0 12px 3px rgba(44, 255, 255, 0.4);
       }
       .visualizer-container { height: 72px; padding: 6px; }
       .visualizer-bar { max-height: 68px; }
@@ -260,7 +260,7 @@
     tailwind.config = {
       theme: {
         extend: {
-          colors: { 'primary-accent': '#06b6d4', 'dark-bg': '#1f2937' },
+          colors: { 'primary-accent': '#2cffff', 'dark-bg': '#1f2937' },
           fontFamily: { sans: ['Inter', 'sans-serif'] }
         }
       }
@@ -311,7 +311,7 @@
   <!-- Home -->
   <div id="page-home" class="page active min-h-screen flex flex-col justify-center items-center p-4 sm:p-8">
     <button onclick="showPage('showcase')" title="Go to Music Showcase" class="bg-transparent border-none transition-transform duration-300 hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-primary-accent focus:ring-opacity-50 rounded-lg p-0 cursor-pointer">
-      <img src="https://i.imgur.com/80HMrPY.png" alt="Ten Rise Official Logo" class="w-full max-w-2xl h-auto mb-12 animate-pulse" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
+      <img src="https://i.imgur.com/Uhxirbr.png" alt="Ten Rise Official Logo" class="w-full max-w-2xl h-auto mb-12 animate-pulse" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
     </button>
   </div>
 
@@ -322,7 +322,7 @@
         <button id="lang-en" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-primary-accent" onclick="setLanguage('en')">EN</button>
         <button id="lang-jp" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-gray-400" onclick="setLanguage('jp')">JP</button>
       </div>
-      <img src="https://i.imgur.com/80HMrPY.png" alt="Ten Rise Logo" class="w-full max-w-xl h-auto" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
+      <img src="https://i.imgur.com/Uhxirbr.png" alt="Ten Rise Logo" class="w-full max-w-xl h-auto" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
     </header>
 
     <div id="social-links-bar" class="flex justify-center items-center mb-8"></div>
@@ -351,13 +351,21 @@
         <button id="lang-en-contact" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-primary-accent" onclick="setLanguage('en')">EN</button>
         <button id="lang-jp-contact" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-gray-400" onclick="setLanguage('jp')">JP</button>
       </div>
-      <img src="https://i.imgur.com/80HMrPY.png" alt="Ten Rise Logo" class="w-full max-w-xl h-auto" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
+      <img src="https://i.imgur.com/Uhxirbr.png" alt="Ten Rise Logo" class="w-full max-w-xl h-auto" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
     </header>
 
     <div class="flex-grow flex items-center justify-center">
       <div class="bg-gray-900/90 rounded-xl shadow-2xl p-8 w-full max-w-2xl">
-        <h2 class="text-3xl font-bold text-primary-accent mb-6 text-center">Contact Us</h2>
-        <p class="text-gray-300 mb-8 text-center">We'd love to hear from you! Send us a message and we'll respond as soon as possible.</p>
+        <h2 id="contact-title" class="text-3xl font-bold text-primary-accent mb-6 text-center">
+          Partnership & Professional Inquiries
+        </h2>
+
+        <div id="contact-description" class="text-gray-300 mb-8 text-center whitespace-pre-line">
+This page is reserved for professional inquiries regarding sync licensing, collaborations, and partnerships with Ten Rise Records.
+Ten Rise Records is a small dedicated team passionate about crafting immersive, story-driven songs inspired by anime and centered around the adventures of Rise's universe. Our mission is to bring unique worlds to life through music, connecting listeners to rich narratives, emotion, and creativity.
+We are always open to exploring partnership opportunities with Anime Studios, Film Production Companies, Music Supervisors, Game Developers, and other visionary production teams looking to license our existing catalog or discuss creative business ventures.
+To explore a partnership or sync license, please use the form below. To ensure the fastest and most efficient review of your inquiry, we kindly ask that you provide the necessary project details.
+        </div>
 
         <!-- Netlify Forms-enabled form -->
         <form id="contact-form" name="contact" method="POST" netlify data-netlify="true" netlify-honeypot="bot-field" class="space-y-6">
@@ -366,11 +374,19 @@
             <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
           </p>
 
-          <input type="text" id="name" name="name" required placeholder="Your Name" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300">
-          <input type="email" id="email" name="email" required placeholder="Your Email" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300">
-          <input type="text" id="subject" name="subject" required placeholder="Subject" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300">
-          <textarea id="message" name="message" rows="6" required placeholder="Your Message" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300 resize-none"></textarea>
-          <button type="submit" class="w-full bg-primary-accent hover:bg-cyan-500 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-accent focus:ring-opacity-50">Send Message</button>
+          <label for="name" class="sr-only">Your Name</label>
+          <input type="text" id="name" name="name" required placeholder="Your Name" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300" aria-label="Your Name">
+
+          <label for="email" class="sr-only">Your Email</label>
+          <input type="email" id="email" name="email" required placeholder="Your Email" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300" aria-label="Your Email">
+
+          <label for="subject" class="sr-only">Subject</label>
+          <input type="text" id="subject" name="subject" required placeholder="Subject" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300" aria-label="Subject">
+
+          <label for="message" class="sr-only">Your Message</label>
+          <textarea id="message" name="message" rows="6" required placeholder="Your Message" maxlength="3000" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300 resize-none" aria-label="Your Message"></textarea>
+
+          <button id="send-button" type="submit" class="w-full bg-primary-accent hover:bg-primary-accent/80 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-accent focus:ring-opacity-50">Send Message</button>
         </form>
       </div>
     </div>
@@ -378,12 +394,12 @@
 
   <!-- Donation -->
   <div id="page-donation" class="page min-h-screen flex flex-col p-4 sm:p-8">
-    <header class="mb-4 flex flex-col items-center relative">
+    <header class="mb-4 flex flex-col items中心 relative">
       <div class="absolute top-0 right-0 flex space-x-2">
         <button id="lang-en-donation" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-primary-accent" onclick="setLanguage('en')">EN</button>
         <button id="lang-jp-donation" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-gray-400" onclick="setLanguage('jp')">JP</button>
       </div>
-      <img src="https://i.imgur.com/80HMrPY.png" alt="Ten Rise Logo" class="w-full max-w-xl h-auto" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
+      <img src="https://i.imgur.com/Uhxirbr.png" alt="Ten Rise Logo" class="w-full max-w-xl h-auto" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
     </header>
 
     <div class="flex-grow flex items-center justify-center">
@@ -400,13 +416,13 @@
   </div>
 
   <!-- Modal -->
-  <div id="selection-modal" class="fixed inset-0 z-50 bg-black bg-opacity-80 backdrop-blur-sm hidden transition-opacity duration-300 ease-out" aria-modal="true" role="dialog">
+  <div id="selection-modal" class="fixed inset-0 z-50 bg-black bg-opacity-80 backdrop-blur-sm hidden transition-opacity duration-300 ease-out" aria-modal="true" role="dialog" aria-labelledby="modal-title">
     <div class="flex items-center justify-center min-h-screen p-4 sm:p-6">
       <div id="modalContent" class="modal-content-translucent p-6 sm:p-8 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden transform scale-95 opacity-0 transition-all duration-300 ease-out">
         <div class="modal-sticky-header sticky top-0 z-20 -mx-6 -mt-6 px-6 pt-6 pb-4">
           <div class="flex justify-between items-center pb-4 mb-4 border-b border-gray-700">
-            <h2 class="text-3xl font-bold text-primary-accent text-gray-100">Select a Release</h2>
-            <button id="closeModalButton" onclick="closeModal()" class="text-primary-accent hover:text-cyan-300 transition-colors p-2 rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-accent" aria-label="Close modal">
+            <h2 id="modal-title" class="text-3xl font-bold text-primary-accent text-gray-100">Select a Release</h2>
+            <button id="closeModalButton" onclick="closeModal()" class="text-primary-accent hover:text-[#23cccc] transition-colors p-2 rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-accent" aria-label="Close modal">
               <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
           </div>
@@ -427,8 +443,8 @@
     // Background SEO: titles + descriptions per page (no visible UI changes)
     const PAGE_SEO = {
       home: {
-        title: 'Ten Rise | 日本語 Vocaloid, Anisong & Soundtrack Artist – Official',
-        desc: 'Official website for Ten Rise, the Japanese Anime Music and Vocaloid artist. Explore Anisong-style tracks, OST, cinematic ballads, and sync placement for Manga, Anime, and media.'
+        title: 'Ten Rise | Official Music Gallery',
+        desc: 'Ten Rise Music: Immersive, story-driven songs inspired by Anime and J-Pop. Explore the official music gallery. (日本語アニソン、J-Pop、OST、楽曲)'
       },
       showcase: {
         title: 'Ten Rise Showcase | Anime OST, Vocaloid Tracks – Spotify, Awa, KKBOX',
@@ -447,9 +463,10 @@
       let tag = document.querySelector(selector);
       const isOg = attrs.property && attrs.property.startsWith('og:');
       if (!tag) {
-        tag = document.createElement('meta');
+        tag = document.createElement(isOg ? 'meta' : (attrs.rel === 'canonical' ? 'link' : 'meta'));
         if (isOg) tag.setAttribute('property', attrs.property);
         else if (attrs.name) tag.setAttribute('name', attrs.name);
+        else if (attrs.rel) tag.setAttribute('rel', attrs.rel);
         document.head.appendChild(tag);
       }
       Object.entries(attrs).forEach(([k, v]) => tag.setAttribute(k, v));
@@ -467,8 +484,11 @@
       desc.setAttribute('content', cfg.desc);
       ensureMeta('meta[property="og:title"]', { property: 'og:title', content: cfg.title });
       ensureMeta('meta[property="og:description"]', { property: 'og:description', content: cfg.desc });
+      ensureMeta('meta[property="og:url"]', { property: 'og:url', content: location.href });
       ensureMeta('meta[name="twitter:title"]', { name: 'twitter:title', content: cfg.title });
       ensureMeta('meta[name="twitter:description"]', { name: 'twitter:description', content: cfg.desc });
+      const canonical = document.querySelector('link[rel="canonical"]') || ensureMeta('link[rel="canonical"]', { rel: 'canonical', href: location.href });
+      canonical.setAttribute('href', location.href);
     }
 
     // App state
@@ -480,7 +500,9 @@
       currentTrackId: null,
       progressInterval: null,
       visualizerInterval: null,
-      visualizerBars: []
+      visualizerBars: [],
+      outsideCloseHandler: null,
+      lastFocusedElement: null
     };
 
     const TRANSLATIONS = {
@@ -488,17 +510,42 @@
         'gallery-title': 'View All Releases', 'current-selection': 'Current Selection:', 'initial-prompt': 'Select a release to view the full details.',
         'details-heading': 'Single Details', 'listen-prompt': 'Click an icon to listen:', 'artist': 'Artist', 'duration': 'Duration', 'label': 'Label',
         'style': 'Style', 'release_date': 'Release Date', 'desc_heading': 'Track Description:', 'available-releases': 'Available Releases',
-        'click-to-view': 'Click "View All Releases" below to select a track', 'contact-title': 'Contact Us', 'donation-title': 'Support Ten Rise',
+        'click-to-view': 'Click "View All Releases" below to select a track',
+        'contact-title': 'Partnership & Professional Inquiries',
+        'contact-description': `This page is reserved for professional inquiries regarding sync licensing, collaborations, and partnerships with Ten Rise Records.
+Ten Rise Records is a small dedicated team passionate about crafting immersive, story-driven songs inspired by anime and centered around the adventures of Rise's universe. Our mission is to bring unique worlds to life through music, connecting listeners to rich narratives, emotion, and creativity.
+We are always open to exploring partnership opportunities with Anime Studios, Film Production Companies, Music Supervisors, Game Developers, and other visionary production teams looking to license our existing catalog or discuss creative business ventures.
+To explore a partnership or sync license, please use the form below. To ensure the fastest and most efficient review of your inquiry, we kindly ask that you provide the necessary project details.`,
+        'donation-title': 'Support Ten Rise',
         'track-journey-desc': "A gentle, cinematic piece built around themes of hope and aspiration. Featuring serene female vocals, intricate piano melodies, and lush synthesizer arrangements, the track culminates with the ethereal quality of a children's choir, suggesting a bright, illuminated future. The style aligns with uplifting Anisong and anime soundtracks, providing calm, hopeful music.",
-        'track-stars-desc': "An energetic and highly rhythmic anthem designed to inspire determination. This track features a powerful lead female vocal backed by a dynamic children's choir, set against a driving blend of synthesizer leads and prominent piano rhythms. Its powerful, uplifting style is characteristic of modern Anisong and anime themes, delivering rhymed, energetic music."
+        'track-stars-desc': "An energetic and highly rhythmic anthem designed to inspire determination. This track features a powerful lead female vocal backed by a dynamic children's choir, set against a driving blend of synthesizer leads and prominent piano rhythms. Its powerful, uplifting style is characteristic of modern Anisong and anime themes, delivering rhymed, energetic music.",
+        'placeholder_name': 'Your Name',
+        'placeholder_email': 'Your Email',
+        'placeholder_subject': 'Subject',
+        'placeholder_message': 'Your Message',
+        'send_button': 'Send Message'
       },
       jp: {
         'gallery-title': '全リリースを見る', 'current-selection': '現在の選択:', 'initial-prompt': 'リリースを選択して詳細をご覧ください。',
         'details-heading': 'シングル詳細', 'listen-prompt': 'アイコンをクリックして聴く:', 'artist': 'アーティスト', 'duration': '演奏時間', 'label': 'レーベル',
         'style': 'スタイル', 'release_date': 'リリース日', 'desc_heading': '楽曲の説明:', 'available-releases': '利用可能なリリース',
-        'click-to-view': '下の「全リリースを見る」をクリックして曲を選択してください', 'contact-title': 'お問い合わせ', 'donation-title': 'Ten Riseをサポート',
+        'click-to-view': '下の「全リリースを見る」をクリックして曲を選択してください',
+        'contact-title': '提携および専門的なお問い合わせ',
+        'contact-description': `このページは、テン・ライズ・レコーズ（Ten Rise Records）との音源使用ライセンス（Sync Licensing）、コラボレーション、およびパートナーシップに関する専門的なお問い合わせのための窓口です。
+テン・ライズ・レコーズは、アニメから着想を得たビジュアルとストーリー性、そしてキャラクター「Rise」が見つめる世界を軸に、情感豊かな音楽を創り出すクリエイティブチームです。
+私たちの使命は、独自のサウンドを通して想像の世界を現実に広げ、リスナーを物語・感情・創造性で満たされた体験へと導くことにあります。
+アニメ制作会社、映画制作会社、音楽スーパーバイザー、ゲーム開発者など、先見性あるクリエイターや制作チームとのパートナーシップを常に歓迎しています。
+また、音楽・映像・メディアなどの分野での事業提携のご相談も承っております。
+パートナーシップや音源使用ライセンスをご検討の際は、下記フォームよりご連絡ください。
+よりスムーズなご対応のため、プロジェクトの概要やご提案内容をできるだけ具体的にご記入いただけますと幸いです。`,
+        'donation-title': 'Ten Riseをサポート',
         'track-journey-desc': "希望と憧れをテーマにした、優しくシネマティックな楽曲。穏やかな女性ボーカル、繊細なピアノメロディ、豊かなシンセサイザーアレンジメントを特徴とし、子供たちのコーラスが明るく照らされた未来を暗示します。アップリフティングなアニソン、アニメのサウンドトラックに適合する、穏やかで希望に満ちた音楽です。",
-        'track-stars-desc': "決意を鼓舞するためにデザインされた、エネルギッシュでリズミカルなアンセム。力強いリード女性ボーカルとダイナミックな子供たちのコーラスが特徴で、ドライヴ感のあるシンセサイザーと際立ったピアノのリズムが融合しています。力強く、高揚感のあるスタイルは、現代のアニソンやアニメのテーマ曲を彷彿とさせ、リズミカルでエネルギッシュな楽曲をお届けします。"
+        'track-stars-desc': "決意を鼓舞するためにデザインされた、エネルギッシュでリズミカルなアンセム。力強いリード女性ボーカルとダイナミックな子供たちのコーラスが特徴で、ドライヴ感のあるシンセサイザーと際立ったピアノのリズムが融合しています。力強く、高揚感のあるスタイルは、現代のアニソンやアニメのテーマ曲を彷彿とさせ、リズミカルでエネルギッシュな楽曲をお届けします。",
+        'placeholder_name': 'お名前',
+        'placeholder_email': 'メールアドレス',
+        'placeholder_subject': '件名',
+        'placeholder_message': 'メッセージ',
+        'send_button': '送信'
       }
     };
 
@@ -605,17 +652,23 @@
         events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange }
       });
     }
-    function onPlayerReady() {}
+    function onPlayerReady() {
+      if (CONFIG.youtubePlayer && typeof CONFIG.youtubePlayer.setVolume === 'function') {
+        CONFIG.youtubePlayer.setVolume(70);
+      }
+    }
     function onPlayerStateChange(event) {
       const playIcon = document.getElementById('play-icon');
       const pauseIcon = document.getElementById('pause-icon');
       const loadingSpinner = document.getElementById('loading-spinner');
+      const playButton = document.getElementById('play-button');
       switch(event.data) {
         case YT.PlayerState.PLAYING:
           CONFIG.isPlaying = true;
           if (loadingSpinner) loadingSpinner.style.display = 'none';
           if (pauseIcon) pauseIcon.style.display = 'block';
           if (playIcon) playIcon.style.display = 'none';
+          if (playButton) { playButton.setAttribute('aria-pressed', 'true'); playButton.setAttribute('aria-label', 'Pause'); }
           createVisualizer();
           startProgressUpdates();
           break;
@@ -624,6 +677,7 @@
           if (playIcon) playIcon.style.display = 'block';
           if (pauseIcon) pauseIcon.style.display = 'none';
           if (loadingSpinner) loadingSpinner.style.display = 'none';
+          if (playButton) { playButton.setAttribute('aria-pressed', 'false'); playButton.setAttribute('aria-label', 'Play'); }
           stopVisualizer();
           stopProgressUpdates();
           break;
@@ -634,6 +688,7 @@
           if (loadingSpinner) loadingSpinner.style.display = 'none';
           const progressEl = document.getElementById('progress');
           if (progressEl) progressEl.style.width = '0%';
+          if (playButton) { playButton.setAttribute('aria-pressed', 'false'); playButton.setAttribute('aria-label', 'Play'); }
           stopVisualizer();
           stopProgressUpdates();
           break;
@@ -650,16 +705,19 @@
       const playIcon = document.getElementById('play-icon');
       const pauseIcon = document.getElementById('pause-icon');
       const loadingSpinner = document.getElementById('loading-spinner');
+      const playButton = document.getElementById('play-button');
       if (!CONFIG.youtubePlayer || !CONFIG.currentTrackId) {
         showMessage('Please select a track first.', 'error'); return;
       }
       if (CONFIG.isPlaying) {
         CONFIG.youtubePlayer.pauseVideo();
+        if (playButton) { playButton.setAttribute('aria-pressed', 'false'); playButton.setAttribute('aria-label', 'Play'); }
         stopVisualizer(); stopProgressUpdates();
       } else {
         if (loadingSpinner) loadingSpinner.style.display = 'block';
         if (playIcon) playIcon.style.display = 'none';
         if (pauseIcon) pauseIcon.style.display = 'none';
+        if (playButton) { playButton.setAttribute('aria-pressed', 'true'); playButton.setAttribute('aria-label', 'Pause'); }
         const vd = CONFIG.youtubePlayer.getVideoData();
         if (!vd || vd.video_id !== CONFIG.currentTrackId) {
           CONFIG.youtubePlayer.loadVideoById(CONFIG.currentTrackId);
@@ -671,12 +729,15 @@
     function updateProgressBar() {
       if (!CONFIG.youtubePlayer || !CONFIG.isPlaying) return;
       const progress = document.getElementById('progress');
+      const progressBar = document.getElementById('progress-bar');
       const currentTime = document.getElementById('current-time');
       const duration = document.getElementById('duration');
       const current = CONFIG.youtubePlayer.getCurrentTime();
       const total = CONFIG.youtubePlayer.getDuration();
       if (total > 0) {
-        if (progress) progress.style.width = `${(current/total)*100}%`;
+        const pct = (current/total)*100;
+        if (progress) progress.style.width = `${pct}%`;
+        if (progressBar) progressBar.setAttribute('aria-valuenow', Math.round(pct));
         if (currentTime) currentTime.textContent = formatTime(current);
         if (duration) duration.textContent = formatTime(total);
       }
@@ -691,7 +752,8 @@
       const progressBar = document.getElementById('progress-bar');
       if (!CONFIG.youtubePlayer || !progressBar) return;
       const rect = progressBar.getBoundingClientRect();
-      let percent = (event.clientX - rect.left) / rect.width;
+      const clientX = (event.touches && event.touches[0]?.clientX) || event.clientX;
+      let percent = (clientX - rect.left) / rect.width;
       if (percent < 0) percent = 0;
       if (percent > 1) percent = 1;
       const duration = CONFIG.youtubePlayer.getDuration();
@@ -714,11 +776,13 @@
       const playIcon = document.getElementById('play-icon');
       const pauseIcon = document.getElementById('pause-icon');
       const loadingSpinner = document.getElementById('loading-spinner');
+      const playButton = document.getElementById('play-button');
       if (playIcon && pauseIcon && loadingSpinner) {
         playIcon.style.display = 'block';
         pauseIcon.style.display = 'none';
         loadingSpinner.style.display = 'none';
       }
+      if (playButton) { playButton.setAttribute('aria-pressed', 'false'); playButton.setAttribute('aria-label', 'Play'); }
       const progress = document.getElementById('progress');
       const currentTime = document.getElementById('current-time');
       const duration = document.getElementById('duration');
@@ -750,7 +814,6 @@
       } else if (currentPath !== targetPath) {
         window.history.pushState({ page: pageName }, '', targetPath);
       }
-      // Clean any old hash remnants
       if (window.location.hash) {
         window.history.replaceState({ page: pageName }, '', targetPath);
       }
@@ -791,7 +854,7 @@
     function setLanguage(lang) {
       CONFIG.currentLanguage = lang;
 
-      // Invisible SEO improvement: keep document language tag and OG locale consistent
+      // Keep document language tag and OG locale consistent
       document.documentElement.lang = (lang === 'jp' ? 'ja' : 'en');
       ensureMeta('meta[property="og:locale"]', {
         property: 'og:locale',
@@ -812,11 +875,68 @@
           }
         }
       });
+
       const galleryTitle = document.getElementById('gallery-title');
       if (galleryTitle) galleryTitle.textContent = t('gallery-title');
+
+      // Update Contact page title + description based on language
+      const contactTitleEl = document.getElementById('contact-title');
+      if (contactTitleEl) contactTitleEl.textContent = t('contact-title');
+
+      const contactDescEl = document.getElementById('contact-description');
+      if (contactDescEl) {
+        contactDescEl.textContent = t('contact-description');
+        // Align English center; Japanese left
+        contactDescEl.classList.remove('text-left', 'text-center');
+        contactDescEl.classList.add(lang === 'en' ? 'text-center' : 'text-left');
+      }
+
+      // Update Contact form placeholders, ARIA labels, and submit button
+      const nameInput = document.getElementById('name');
+      const emailInput = document.getElementById('email');
+      const subjectInput = document.getElementById('subject');
+      const messageInput = document.getElementById('message');
+      const sendButton = document.getElementById('send-button');
+
+      if (nameInput) { nameInput.placeholder = t('placeholder_name'); nameInput.setAttribute('aria-label', t('placeholder_name')); }
+      if (emailInput) { emailInput.placeholder = t('placeholder_email'); emailInput.setAttribute('aria-label', t('placeholder_email')); }
+      if (subjectInput) { subjectInput.placeholder = t('placeholder_subject'); subjectInput.setAttribute('aria-label', t('placeholder_subject')); }
+      if (messageInput) { messageInput.placeholder = t('placeholder_message'); messageInput.setAttribute('aria-label', t('placeholder_message')); }
+      if (sendButton) sendButton.textContent = t('send_button');
+
       if (RELEASES_DATA.length > 0) {
         if (CONFIG.selectedReleaseIndex !== null) displayDetails(CONFIG.selectedReleaseIndex);
         else renderInitialSummary();
+      }
+    }
+
+    // Robust outside click handler using coordinates (capture phase)
+    function attachOutsideClose() {
+      detachOutsideClose(); // ensure no duplicates
+      const handler = (e) => {
+        const modal = document.getElementById('selection-modal');
+        const content = document.getElementById('modalContent');
+        if (!modal || modal.classList.contains('hidden') || !content) return;
+        const rect = content.getBoundingClientRect();
+        const point = (e.touches && e.touches[0]) ? e.touches[0] : e;
+        const x = point.clientX;
+        const y = point.clientY;
+        const outside = x < rect.left || x > rect.right || y < rect.top || y > rect.bottom;
+        if (outside) {
+          closeModal();
+          e.stopPropagation();
+          e.preventDefault();
+        }
+      };
+      document.addEventListener('mousedown', handler, true);
+      document.addEventListener('touchstart', handler, true);
+      CONFIG.outsideCloseHandler = handler;
+    }
+    function detachOutsideClose() {
+      if (CONFIG.outsideCloseHandler) {
+        document.removeEventListener('mousedown', CONFIG.outsideCloseHandler, true);
+        document.removeEventListener('touchstart', CONFIG.outsideCloseHandler, true);
+        CONFIG.outsideCloseHandler = null;
       }
     }
 
@@ -824,16 +944,20 @@
       const modal = document.getElementById('selection-modal');
       const modalContent = document.getElementById('modalContent');
       if (!modal || !modalContent) return;
+      CONFIG.lastFocusedElement = document.activeElement;
       modal.classList.remove('hidden');
       setTimeout(() => {
         modal.classList.add('opacity-100');
         modalContent.classList.remove('scale-95','opacity-0');
         modalContent.classList.add('scale-100','opacity-100');
+        const closeBtn = document.getElementById('closeModalButton');
+        if (closeBtn) closeBtn.focus();
       }, 10);
       document.body.style.overflow = 'hidden';
       renderGallery();
       const search = document.getElementById('modal-search-input');
       if (search) search.value = '';
+      attachOutsideClose(); // activate outside click-to-close
     }
     function closeModal() {
       const modal = document.getElementById('selection-modal');
@@ -842,19 +966,27 @@
       modalContent.classList.remove('scale-100','opacity-100');
       modalContent.classList.add('scale-95','opacity-0');
       modal.classList.remove('opacity-100');
-      setTimeout(() => { modal.classList.add('hidden'); document.body.style.overflow = ''; }, 300);
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+        detachOutsideClose(); // cleanup handlers
+        if (CONFIG.lastFocusedElement && typeof CONFIG.lastFocusedElement.focus === 'function') {
+          CONFIG.lastFocusedElement.focus();
+        }
+      }, 300);
     }
 
     function renderSocialLinks() {
       const container = document.getElementById('social-links-bar');
       if (!container) return;
       container.innerHTML = SOCIAL_LINKS.map(link =>
-        `<a href="${link.url}" target="_blank" title="Visit Ten Rise on ${link.name}" class="mx-3 transition-opacity duration-200 opacity-80 hover:opacity-100 hover:scale-105">
+        `<a href="${link.url}" target="_blank" rel="noopener noreferrer" title="Visit Ten Rise on ${link.name}" class="mx-3 transition-opacity duration-200 opacity-80 hover:opacity-100 hover:scale-105">
            <img src="${link.iconUrl}" alt="${link.name} icon" class="w-14 h-14 object-contain rounded-lg" onerror="this.src='https://placehold.co/40x40/9ca3af/ffffff?text=?'">
          </a>`
       ).join('');
     }
 
+    // Updated: add data-index, tabindex, and accessibility role on wrapper
     function renderGallery(releases = RELEASES_DATA) {
       const container = document.getElementById('modal-release-grid');
       if (!container) return;
@@ -864,10 +996,10 @@
       }
       container.innerHTML = releases.map(release => {
         const originalIndex = RELEASES_DATA.findIndex(r => r.id === release.id);
-        return `<div class="flex flex-col items-center group">
+        return `<div class="flex flex-col items-center group" data-index="${originalIndex}" tabindex="0" role="button" aria-label="Open ${release.title}">
           <img src="${release.image}" alt="Cover for ${release.title}" data-index="${originalIndex}" onclick="displayDetails(${originalIndex}); closeModal();"
                class="album-cover w-full object-cover rounded-xl cursor-pointer shadow-lg ${originalIndex === CONFIG.selectedReleaseIndex ? 'selected' : ''}"
-               onerror="this.src='https://placehold.co/400x400/9ca3af/111827?text=${release.title.substring(0, 10)}'">
+               onerror="this.src='https://placehold.co/400x400/9ca3af/111827?text=${encodeURIComponent(release.title.substring(0, 10))}'">
           <p class="text-sm text-gray-400 mt-3 text-center w-full truncate group-hover:text-primary-accent transition-colors duration-200">${release.title}</p>
         </div>`;
       }).join('');
@@ -922,7 +1054,7 @@
       const summary = document.getElementById('current-selection-summary');
       if (summary) {
         summary.innerHTML =
-          `<img src="${release.image}" alt="Cover for ${release.title}" class="w-16 h-16 object-cover rounded-md shadow-lg border-2 border-primary-accent" onerror="this.src='https://placehold.co/48x48/06b6d4/ffffff?text=TR'">
+          `<img src="${release.image}" alt="Cover for ${release.title}" class="w-16 h-16 object-cover rounded-md shadow-lg border-2 border-primary-accent" onerror="this.src='https://placehold.co/48x48/2cffff/ffffff?text=TR'">
            <div class="truncate flex-grow">
               <p class="text-sm font-semibold text-gray-400">${t('current-selection')}</p>
               <p class="text-xl font-bold text-gray-100 truncate">${release.title}</p>
@@ -937,14 +1069,14 @@
       if (!dc) return;
       dc.className = 'w-full flex flex-col lg:flex-row items-start gap-6 lg:gap-10';
       dc.innerHTML =
-        `<div class="w-full lg:w-1/3 flex flex-col items-center lg:items-start">
+        `<div class="w-full lg:w-1/3 flex flex-col items中心 lg:items-start">
             <img src="${release.image}" alt="Cover for ${release.title}"
                  class="w-10/12 max-w-[280px] sm:max-w-[320px] md:max-w-[360px] h-auto object-cover rounded-xl shadow-xl mb-4 sm:mb-6"
-                 onerror="this.src='https://placehold.co/400x400/9ca3af/ffffff?text=${release.title.substring(0, 10)}'">
+                 onerror="this.src='https://placehold.co/400x400/9ca3af/ffffff?text=${encodeURIComponent(release.title.substring(0, 10))}'">
 
             <div class="media-player w-full max-w-[420px] sm:max-w-xs mb-4 sm:mb-6">
               <div class="flex items-center justify-between mb-3 sm:mb-4">
-                <button id="play-button" onclick="togglePlayPause()" class="play-button">
+                <button id="play-button" onclick="togglePlayPause()" class="play-button" aria-pressed="false" aria-label="Play">
                   <svg id="play-icon" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
                   <svg id="pause-icon" style="display: none;" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
                   <div id="loading-spinner" class="loading-spinner"></div>
@@ -957,7 +1089,7 @@
 
               <div class="flex items-center space-x-2 mb-2">
                 <span id="current-time" class="time-display">0:00</span>
-                <div id="progress-bar" class="progress-bar flex-1" onclick="seekAudio(event)">
+                <div id="progress-bar" class="progress-bar flex-1" onclick="seekAudio(event)" ontouchstart="seekAudio(event)" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
                   <div id="progress" class="progress"></div>
                 </div>
                 <span id="duration" class="time-display">${release.duration}</span>
@@ -968,7 +1100,7 @@
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="#9ca3af"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
                   <input type="range" min="0" max="100" value="70" class="volume-slider" oninput="setVolume(event)">
                 </div>
-                <a href="${release.streamingLinks.find(link => link.name === 'YouTube Music').url}" target="_blank" class="text-xs text-primary-accent hover:underline">Open in YouTube Music</a>
+                <a href="${release.streamingLinks.find(link => link.name === 'YouTube Music').url}" target="_blank" rel="noopener noreferrer" class="text-xs text-primary-accent hover:underline">Open in YouTube Music</a>
               </div>
 
               <div class="visualizer-container" id="visualizer-container"></div>
@@ -977,7 +1109,7 @@
             <p class="text-sm font-semibold text-gray-400 mb-2 sm:mb-4 text-center lg:text-left">${t('listen-prompt')}</p>
             <div class="w-full max-w-[420px] sm:max-w-xs grid grid-cols-4 sm:grid-cols-6 gap-2 sm:gap-1 mt-1 p-0">
               ${release.streamingLinks.map(link =>
-                `<a href="${link.url}" target="_blank" title="Listen on ${link.name}" class="flex flex-col items-center justify-center transition-transform duration-150 hover:scale-110 p-1 rounded-lg focus:ring-2 focus:ring-primary-accent">
+                `<a href="${link.url}" target="_blank" rel="noopener noreferrer" title="Listen on ${link.name}" class="flex flex-col items中心 justify-center transition-transform duration-150 hover:scale-110 p-1 rounded-lg focus:ring-2 focus:ring-primary-accent">
                   <img src="${link.iconUrl}" alt="${link.name} icon" class="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 object-contain rounded-lg shadow-md" onerror="this.src='https://placehold.co/40x40/9ca3af/ffffff?text=?'">
                 </a>`
               ).join('')}
@@ -1015,6 +1147,10 @@
         showMessage('Please complete all fields before sending.', 'error');
         return;
       }
+      if (message.length > 3000) {
+        showMessage('Please shorten your message (max 3000 characters).', 'error');
+        return;
+      }
 
       const data = new URLSearchParams();
       data.append('form-name', formName);
@@ -1039,21 +1175,6 @@
       } catch {
         showMessage('Network error while sending.', 'error');
       }
-
-      if (ENABLE_MAILTO_FALLBACK) {
-        const mailtoSubject = encodeURIComponent(`Contact — ${subject}`);
-        const mailtoBody = encodeURIComponent(
-          `Name: ${name}
-Email: ${email}
-Subject: ${subject}
-
-Message:
-${message}
-
-Sent from: ${window.location.href}`
-        );
-        window.location.href = `mailto:${CONTACT_EMAIL}?subject=${mailtoSubject}&body=${mailtoBody}`;
-      }
     }
 
     // Events
@@ -1063,14 +1184,41 @@ Sent from: ${window.location.href}`
       showPage(initialPage, { updateUrl: false });
       updateUrlForPage(initialPage, true); // normalize URL to path, remove hash
 
+      // Ensure default language (EN) is applied on load
+      setLanguage(CONFIG.currentLanguage);
+
       const contactForm = document.getElementById('contact-form');
       if (contactForm) contactForm.addEventListener('submit', handleContactSubmit);
 
-      const overlay = document.getElementById('selection-modal');
+      // Prevent clicks inside modal content from bubbling to overlay
       const modalContent = document.getElementById('modalContent');
-      if (overlay && modalContent) {
+      if (modalContent) {
         modalContent.addEventListener('click', e => e.stopPropagation());
-        overlay.addEventListener('click', () => closeModal());
+      }
+
+      // Delegated click handler on modal grid: select track and close modal
+      const grid = document.getElementById('modal-release-grid');
+      if (grid) {
+        grid.addEventListener('click', (e) => {
+          const clickable = e.target.closest('[data-index]');
+          if (!clickable) return;
+          const idx = parseInt(clickable.getAttribute('data-index'), 10);
+          if (!Number.isNaN(idx)) {
+            displayDetails(idx);
+            closeModal();
+          }
+        });
+        grid.addEventListener('keydown', (e) => {
+          const clickable = e.target.closest('[data-index]');
+          if (!clickable) return;
+          if (e.key === 'Enter' || e.key === ' ') {
+            const idx = parseInt(clickable.getAttribute('data-index'), 10);
+            if (!Number.isNaN(idx)) {
+              displayDetails(idx);
+              closeModal();
+            }
+          }
+        });
       }
 
       document.addEventListener('keydown', e => {
