@@ -19,6 +19,10 @@
   <meta name="twitter:description" content="Ten Rise Music: Immersive, story-driven songs inspired by Anime and J-Pop. Explore the official music gallery. (日本語アニソン、J-Pop、OST、楽曲)">
   <!-- Optional: replace with your live domain -->
   <link rel="canonical" href="https://your-domain.example/" />
+  <!-- Icons: desktop favicon, iOS (apple touch), Android -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png">
 
   <!-- JSON-LD: MusicGroup (background only) -->
   <script type="application/ld+json">
@@ -162,7 +166,7 @@
       width: 50px; height: 50px;
       display: flex; align-items: center; justify-content: center;
       transition: all 0.3s ease;
-      cursor: pointer;
+      cursor: pointer.
     }
     .play-button:hover {
       background: #23cccc;
@@ -181,7 +185,7 @@
       background: #2cffff;
       height: 100%;
       width: 0%;
-      transition: width 0.1s ease;
+      transition: width 0.1s ease.
     }
 
     .volume-slider {
@@ -310,6 +314,8 @@
 
   <!-- Home -->
   <div id="page-home" class="page active min-h-screen flex flex-col justify-center items-center p-4 sm:p-8">
+    <!-- Primary heading for SEO (visually hidden) -->
+    <h1 class="sr-only">Ten Rise | Official Music Gallery</h1>
     <button onclick="showPage('showcase')" title="Go to Music Showcase" class="bg-transparent border-none transition-transform duration-300 hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-primary-accent focus:ring-opacity-50 rounded-lg p-0 cursor-pointer">
       <img src="https://i.imgur.com/Uhxirbr.png" alt="Ten Rise Official Logo" class="w-full max-w-2xl h-auto mb-12 animate-pulse" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
     </button>
@@ -318,6 +324,8 @@
   <!-- Music Showcase -->
   <div id="page-showcase" class="page min-h-screen flex flex-col p-4 sm:p-8">
     <header class="mb-4 flex flex-col items-center relative">
+      <!-- Primary heading for SEO (visually hidden) -->
+      <h1 class="sr-only">Ten Rise Showcase | Anime OST, Vocaloid Tracks – Spotify, Awa, KKBOX</h1>
       <div class="absolute top-0 right-0 flex space-x-2">
         <button id="lang-en" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-primary-accent" onclick="setLanguage('en')">EN</button>
         <button id="lang-jp" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-gray-400" onclick="setLanguage('jp')">JP</button>
@@ -347,6 +355,8 @@
   <!-- Contact -->
   <div id="page-contact" class="page min-h-screen flex flex-col p-4 sm:p-8">
     <header class="mb-4 flex flex-col items-center relative">
+      <!-- Primary heading for SEO (visually hidden) -->
+      <h1 class="sr-only">Contact Ten Rise | Sync Licensing, Anime, Cinema, OST & Partnerships</h1>
       <div class="absolute top-0 right-0 flex space-x-2">
         <button id="lang-en-contact" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-primary-accent" onclick="setLanguage('en')">EN</button>
         <button id="lang-jp-contact" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-gray-400" onclick="setLanguage('jp')">JP</button>
@@ -394,7 +404,9 @@ To explore a partnership or sync license, please use the form below. To ensure t
 
   <!-- Donation -->
   <div id="page-donation" class="page min-h-screen flex flex-col p-4 sm:p-8">
-    <header class="mb-4 flex flex-col items中心 relative">
+    <header class="mb-4 flex flex-col items-center relative">
+      <!-- Primary heading for SEO (visually hidden) -->
+      <h1 class="sr-only">Support Ten Rise Universe | Fund the Rise Galaxy Video Development</h1>
       <div class="absolute top-0 right-0 flex space-x-2">
         <button id="lang-en-donation" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-primary-accent" onclick="setLanguage('en')">EN</button>
         <button id="lang-jp-donation" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-gray-400" onclick="setLanguage('jp')">JP</button>
