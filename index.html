@@ -30,6 +30,7 @@
   "description": "Japanese Vocaloid and Anime Music (Anisong) Composer/Artist. Specializes in Soundtrack and OST for Manga, Anime, Film, and Cinema Sync Licensing.",
   "genre": ["Anisong", "Anime Soundtrack", "Vocaloid", "OST", "Soundtrack", "Manga Music", "J-Pop", "Cinematic", "Futuristic"],
   "sameAs": [
+    "https://www.youtube.com/channel/UCcPq0erKw_lar4nhdak95Og",
     "https://www.instagram.com/tr_tenrise/",
     "https://www.tiktok.com/@tr_tenrise",
     "https://x.com/TR_TenRise",
@@ -48,9 +49,16 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
 <style>
+:root {
+  --accent: #2cffff;
+  --bg-dark: #1f2937;
+  --bg-body: #111827;
+}
+
+/* Background and Panels */
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #111827;
+  background-color: var(--bg-body);
   background-image:
     linear-gradient(rgba(17, 24, 39, 0.5), rgba(17, 24, 39, 0.5)),
     url('https://i.imgur.com/3RD3PbO.jpeg');
@@ -60,6 +68,7 @@ body {
 }
 
 detail-panel {
+
   background-image:
     linear-gradient(rgba(17, 24, 39, 0.95), rgba(17, 24, 39, 0.95)),
     url('https://i.imgur.com/3RD3PbO.jpeg');
@@ -76,6 +85,8 @@ detail-panel {
   background-attachment: fixed;
 }
 .modal-sticky-header { backdrop-filter: blur(4px); }
+
+/* Gallery covers */
 .album-cover {
   transition: all 0.2s ease-in-out;
   border: 4px solid transparent;
@@ -84,24 +95,29 @@ detail-panel {
 }
 .album-cover:hover { transform: scale(1.03); }
 .album-cover.selected {
-  border-color: #2cffff;
+  border-color: var(--accent);
   transform: scale(1.05);
   box-shadow:
     0 0 8px 2px rgba(44, 255, 255, 1),
     0 0 20px 5px rgba(44, 255, 255, 0.6);
 }
 
+/* Inputs and scrollbars */
+
 modal-search-input:focus {
+
   outline: none;
-  border-color: #2cffff;
+  border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(44, 255, 255, 0.5);
 }
 .modal-scrollable::-webkit-scrollbar { width: 8px; }
 .modal-scrollable::-webkit-scrollbar-thumb {
-  background-color: #2cffff;
+  background-color: var(--accent);
   border-radius: 4px;
 }
 .modal-scrollable::-webkit-scrollbar-track { background-color: #374151; }
+
+/* Page visibility */
 .page {
   position: absolute;
   top: 0; left: 0;
@@ -112,13 +128,15 @@ modal-search-input:focus {
   display: flex;
 }
 .page.active { opacity: 1; visibility: visible; }
+
+/* Navigation panel */
 .nav-panel {
   background: rgba(17, 24, 39, 0.5);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(44, 255, 255, 0.2);
   box-shadow: 0 8px 32px rgba(0,0,0,0.3);
 }
-.nav-icon { transition: all 0.3s ease; color: #2cffff; }
+.nav-icon { transition: all 0.3s ease; color: var(--accent); }
 .nav-button {
   transition: all 0.3s ease;
   background: transparent;
@@ -133,9 +151,11 @@ modal-search-input:focus {
 .nav-button:hover .nav-icon {
   filter: drop-shadow(0 0 8px rgba(44, 255, 255, 0.8));
 }
+
+/* Media player */
 .media-player {
   background: rgba(31, 41, 55, 0.7);
-  border: 4px solid #2cffff;
+  border: 4px solid var(--accent);
   border-radius: 12px;
   padding: 16px;
   transition: all 0.3s ease;
@@ -146,19 +166,19 @@ modal-search-input:focus {
     0 0 20px 5px rgba(44, 255, 255, 0.6);
 }
 .media-player:focus-within {
-  border-color: #2cffff;
+  border-color: var(--accent);
   box-shadow:
     0 0 12px 3px rgba(44, 255, 255, 1),
     0 0 25px 8px rgba(44, 255, 255, 0.8);
 }
 .play-button {
-  background: #2cffff;
+  background: var(--accent);
   border: none;
   border-radius: 50%;
   width: 50px; height: 50px;
   display: flex; align-items: center; justify-content: center;
   transition: all 0.3s ease;
-  cursor: pointer.
+  cursor: pointer;
 }
 .play-button:hover {
   background: #23cccc;
@@ -173,7 +193,7 @@ modal-search-input:focus {
   cursor: pointer;
 }
 .progress {
-  background: #2cffff;
+  background: var(--accent);
   height: 100%;
   width: 0%;
   transition: width 0.1s ease;
@@ -189,7 +209,7 @@ modal-search-input:focus {
   -webkit-appearance: none;
   width: 14px; height: 14px;
   border-radius: 50%;
-  background: #2cffff;
+  background: var(--accent);
   cursor: pointer;
 }
 .time-display { font-size: 0.8rem; color: #9ca3af; }
@@ -197,17 +217,22 @@ modal-search-input:focus {
   display: none;
   width: 20px; height: 20px;
   border: 2px solid #f3f4f6;
-  border-top: 2px solid #2cffff;
+  border-top: 2px solid var(--accent);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
 
+/* Hide iframe offscreen for accessibility; keep created player tiny */
+
 youtube-player {
-  position: absolute;
-  top: -1000px; left: -1000px;
+
+  position: fixed;
+  top: -9999px; left: -9999px;
   width: 1px; height: 1px;
 }
+
+/* Visualizer */
 .visualizer-container {
   position: relative;
   margin-top: 16px;
@@ -233,6 +258,7 @@ youtube-player {
   max-height: 96px;
 }
 .visualizer-bar.active { box-shadow: 0 0 6px rgba(44, 255, 255, 0.7); }
+
 @media (max-width: 640px) {
   .media-player {
     transform: none;
@@ -365,7 +391,7 @@ To explore a partnership or sync license, please use the form below. To ensure t
         <input type="text" id="subject" name="subject" required placeholder="Subject" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300" aria-label="Subject">
         <label for="message" class="sr-only">Your Message</label>
         <textarea id="message" name="message" rows="6" required placeholder="Your Message" maxlength="3000" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300 resize-none" aria-label="Your Message"></textarea>
-        <button id="send-button" type="submit" class="w-full bg-primary-accent hover:bg-primary-accent/80 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-accent focus:ring-opacity-50">Send Message</button>
+        <button id="send-button" type="submit" class="w-full bg-primary-accent hover:bg-primary-accent/80 text-[#0a1f44] font-semibold py-3 px-6 rounded-lg transition-colors duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-accent focus:ring-opacity-50">Send Message</button>
       </form>
     </div>
   </div>
@@ -383,17 +409,13 @@ To explore a partnership or sync license, please use the form below. To ensure t
   </header>
   <div class="flex-grow flex items-center justify-center">
     <div class="bg-gray-900/90 rounded-xl shadow-2xl p-6 md:p-8 w-full max-w-2xl md:max-w-3xl lg:max-w-4xl">
-      <!-- Title + Recent supporters -->
       <div class="w-full mb-6">
         <h3 id="donation-section-title" class="text-lg sm:text-2xl font-bold text-primary-accent mb-3 text-center">Built on Passion: A Message from Ten Rise</h3>
         <div id="recent-supporters" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
       </div>
-      <!-- Communication (EN/JP) - Enlarged, responsive, scrollable -->
       <div id="donation-message" class="bg-dark-bg/60 border border-primary-accent/30 rounded-xl p-4 md:p-6 text-gray-300 whitespace-normal leading-relaxed text-sm md:text-base max-h-[62vh] md:max-h-[66vh] lg:max-h-[70vh] overflow-y-auto"></div>
-      <!-- Donation module moved to end -->
       <div class="mt-8 pt-4 border-t border-gray-700">
         <h2 class="text-3xl font-bold text-primary-accent mb-6 text-center">Support Ten Rise</h2>
-        <!-- Totals panel -->
         <div class="w-full bg-dark-bg/60 border border-primary-accent/30 rounded-xl p-4 mb-6">
           <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div class="text-gray-300">
@@ -408,12 +430,11 @@ To explore a partnership or sync license, please use the form below. To ensure t
             </div>
           </div>
         </div>
-        <!-- Ko-fi Support button -->
         <div class="flex justify-center mb-2">
           <button id="kofi-button"
             class="bg-primary-accent hover:bg-primary-accent/80 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-accent"
             aria-label="Support on Ko-fi">
-            Support Ten Rise
+            <span class="text-[#0a1f44]">Support Ten Rise</span>
           </button>
         </div>
       </div>
@@ -443,9 +464,7 @@ To explore a partnership or sync license, please use the form below. To ensure t
 
 <!-- JavaScript -->
 <script>
-const CONTACT_EMAIL = 'gregory.benne@edhec.com';
-const ENABLE_MAILTO_FALLBACK = false;
-
+// SEO per page
 const PAGE_SEO = {
   home: {
     title: 'Ten Rise | Official Music Gallery',
@@ -512,6 +531,7 @@ const CONFIG = {
   lastFocusedElement: null
 };
 
+// Translations
 const TRANSLATIONS = {
   en: {
     'gallery-title': 'View All Releases',
@@ -574,12 +594,15 @@ To explore a partnership or sync license, please use the form below. To ensure t
   }
 };
 
+// Social links (YouTube first, spacing reduced)
 const SOCIAL_LINKS = [
+  { name: "YouTube", url: "https://www.youtube.com/channel/UCcPq0erKw_lar4nhdak95Og", iconUrl: "https://i.imgur.com/IoGvQII.png" },
   { name: "Instagram", url: "https://www.instagram.com/tr_tenrise/", iconUrl: "https://i.imgur.com/RHS4HTR.png" },
   { name: "TikTok", url: "https://www.tiktok.com/@tr_tenrise", iconUrl: "https://i.imgur.com/kOu4UG7.png" },
   { name: "X (Twitter)", url: "https://x.com/TR_TenRise", iconUrl: "https://i.imgur.com/Yd5oBVX.png" }
 ];
 
+// Releases
 const RELEASES_DATA = [
   {
     id: 'track-journey', title: "光の旅路 Journey of Light", artist: "Ten Rise", label: "Ten Rise Records",
@@ -625,14 +648,30 @@ const RELEASES_DATA = [
   }
 ];
 
+// Helpers
+function t(key) { return TRANSLATIONS[CONFIG.currentLanguage][key] || key; }
+
+function updatePlayUI({ isPlaying = false, isBuffering = false } = {}) {
+  const playIcon = document.getElementById('play-icon');
+  const pauseIcon = document.getElementById('pause-icon');
+  const loadingSpinner = document.getElementById('loading-spinner');
+  const playButton = document.getElementById('play-button');
+  if (loadingSpinner) loadingSpinner.style.display = isBuffering ? 'block' : 'none';
+  if (playIcon) playIcon.style.display = isPlaying ? 'none' : 'block';
+  if (pauseIcon) pauseIcon.style.display = isPlaying && !isBuffering ? 'block' : 'none';
+  if (playButton) {
+    playButton.setAttribute('aria-pressed', isPlaying ? 'true' : 'false');
+    playButton.setAttribute('aria-label', isPlaying ? 'Pause' : 'Play');
+  }
+}
+
 // Visualizer
 function createVisualizer() {
   const container = document.getElementById('visualizer-container');
   if (!container) return;
   container.innerHTML = '';
   CONFIG.visualizerBars = [];
-  const barCount = 28;
-  for (let i = 0; i < barCount; i++) {
+  for (let i = 0; i < 28; i++) {
     const bar = document.createElement('div');
     bar.className = 'visualizer-bar';
     bar.style.height = '2px';
@@ -667,90 +706,6 @@ function stopVisualizer() {
 }
 
 // Progress
-function startProgressUpdates() { stopProgressUpdates(); CONFIG.progressInterval = setInterval(updateProgressBar, 100); }
-function stopProgressUpdates() { if (CONFIG.progressInterval) { clearInterval(CONFIG.progressInterval); CONFIG.progressInterval = null; } }
-
-// YouTube API
-function onYouTubeIframeAPIReady() {
-  CONFIG.youtubePlayer = new YT.Player('youtube-player', {
-    height: '1', width: '1',
-    events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange }
-  });
-}
-function onPlayerReady() {
-  if (CONFIG.youtubePlayer && typeof CONFIG.youtubePlayer.setVolume === 'function') {
-    CONFIG.youtubePlayer.setVolume(70);
-  }
-}
-function onPlayerStateChange(event) {
-  const playIcon = document.getElementById('play-icon');
-  const pauseIcon = document.getElementById('pause-icon');
-  const loadingSpinner = document.getElementById('loading-spinner');
-  const playButton = document.getElementById('play-button');
-  switch(event.data) {
-    case YT.PlayerState.PLAYING:
-      CONFIG.isPlaying = true;
-      if (loadingSpinner) loadingSpinner.style.display = 'none';
-      if (pauseIcon) pauseIcon.style.display = 'block';
-      if (playIcon) playIcon.style.display = 'none';
-      if (playButton) { playButton.setAttribute('aria-pressed', 'true'); playButton.setAttribute('aria-label', 'Pause'); }
-      createVisualizer();
-      startProgressUpdates();
-      break;
-    case YT.PlayerState.PAUSED:
-      CONFIG.isPlaying = false;
-      if (playIcon) playIcon.style.display = 'block';
-      if (pauseIcon) pauseIcon.style.display = 'none';
-      if (loadingSpinner) loadingSpinner.style.display = 'none';
-      if (playButton) { playButton.setAttribute('aria-pressed', 'false'); playButton.setAttribute('aria-label', 'Play'); }
-      stopVisualizer();
-      stopProgressUpdates();
-      break;
-    case YT.PlayerState.ENDED:
-      CONFIG.isPlaying = false;
-      if (playIcon) playIcon.style.display = 'block';
-      if (pauseIcon) pauseIcon.style.display = 'none';
-      if (loadingSpinner) loadingSpinner.style.display = 'none';
-      const progressEl = document.getElementById('progress');
-      if (progressEl) progressEl.style.width = '0%';
-      if (playButton) { playButton.setAttribute('aria-pressed', 'false'); playButton.setAttribute('aria-label', 'Play'); }
-      stopVisualizer();
-      stopProgressUpdates();
-      break;
-    case YT.PlayerState.BUFFERING:
-      if (loadingSpinner) loadingSpinner.style.display = 'block';
-      if (playIcon) playIcon.style.display = 'none';
-      if (pauseIcon) pauseIcon.style.display = 'none';
-      break;
-  }
-  updateProgressBar();
-}
-function togglePlayPause() {
-  const playIcon = document.getElementById('play-icon');
-  const pauseIcon = document.getElementById('pause-icon');
-  const loadingSpinner = document.getElementById('loading-spinner');
-  const playButton = document.getElementById('play-button');
-  if (!CONFIG.youtubePlayer || !CONFIG.currentTrackId) {
-    showMessage('Please select a track first.', 'error'); return;
-  }
-  if (CONFIG.isPlaying) {
-    CONFIG.youtubePlayer.pauseVideo();
-    if (playButton) { playButton.setAttribute('aria-pressed', 'false'); playButton.setAttribute('aria-label', 'Play'); }
-    stopVisualizer();
-    stopProgressUpdates();
-  } else {
-    if (loadingSpinner) loadingSpinner.style.display = 'block';
-    if (playIcon) playIcon.style.display = 'none';
-    if (pauseIcon) pauseIcon.style.display = 'none';
-    if (playButton) { playButton.setAttribute('aria-pressed', 'true'); playButton.setAttribute('aria-label', 'Pause'); }
-    const vd = CONFIG.youtubePlayer.getVideoData();
-    if (!vd || vd.video_id !== CONFIG.currentTrackId) {
-      CONFIG.youtubePlayer.loadVideoById(CONFIG.currentTrackId);
-    } else {
-      CONFIG.youtubePlayer.playVideo();
-    }
-  }
-}
 function updateProgressBar() {
   if (!CONFIG.youtubePlayer || !CONFIG.isPlaying) return;
   const progress = document.getElementById('progress');
@@ -760,13 +715,15 @@ function updateProgressBar() {
   const current = CONFIG.youtubePlayer.getCurrentTime();
   const total = CONFIG.youtubePlayer.getDuration();
   if (total > 0) {
-    const pct = (current/total)*100;
+    const pct = (current / total) * 100;
     if (progress) progress.style.width = `${pct}%`;
     if (progressBar) progressBar.setAttribute('aria-valuenow', Math.round(pct));
     if (currentTime) currentTime.textContent = formatTime(current);
     if (duration) duration.textContent = formatTime(total);
   }
 }
+function startProgressUpdates() { stopProgressUpdates(); CONFIG.progressInterval = setInterval(updateProgressBar, 100); }
+function stopProgressUpdates() { if (CONFIG.progressInterval) { clearInterval(CONFIG.progressInterval); CONFIG.progressInterval = null; } }
 function formatTime(seconds) {
   if (isNaN(seconds)) return '0:00';
   const mins = Math.floor(seconds / 60);
@@ -781,14 +738,71 @@ function seekAudio(event) {
   let percent = (clientX - rect.left) / rect.width;
   percent = Math.max(0, Math.min(1, percent));
   const duration = CONFIG.youtubePlayer.getDuration();
-  if (duration > 0) {
-    const newTime = percent * duration;
-    CONFIG.youtubePlayer.seekTo(newTime, true);
-  }
+  if (duration > 0) CONFIG.youtubePlayer.seekTo(percent * duration, true);
 }
 function setVolume(event) {
   if (!CONFIG.youtubePlayer) return;
   CONFIG.youtubePlayer.setVolume(event.target.value);
+}
+
+// YouTube API
+function onYouTubeIframeAPIReady() {
+  CONFIG.youtubePlayer = new YT.Player('youtube-player', {
+    height: '1', width: '1',
+    events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange }
+  });
+}
+function onPlayerReady() {
+  if (CONFIG.youtubePlayer && typeof CONFIG.youtubePlayer.setVolume === 'function') {
+    CONFIG.youtubePlayer.setVolume(70);
+  }
+}
+function onPlayerStateChange(event) {
+  switch (event.data) {
+    case YT.PlayerState.PLAYING:
+      CONFIG.isPlaying = true;
+      updatePlayUI({ isPlaying: true });
+      createVisualizer();
+      startProgressUpdates();
+      break;
+    case YT.PlayerState.PAUSED:
+      CONFIG.isPlaying = false;
+      updatePlayUI({ isPlaying: false });
+      stopVisualizer();
+      stopProgressUpdates();
+      break;
+    case YT.PlayerState.ENDED:
+      CONFIG.isPlaying = false;
+      updatePlayUI({ isPlaying: false });
+      const progressEl = document.getElementById('progress');
+      if (progressEl) progressEl.style.width = '0%';
+      stopVisualizer();
+      stopProgressUpdates();
+      break;
+    case YT.PlayerState.BUFFERING:
+      updatePlayUI({ isPlaying: false, isBuffering: true });
+      break;
+  }
+  updateProgressBar();
+}
+function togglePlayPause() {
+  if (!CONFIG.youtubePlayer || !CONFIG.currentTrackId) {
+    showMessage('Please select a track first.', 'error'); return;
+  }
+  if (CONFIG.isPlaying) {
+    CONFIG.youtubePlayer.pauseVideo();
+    updatePlayUI({ isPlaying: false });
+    stopVisualizer();
+    stopProgressUpdates();
+  } else {
+    updatePlayUI({ isBuffering: true });
+    const vd = CONFIG.youtubePlayer.getVideoData();
+    if (!vd || vd.video_id !== CONFIG.currentTrackId) {
+      CONFIG.youtubePlayer.loadVideoById(CONFIG.currentTrackId);
+    } else {
+      CONFIG.youtubePlayer.playVideo();
+    }
+  }
 }
 function loadTrack(youtubeId) {
   if (CONFIG.youtubePlayer && CONFIG.isPlaying) {
@@ -798,16 +812,7 @@ function loadTrack(youtubeId) {
     stopProgressUpdates();
   }
   CONFIG.currentTrackId = youtubeId;
-  const playIcon = document.getElementById('play-icon');
-  const pauseIcon = document.getElementById('pause-icon');
-  const loadingSpinner = document.getElementById('loading-spinner');
-  const playButton = document.getElementById('play-button');
-  if (playIcon && pauseIcon && loadingSpinner) {
-    playIcon.style.display = 'block';
-    pauseIcon.style.display = 'none';
-    loadingSpinner.style.display = 'none';
-  }
-  if (playButton) { playButton.setAttribute('aria-pressed', 'false'); playButton.setAttribute('aria-label', 'Play'); }
+  updatePlayUI({ isPlaying: false });
   const progress = document.getElementById('progress');
   const currentTime = document.getElementById('current-time');
   const duration = document.getElementById('duration');
@@ -818,11 +823,9 @@ function loadTrack(youtubeId) {
   }
 }
 
-// Routing helpers
-const VALID_PAGES = ['home','showcase','contact','donation'];
-function normalizePathname() {
-  return window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
-}
+// Routing
+const VALID_PAGES = ['home', 'showcase', 'contact', 'donation'];
+function normalizePathname() { return window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase(); }
 function getRequestedPage() {
   const hashPage = window.location.hash.replace('#', '').toLowerCase();
   const pathPage = normalizePathname();
@@ -833,14 +836,9 @@ function getRequestedPage() {
 function updateUrlForPage(pageName, replace = false) {
   const targetPath = pageName === 'home' ? '/' : `/${pageName}`;
   const currentPath = window.location.pathname;
-  if (replace) {
-    window.history.replaceState({ page: pageName }, '', targetPath);
-  } else if (currentPath !== targetPath) {
-    window.history.pushState({ page: pageName }, '', targetPath);
-  }
-  if (window.location.hash) {
-    window.history.replaceState({ page: pageName }, '', targetPath);
-  }
+  if (replace) window.history.replaceState({ page: pageName }, '', targetPath);
+  else if (currentPath !== targetPath) window.history.pushState({ page: pageName }, '', targetPath);
+  if (window.location.hash) window.history.replaceState({ page: pageName }, '', targetPath);
 }
 
 // UI helpers
@@ -858,9 +856,244 @@ function showMessage(message, type = 'info') {
   clearTimeout(box.timeout);
   box.timeout = setTimeout(() => box.classList.add('hidden'), 5000);
 }
-function t(key) { return TRANSLATIONS[CONFIG.currentLanguage][key] || key; }
 
 // Page switch
+function renderSocialLinks() {
+  const container = document.getElementById('social-links-bar');
+  if (!container) return;
+  container.innerHTML = SOCIAL_LINKS.map(link => `
+    <a href="${link.url}" target="_blank" rel="noopener noreferrer" title="Visit Ten Rise on ${link.name}" class="mx-1 transition-opacity duration-200 opacity-80 hover:opacity-100 hover:scale-105">
+      <img src="${link.iconUrl}" alt="${link.name} icon" class="w-14 h-14 object-contain rounded-lg" onerror="this.src='https://placehold.co/40x40/9ca3af/ffffff?text=?'">
+    </a>
+  `).join('');
+}
+
+function renderGallery(releases = RELEASES_DATA) {
+  const container = document.getElementById('modal-release-grid');
+  if (!container) return;
+  if (!releases.length) {
+    container.innerHTML = '<p class="text-gray-500 text-center w-full col-span-full py-12">No releases found matching your search criteria.</p>';
+    return;
+  }
+  container.innerHTML = releases.map(release => {
+    const originalIndex = RELEASES_DATA.findIndex(r => r.id === release.id);
+    return `
+      <div class="flex flex-col items-center group" data-index="${originalIndex}" tabindex="0" role="button" aria-label="Open ${release.title}">
+        <img src="${release.image}" alt="Cover for ${release.title}" data-index="${originalIndex}" onclick="displayDetails(${originalIndex}); closeModal();" class="album-cover w-full object-cover rounded-xl cursor-pointer shadow-lg ${originalIndex === CONFIG.selectedReleaseIndex ? 'selected' : ''}" onerror="this.src='https://placehold.co/400x400/9ca3af/111827?text=${encodeURIComponent(release.title.substring(0, 10))}'">
+        <p class="text-sm text-gray-400 mt-3 text-center w-full truncate group-hover:text-primary-accent transition-colors duration-200">${release.title}</p>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderInitialSummary() {
+  const container = document.getElementById('current-selection-summary');
+  if (!container) return;
+  const covers = RELEASES_DATA.slice(0, 6).map((release, index) => `
+    <img src="${release.image}" alt="Cover for ${release.title}" data-index="${index}" onclick="displayDetails(${index})" class="w-16 h-16 object-cover rounded-md shadow-lg border-2 border-gray-700 transition-transform duration-300 hover:scale-110 cursor-pointer" onerror="this.src='https://placehold.co/64x64/1f2937/ffffff?text=TR'">
+  `).join('');
+  container.innerHTML = `
+    <div class="flex items-center space-x-3">
+      <p class="text-sm font-semibold text-gray-400 mr-2 hidden sm:block">${t('available-releases')}:</p>
+      <div class="flex space-x-2">${covers}</div>
+    </div>
+    <div class="text-right text-xs text-gray-500 hidden sm:block">${t('click-to-view')}</div>
+    <div class="text-right text-xs text-gray-500 sm:hidden"><p>${t('available-releases')}</p><p class="text-primary-accent font-semibold">View All →</p></div>
+  `;
+  const dc = document.getElementById('detail-content');
+  if (dc) {
+    dc.className = 'w-full flex justify-center items-center h-full min-h-[300px]';
+    dc.innerHTML = `<p id="initial-prompt" class="text-gray-400 text-xl animate-pulse">${t('initial-prompt')}</p>`;
+  }
+}
+
+function filterReleases() {
+  const input = document.getElementById('modal-search-input');
+  const query = (input?.value || '').toLowerCase().trim();
+  const filtered = query ? RELEASES_DATA.filter(release =>
+    release.title.toLowerCase().includes(query) ||
+    release.artist.toLowerCase().includes(query) ||
+    release.genres.some(genre => genre.toLowerCase().includes(query)) ||
+    t(release.descriptionKey).toLowerCase().includes(query) ||
+    (release.releaseDate || '').toLowerCase().includes(query)
+  ) : RELEASES_DATA;
+  renderGallery(filtered);
+}
+
+function displayDetails(index) {
+  if (index == null) { CONFIG.selectedReleaseIndex = null; renderInitialSummary(); return; }
+  if (index < 0 || index >= RELEASES_DATA.length) index = 0;
+  CONFIG.selectedReleaseIndex = index;
+  const release = RELEASES_DATA[index];
+
+  document.querySelectorAll('.album-cover').forEach(cover => {
+    cover.classList.toggle('selected', parseInt(cover.getAttribute('data-index')) === index);
+  });
+
+  const summary = document.getElementById('current-selection-summary');
+  if (summary) {
+    summary.innerHTML = `
+      <img src="${release.image}" alt="Cover for ${release.title}" class="w-16 h-16 object-cover rounded-md shadow-lg border-2 border-primary-accent" onerror="this.src='https://placehold.co/48x48/2cffff/ffffff?text=TR'">
+      <div class="truncate flex-grow">
+        <p class="text-sm font-semibold text-gray-400">${t('current-selection')}</p>
+        <p class="text-xl font-bold text-gray-100 truncate">${release.title}</p>
+      </div>
+      <div class="hidden sm:block text-right">
+        <p class="text-xs text-gray-500">${release.artist}</p>
+        <p class="text-sm text-primary-accent">${release.duration}</p>
+      </div>
+    `;
+  }
+
+  const dc = document.getElementById('detail-content');
+  if (!dc) return;
+  const ytMusicLink = release.streamingLinks.find(link => link.name === 'YouTube Music')?.url || '#';
+  dc.className = 'w-full flex flex-col lg:flex-row items-start gap-6 lg:gap-10';
+  dc.innerHTML = `
+    <div class="w-full lg:w-1/3 flex flex-col items-center lg:items-start">
+      <img src="${release.image}" alt="Cover for ${release.title}"
+        class="w-10/12 max-w-[280px] sm:max-w-[320px] md:max-w-[360px] h-auto object-cover rounded-xl shadow-xl mb-4 sm:mb-6"
+        onerror="this.src='https://placehold.co/400x400/9ca3af/ffffff?text=${encodeURIComponent(release.title.substring(0, 10))}'">
+      <div class="media-player w-full max-w-[420px] sm:max-w-xs mb-4 sm:mb-6">
+        <div class="flex items-center justify-between mb-3 sm:mb-4">
+          <button id="play-button" onclick="togglePlayPause()" class="play-button" aria-pressed="false" aria-label="Play">
+            <svg id="play-icon" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+            <svg id="pause-icon" style="display: none;" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            <div id="loading-spinner" class="loading-spinner"></div>
+          </button>
+          <div class="flex-1 mx-3 sm:mx-4 min-w-0">
+            <div class="text-sm font-semibold text-gray-100 truncate">${release.title}</div>
+            <div class="text-xs text-gray-400 truncate">${release.artist}</div>
+          </div>
+        </div>
+        <div class="flex items-center space-x-2 mb-2">
+          <span id="current-time" class="time-display">0:00</span>
+          <div id="progress-bar" class="progress-bar flex-1" onclick="seekAudio(event)" ontouchstart="seekAudio(event)" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div id="progress" class="progress"></div>
+          </div>
+          <span id="duration" class="time-display">${release.duration}</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#9ca3af"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            <input type="range" min="0" max="100" value="70" class="volume-slider" oninput="setVolume(event)">
+          </div>
+          <a href="${ytMusicLink}" target="_blank" rel="noopener noreferrer" class="text-xs text-primary-accent hover:underline">Open in YouTube Music</a>
+        </div>
+        <div class="visualizer-container" id="visualizer-container"></div>
+      </div>
+      <p class="text-sm font-semibold text-gray-400 mb-2 sm:mb-4 text-center lg:text-left">${t('listen-prompt')}</p>
+      <div class="w-full max-w-[420px] sm:max-w-xs grid grid-cols-4 sm:grid-cols-6 gap-2 sm:gap-1 mt-1 p-0">
+        ${release.streamingLinks.map(link => `
+          <a href="${link.url}" target="_blank" rel="noopener noreferrer" title="Listen on ${link.name}" class="flex flex-col items-center justify-center transition-transform duration-150 hover:scale-110 p-1 rounded-lg focus:ring-2 focus:ring-primary-accent">
+            <img src="${link.iconUrl}" alt="${link.name} icon" class="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 object-contain rounded-lg shadow-md" onerror="this.src='https://placehold.co/40x40/9ca3af/ffffff?text=?'">
+          </a>
+        `).join('')}
+      </div>
+    </div>
+    <div class="w-full lg:w-2/3">
+      <h3 class="text-base sm:text-xl font-bold text-primary-accent mb-2 sm:mb-3">${t('details-heading')}</h3>
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-100 mb-3 sm:mb-4 break-words">${release.title}</h2>
+      <div class="text-sm sm:text-base text-gray-300 space-y-2 mb-5 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
+        <p><strong class="text-gray-400">${t('artist')}:</strong> ${release.artist}</p>
+        <p><strong class="text-gray-400">${t('duration')}:</strong> ${release.duration}</p>
+        <p><strong class="text-gray-400">${t('label')}:</strong> ${release.label}</p>
+        ${release.genres ? `<p><strong class="text-gray-400">${t('style')}:</strong> ${release.genres.join(' / ')}</p>` : ''}
+        <p><strong class="text-gray-400">${t('release_date')}:</strong> ${release.releaseDate}</p>
+      </div>
+      <h3 class="text-base sm:text-xl font-bold text-primary-accent mb-2 sm:mb-3">${t('desc_heading')}</h3>
+      <p class="text-gray-300 text-sm sm:text-base leading-relaxed break-words">${t(release.descriptionKey)}</p>
+    </div>
+  `;
+  loadTrack(release.youtubeId);
+}
+
+// Donation module
+async function initDonationModule() {
+  const donationPage = document.getElementById('page-donation');
+  if (!donationPage) return;
+
+  const lang = document.documentElement.lang; // 'ja' or 'en'
+  const currencyParam = (lang === 'ja') ? 'JPY' : 'EUR';
+
+  const sectionTitleEl = document.getElementById('donation-section-title');
+  if (sectionTitleEl) {
+    sectionTitleEl.textContent = (lang === 'ja')
+      ? '情熱が生んだ世界 ― Ten Riseからのメッセージ'
+      : 'Built on Passion: A Message from Ten Rise';
+  }
+
+  const msgEn = `
+<p>If you're reading this, it means you've connected with the world we've built—the music, the emotion, and the adventures of Rise. Thank you.</p>
+<p>We are Ten Rise: a tiny, dedicated team (which is essentially one passionate creator) pouring our hearts into high-quality, story-driven music inspired by anime and centered on Rise's universe. From the initial spark of an idea to the final official release on music platforms, every beat, note, and lyric is a labor of love created in our limited free time. We're not some big label; we're just like you—fans of immersive stories who happen to make music.</p>
+<h4 class="text-primary-accent font-bold mt-4">What We Dream Of</h4>
+<p>Our mission has always been to bring unique worlds to life through music. But we dream bigger than just high-quality standalone music releases. We want to take the Ten Rise Universe to the next level:</p>
+<p>• Developing richer, more ambitious music that pushes the quality even further.</p>
+<p>• Bringing our songs to life with stunning video content and full animation.</p>
+<p>To make these dreams a reality, we need to evolve beyond the "free time" model, and that's where your support makes all the difference.</p>
+<h4 class="text-primary-accent font-bold mt-4">How You Can Support the Journey</h4>
+<p>Your support, in all its forms, is what keeps the music playing and the story moving forward.</p>
+<p class="text-primary-accent border border-primary-accent/50 rounded-md px-3 py-1 mt-2">1. Amplify the Story</p>
+<p>The best way to help? Talk about us! Share our content, follow us on social media, and tell your friends who have a passion for rich narratives and powerful, story-driven music. A shared link is just as valuable as a composing session.</p>
+<p class="text-primary-accent border border-primary-accent/50 rounded-md px-3 py-1 mt-3">2. Lend Your Time and Talent</p>
+<p>Have a knack for social media, marketing, design, or something else entirely? Do you have great ideas for the brand? We're always looking for dedicated fans to join our non-financial support team. If you have some time to give, we'd love to hear from you. Connect with us directly at contact@tenrisemusic.com.</p>
+<p class="text-primary-accent border border-primary-accent/50 rounded-md px-3 py-1 mt-3">3. Fuel the Next Project</p>
+<p>To create videos, hire animators, and invest more time into the music, financial support is essential. If you feel compelled to help us reach our next milestone, you can contribute right here on this page. Every donation, big or small, goes directly into creating the next piece of the Ten Rise Universe.</p>
+<p class="mt-4">Thank you for being part of this journey. We are nothing without this community.</p>
+<p>Best regards, The Ten Rise Team</p>
+`;
+
+  const msgJp = `
+<p>音楽が物語を奏で、物語が音を生む――。「Rise」の世界は、そんな想いから生まれました。作品を通してその世界に触れてくださった皆さまに、心からの感謝をお伝えします。Ten Riseは、アニメの世界観にインスピレーションを受け、「Rise」の物語を軸に音楽を創り出す小さなクリエイティブチームです。実際には、ひとりの情熱的なクリエイターが、構想から作曲、映像、言葉まですべてを手掛けています。ひとつひとつの音、ひとつひとつの言葉が、限られた時間の中で丁寧に紡がれた愛の結晶です。</p>
+<h4 class="text-primary-accent font-bold mt-4">私たちの夢</h4>
+<p>Ten Riseの使命は、「音楽を通して、ひとつの世界に命を吹き込むこと」。そして今、その先にある新たな夢を描いています。</p>
+<p>• さらに深く豊かな物語を表現する楽曲を制作すること </p>
+<p>• 音楽に息づく世界を、映像やアニメーションで形にすること </p>
+<p>これを実現するためには、「空いた時間に創る」段階からもう一歩踏み出す必要があります。</p>
+<p>その一歩を後押ししてくれるのが、皆さまの温かいサポートです。</p>
+<h4 class="text-primary-accent font-bold mt-4"> あなたにできるサポートの形 </h4>
+<p>皆さまの一つひとつの行動が、Ten Riseの音楽と物語を未来へと導く力になります。</p>
+<p class="text-primary-accent border border-primary-accent/50 rounded-md px-3 py-1 mt-2">1. 物語を広める</p>
+<p>私たちにとって最大の支援は、Ten Riseを知ってもらうことです。作品をシェアしたり、SNSでフォローしたり、物語性のある音楽を愛する方にTen Riseを紹介してください。そのひとつのシェアが、新しい音を生み出す力になります。</p>
+<p class="text-primary-accent border border-primary-accent/50 rounded-md px-3 py-1 mt-3">2. 才能や時間で支える </p>
+<p>SNS運用、デザイン、マーケティングなど、得意なことを活かしてTen Riseに関わってみませんか？金銭的な支援だけでなく、「一緒に創りたい」という気持ちも大歓迎です。ご興味のある方は、ぜひ contact@tenrisemusic.com までご連絡ください。</p>
+<p class="text-primary-accent border border-primary-accent/50 rounded-md px-3 py-1 mt-3">3. 次の作品を支援する</p>
+<p>映像制作、アニメーション、音楽制作には継続的な資金が欠かせません。「Ten Riseの世界をもっと見たい」と感じてくださった方は、こちらのページからご支援をお願いいたします。すべてのご支援は、次なる創作のために大切に使わせていただきます。</p>
+<h4 class="text-primary-accent font-bold mt-4">最後に</h4>
+<p class="mt-4">この旅を共に歩んでくださる皆さまに、心から感謝いたします。このコミュニティがあるからこそ、Ten Riseは音楽を通して世界を描き続けることができます。</p>
+<p>Ten Riseチーム一同より</p>
+`;
+
+  const messageEl = document.getElementById('donation-message');
+  if (messageEl) messageEl.innerHTML = (lang === 'ja') ? msgJp : msgEn;
+
+  // Near-live summary fetch (optional)
+  try {
+    const res = await fetch(`/.netlify/functions/donation-summary?currency=${currencyParam}`);
+    if (!res.ok) throw new Error('Summary not available');
+    const data = await res.json();
+    const totalEl = document.getElementById('donation-total');
+    const currEl = document.getElementById('donation-currency');
+    const updatedEl = document.getElementById('donation-last-updated');
+    const supportersEl = document.getElementById('recent-supporters');
+    if (totalEl) totalEl.textContent = new Intl.NumberFormat().format(data.totalAmount || 0);
+    if (currEl) currEl.textContent = data.currency || '';
+    if (updatedEl) updatedEl.textContent = new Date(data.lastUpdatedIso || Date.now()).toLocaleString();
+    if (supportersEl) {
+      supportersEl.innerHTML = (data.recentSupporters || []).map(s => `
+        <div class="rounded-lg bg-gray-800/60 border border-gray-700 p-3">
+          <p class="text-sm text-gray-100 font-semibold truncate">${s.name || 'Anonymous'}</p>
+          ${s.amount ? `<p class="text-sm text-primary-accent">${new Intl.NumberFormat().format(s.amount)} ${data.currency || ''}</p>` : ''}
+          ${s.message ? `<p class="text-xs text-gray-300 mt-1 break-words">${s.message}</p>` : ''}
+        </div>
+      `).join('');
+    }
+  } catch {
+    // Silent fallback; placeholders remain
+  }
+}
+
+// Page switching and language
 function showPage(pageName, options = { updateUrl: true }) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const targetPage = document.getElementById(`page-${pageName}`);
@@ -929,11 +1162,10 @@ function setLanguage(lang) {
     else renderInitialSummary();
   }
 
-  // Refresh Donation module (updates currency and communication language)
-  initDonationModule();
+  initDonationModule(); // refresh currency and text
 }
 
-// Robust outside click handler using coordinates (capture phase)
+// Modal outside close
 function attachOutsideClose() {
   detachOutsideClose();
   const handler = (e) => {
@@ -942,10 +1174,8 @@ function attachOutsideClose() {
     if (!modal || modal.classList.contains('hidden') || !content) return;
     const rect = content.getBoundingClientRect();
     const point = (e.touches && e.touches[0]) ? e.touches[0] : e;
-    const x = point.clientX;
-    const y = point.clientY;
-    const outside = x < rect.left || x > rect.right || y < rect.top || y > rect.bottom;
-    if (outside) {
+    const x = point.clientX, y = point.clientY;
+    if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
       closeModal();
       e.stopPropagation();
       e.preventDefault();
@@ -998,257 +1228,6 @@ function closeModal() {
   }, 300);
 }
 
-function renderSocialLinks() {
-  const container = document.getElementById('social-links-bar');
-  if (!container) return;
-  container.innerHTML = SOCIAL_LINKS.map(link => `
-    <a href="${link.url}" target="_blank" rel="noopener noreferrer" title="Visit Ten Rise on ${link.name}" class="mx-3 transition-opacity duration-200 opacity-80 hover:opacity-100 hover:scale-105">
-      <img src="${link.iconUrl}" alt="${link.name} icon" class="w-14 h-14 object-contain rounded-lg" onerror="this.src='https://placehold.co/40x40/9ca3af/ffffff?text=?'">
-    </a>
-  `).join('');
-}
-
-function renderGallery(releases = RELEASES_DATA) {
-  const container = document.getElementById('modal-release-grid');
-  if (!container) return;
-  if (!releases.length) {
-    container.innerHTML = '<p class="text-gray-500 text-center w-full col-span-full py-12">No releases found matching your search criteria.</p>';
-    return;
-  }
-  container.innerHTML = releases.map(release => {
-    const originalIndex = RELEASES_DATA.findIndex(r => r.id === release.id);
-    return `
-      <div class="flex flex-col items-center group" data-index="${originalIndex}" tabindex="0" role="button" aria-label="Open ${release.title}">
-        <img src="${release.image}" alt="Cover for ${release.title}" data-index="${originalIndex}" onclick="displayDetails(${originalIndex}); closeModal();" class="album-cover w-full object-cover rounded-xl cursor-pointer shadow-lg ${originalIndex === CONFIG.selectedReleaseIndex ? 'selected' : ''}" onerror="this.src='https://placehold.co/400x400/9ca3af/111827?text=${encodeURIComponent(release.title.substring(0, 10))}'">
-        <p class="text-sm text-gray-400 mt-3 text-center w-full truncate group-hover:text-primary-accent transition-colors duration-200">${release.title}</p>
-      </div>
-    `;
-  }).join('');
-}
-
-function renderInitialSummary() {
-  const container = document.getElementById('current-selection-summary');
-  if (!container) return;
-  const covers = RELEASES_DATA.slice(0, 6).map((release, index) => `
-    <img src="${release.image}" alt="Cover for ${release.title}" data-index="${index}" onclick="displayDetails(${index})" class="w-16 h-16 object-cover rounded-md shadow-lg border-2 border-gray-700 transition-transform duration-300 hover:scale-110 cursor-pointer" onerror="this.src='https://placehold.co/64x64/1f2937/ffffff?text=TR'">
-  `).join('');
-  container.innerHTML = `
-    <div class="flex itemscenter space-x-3">
-      <p class="text-sm font-semibold text-gray-400 mr-2 hidden sm:block">${t('available-releases')}:</p>
-      <div class="flex space-x-2">${covers}</div>
-    </div>
-    <div class="text-right text-xs text-gray-500 hidden sm:block">${t('click-to-view')}</div>
-    <div class="text-right text-xs text-gray-500 sm:hidden"><p>${t('available-releases')}</p><p class="text-primary-accent font-semibold">View All →</p></div>
-  `;
-  const dc = document.getElementById('detail-content');
-  if (dc) {
-    dc.className = 'w-full flex justify-center items-center h-full min-h-[300px]';
-    dc.innerHTML = `<p id="initial-prompt" class="text-gray-400 text-xl animate-pulse">${t('initial-prompt')}</p>`;
-  }
-}
-
-function filterReleases() {
-  const input = document.getElementById('modal-search-input');
-  const query = (input?.value || '').toLowerCase().trim();
-  const filtered = query ? RELEASES_DATA.filter(release =>
-    release.title.toLowerCase().includes(query) ||
-    release.artist.toLowerCase().includes(query) ||
-    release.genres.some(genre => genre.toLowerCase().includes(query)) ||
-    t(release.descriptionKey).toLowerCase().includes(query) ||
-    (release.releaseDate || '').toLowerCase().includes(query)
-  ) : RELEASES_DATA;
-  renderGallery(filtered);
-}
-
-function displayDetails(index) {
-  if (index == null) { CONFIG.selectedReleaseIndex = null; renderInitialSummary(); return; }
-  if (index < 0 || index >= RELEASES_DATA.length) index = 0;
-  CONFIG.selectedReleaseIndex = index;
-  const release = RELEASES_DATA[index];
-
-  document.querySelectorAll('.album-cover').forEach(cover => {
-    cover.classList.toggle('selected', parseInt(cover.getAttribute('data-index')) === index);
-  });
-
-  const summary = document.getElementById('current-selection-summary');
-  if (summary) {
-    summary.innerHTML = `
-      <img src="${release.image}" alt="Cover for ${release.title}" class="w-16 h-16 object-cover rounded-md shadow-lg border-2 border-primary-accent" onerror="this.src='https://placehold.co/48x48/2cffff/ffffff?text=TR'">
-      <div class="truncate flex-grow">
-        <p class="text-sm font-semibold text-gray-400">${t('current-selection')}</p>
-        <p class="text-xl font-bold text-gray-100 truncate">${release.title}</p>
-      </div>
-      <div class="hidden sm:block text-right">
-        <p class="text-xs text-gray-500">${release.artist}</p>
-        <p class="text-sm text-primary-accent">${release.duration}</p>
-      </div>
-    `;
-  }
-
-  const dc = document.getElementById('detail-content');
-  if (!dc) return;
-  dc.className = 'w-full flex flex-col lg:flex-row items-start gap-6 lg:gap-10';
-  dc.innerHTML = `
-    <div class="w-full lg:w-1/3 flex flex-col items-center lg:items-start">
-      <img src="${release.image}" alt="Cover for ${release.title}"
-        class="w-10/12 max-w-[280px] sm:max-w-[320px] md:max-w-[360px] h-auto object-cover rounded-xl shadow-xl mb-4 sm:mb-6"
-        onerror="this.src='https://placehold.co/400x400/9ca3af/ffffff?text=${encodeURIComponent(release.title.substring(0, 10))}'">
-      <div class="media-player w-full max-w-[420px] sm:max-w-xs mb-4 sm:mb-6">
-        <div class="flex items-center justify-between mb-3 sm:mb-4">
-          <button id="play-button" onclick="togglePlayPause()" class="play-button" aria-pressed="false" aria-label="Play">
-            <svg id="play-icon" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
-            <svg id="pause-icon" style="display: none;" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-            <div id="loading-spinner" class="loading-spinner"></div>
-          </button>
-          <div class="flex-1 mx-3 sm:mx-4 min-w-0">
-            <div class="text-sm font-semibold text-gray-100 truncate">${release.title}</div>
-            <div class="text-xs text-gray-400 truncate">${release.artist}</div>
-          </div>
-        </div>
-        <div class="flex items-center space-x-2 mb-2">
-          <span id="current-time" class="time-display">0:00</span>
-          <div id="progress-bar" class="progress-bar flex-1" onclick="seekAudio(event)" ontouchstart="seekAudio(event)" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-            <div id="progress" class="progress"></div>
-          </div>
-          <span id="duration" class="time-display">${release.duration}</span>
-        </div>
-        <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-2">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#9ca3af"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-            <input type="range" min="0" max="100" value="70" class="volume-slider" oninput="setVolume(event)">
-          </div>
-          <a href="${release.streamingLinks.find(link => link.name === 'YouTube Music').url}" target="_blank" rel="noopener noreferrer" class="text-xs text-primary-accent hover:underline">Open in YouTube Music</a>
-        </div>
-        <div class="visualizer-container" id="visualizer-container"></div>
-      </div>
-      <p class="text-sm font-semibold text-gray-400 mb-2 sm:mb-4 text-center lg:text-left">${t('listen-prompt')}</p>
-      <div class="w-full max-w-[420px] sm:max-w-xs grid grid-cols-4 sm:grid-cols-6 gap-2 sm:gap-1 mt-1 p-0">
-        ${release.streamingLinks.map(link => `
-          <a href="${link.url}" target="_blank" rel="noopener noreferrer" title="Listen on ${link.name}" class="flex flex-col items-center justify-center transition-transform duration-150 hover:scale-110 p-1 rounded-lg focus:ring-2 focus:ring-primary-accent">
-            <img src="${link.iconUrl}" alt="${link.name} icon" class="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 object-contain rounded-lg shadow-md" onerror="this.src='https://placehold.co/40x40/9ca3af/ffffff?text=?'">
-          </a>
-        `).join('')}
-      </div>
-    </div>
-    <div class="w-full lg:w-2/3">
-      <h3 class="text-base sm:text-xl font-bold text-primary-accent mb-2 sm:mb-3">${t('details-heading')}</h3>
-      <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-100 mb-3 sm:mb-4 break-words">${release.title}</h2>
-      <div class="text-sm sm:text-base text-gray-300 space-y-2 mb-5 sm:mb-6 border-b border-gray-700 pb-3 sm:pb-4">
-        <p><strong class="text-gray-400">${t('artist')}:</strong> ${release.artist}</p>
-        <p><strong class="text-gray-400">${t('duration')}:</strong> ${release.duration}</p>
-        <p><strong class="text-gray-400">${t('label')}:</strong> ${release.label}</p>
-        ${release.genres ? `<p><strong class="text-gray-400">${t('style')}:</strong> ${release.genres.join(' / ')}</p>` : ''}
-        <p><strong class="text-gray-400">${t('release_date')}:</strong> ${release.releaseDate}</p>
-      </div>
-      <h3 class="text-base sm:text-xl font-bold text-primary-accent mb-2 sm:mb-3">${t('desc_heading')}</h3>
-      <p class="text-gray-300 text-sm sm:text-base leading-relaxed break-words">${t(release.descriptionKey)}</p>
-    </div>
-  `;
-  loadTrack(release.youtubeId);
-}
-
-// Donation module
-async function initDonationModule() {
-  const donationPage = document.getElementById('page-donation');
-  if (!donationPage) return;
-
-  const lang = document.documentElement.lang; // 'ja' or 'en'
-  const currencyParam = (lang === 'ja') ? 'JPY' : 'EUR';
-
-  // Set section title
-  const sectionTitleEl = document.getElementById('donation-section-title');
-  if (sectionTitleEl) {
-    sectionTitleEl.textContent = (lang === 'ja')
-      ? '情熱が生んだ世界：Ten Riseからのメッセージ'
-      : 'Built on Passion: A Message from Ten Rise';
-  }
-
-  // Communication texts with styled headings and numbered items
-  const msgEn = `
-<p>If you're reading this, it means you've connected with the world we've built—the music, the emotion, and the adventures of Rise. Thank you.</p>
-<p>We are Ten Rise: a tiny, dedicated team (which is essentially one passionate creator) pouring our hearts into high-quality, story-driven music inspired by anime and centered on Rise's universe. From the initial spark of an idea to the final official release on music platforms, every beat, note, and lyric is a labor of love created in our limited free time. We're not some big label; we're just like you—fans of immersive stories who happen to make music.</p>
-
-<h4 class="text-primary-accent font-bold mt-4">What We Dream Of</h4>
-<p>Our mission has always been to bring unique worlds to life through music. But we dream bigger than just high-quality standalone music releases. We want to take the Ten Rise Universe to the next level:</p>
-<p>• Developing richer, more ambitious music that pushes the quality even further.</p>
-<p>• Bringing our songs to life with stunning video content and full animation.</p>
-<p>To make these dreams a reality, we need to evolve beyond the "free time" model, and that's where your support makes all the difference.</p>
-
-<h4 class="text-primary-accent font-bold mt-4">How You Can Support the Journey</h4>
-<p>Your support, in all its forms, is what keeps the music playing and the story moving forward.</p>
-
-<p class="text-primary-accent border border-primary-accent/50 rounded-md px-3 py-1 mt-2">1. Amplify the Story</p>
-<p>The best way to help? Talk about us! Share our content, follow us on social media, and tell your friends who have a passion for rich narratives and powerful, story-driven music. A shared link is just as valuable as a composing session.</p>
-
-<p class="text-primary-accent border border-primary-accent/50 rounded-md px-3 py-1 mt-3">2. Lend Your Time and Talent</p>
-<p>Have a knack for social media, marketing, design, or something else entirely? Do you have great ideas for the brand? We're always looking for dedicated fans to join our non-financial support team. If you have some time to give, we'd love to hear from you. Connect with us directly at contact@tenrisemusic.com.</p>
-
-<p class="text-primary-accent border border-primary-accent/50 rounded-md px-3 py-1 mt-3">3. Fuel the Next Project</p>
-<p>To create videos, hire animators, and invest more time into the music, financial support is essential. If you feel compelled to help us reach our next milestone, you can contribute right here on this page. Every donation, big or small, goes directly into creating the next piece of the Ten Rise Universe.</p>
-
-<p class="mt-4">Thank you for being part of this journey. We are nothing without this community.</p>
-<p>Best regards, The Ten Rise Team</p>
-`;
-
-  const msgJp = `
-<p>もしこの文章を読んでくださっているなら、私たちが創り上げた「Rise」の世界、その音楽、感情、そして冒険に心を動かされたということだと思います。心より感謝申し上げます。</p>
-
-<p>Ten Riseは、アニメからインスピレーションを受け、Riseの物語を中心に据えた、高品質なストーリーテリング音楽を制作している小さなチームです。実質は一人の熱意あるクリエイターが全てを手掛けています。楽曲のひらめきの瞬間から、公式プラットフォームでの最終リリースに至るまで、全ての音、全ての言葉が、限られた時間の中で生み出された愛の結晶です。私たちは大手のレーベルではありません。皆さんと何ら変わりません。ただ、物語性の高い作品を愛し、たまたま音楽を作っている仲間なのです。</p>
-
-<h4 class="text-primary-accent font-bold mt-4">私たちが描く夢</h4>
-<p>私たちの使命は、音楽を通じてユニークな世界に命を吹き込むことです。しかし、私たちは今の高品質な単独リリースに留まらず、さらに大きな夢を描いています。</p>
-<p>• 質をさらに高めた、より豊かで意欲的な楽曲を開発すること。</p>
-<p>• 楽曲に素晴らしい映像やフルアニメーションを添えて、命を吹き込むこと。</p>
-<p>これらの夢を実現するためには、「空き時間で制作する」というモデルから一歩踏み出す必要があります。そこで、皆さまの温かいご支援が大きな力となります。</p>
-
-<h4 class="text-primary-accent font-bold mt-4">旅を支える方法</h4>
-<p>皆さまのあらゆる形でのご支援が、音楽を響かせ、物語を前進させる源になります。</p>
-
-<p class="text-primary-accent border border-primary-accent/50 rounded-md px-3 py-1 mt-2">1. 物語を拡散する</p>
-<p>最も大きなご支援は、私たちのことを広めていただくことです！ コンテンツをシェアし、SNSをフォローして、豊かな物語や心に響くストーリー音楽に情熱を持つご友人に、私たちのことをぜひ伝えてください。シェア一つが、私たちにとって作曲時間と同じくらい価値あるものになります。</p>
-
-<p class="text-primary-accent border border-primary-accent/50 rounded-md px-3 py-1 mt-3">2. 時間と才能を貸していただく</p>
-<p>SNS運用、マーケティング、デザイン、あるいはその他の分野で才能をお持ちではありませんか？ ブランドに対する素敵なアイデアはありませんか？ 私たちは常に、金銭的なサポート以外の部分で協力してくださる熱心なファンの方々を求めています。もし時間をご提供いただけるなら、ぜひお話を聞かせてください。contact@tenrisemusic.comまで、直接ご連絡をお待ちしています。</p>
-
-<p class="text-primary-accent border border-primary-accent/50 rounded-md px-3 py-1 mt-3">3. 次のプロジェクトに資金を投じる</p>
-<p>映像制作、アニメーターへの依頼、そして音楽により多くの時間を投資するためには、活動資金が不可欠です。もし、私たちの次の目標達成を後押ししたいと感じていただけたなら、こちらのページからご支援をお願いできます。大小に関わらず、全ての寄付はTen Riseの世界の新たな創造のために、直接使わせていただきます。</p>
-
-<p class="mt-4">この旅路の一員となってくださり、心から感謝申し上げます。このコミュニティなしに、私たちは存在できません。</p>
-<p>Ten Riseチーム一同より</p>
-`;
-
-  // Set communication message
-  const messageEl = document.getElementById('donation-message');
-  if (messageEl) {
-    messageEl.innerHTML = (lang === 'ja') ? msgJp : msgEn;
-  }
-
-  // Fetch near-live summary if your Netlify function is deployed
-  try {
-    const res = await fetch(`/.netlify/functions/donation-summary?currency=${currencyParam}`);
-    if (!res.ok) throw new Error('Summary not available');
-    const data = await res.json();
-    const totalEl = document.getElementById('donation-total');
-    const currEl = document.getElementById('donation-currency');
-    const updatedEl = document.getElementById('donation-last-updated');
-    const supportersEl = document.getElementById('recent-supporters');
-    if (totalEl) totalEl.textContent = new Intl.NumberFormat().format(data.totalAmount || 0);
-    if (currEl) currEl.textContent = data.currency || '';
-    if (updatedEl) updatedEl.textContent = new Date(data.lastUpdatedIso || Date.now()).toLocaleString();
-    if (supportersEl) {
-      supportersEl.innerHTML = (data.recentSupporters || []).map(s => `
-        <div class="rounded-lg bg-gray-800/60 border border-gray-700 p-3">
-          <p class="text-sm text-gray-100 font-semibold truncate">${s.name || 'Anonymous'}</p>
-          ${s.amount ? `<p class="text-sm text-primary-accent">${new Intl.NumberFormat().format(s.amount)} ${data.currency || ''}</p>` : ''}
-          ${s.message ? `<p class="text-xs text-gray-300 mt-1 break-words">${s.message}</p>` : ''}
-        </div>
-      `).join('');
-    }
-  } catch {
-    // Keep placeholders if summary not available
-  }
-}
-
 // Events
 document.addEventListener('DOMContentLoaded', () => {
   const initialPage = getRequestedPage();
@@ -1260,9 +1239,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (contactForm) contactForm.addEventListener('submit', handleContactSubmit);
 
   const modalContent = document.getElementById('modalContent');
-  if (modalContent) {
-    modalContent.addEventListener('click', e => e.stopPropagation());
-  }
+  if (modalContent) modalContent.addEventListener('click', e => e.stopPropagation());
 
   const grid = document.getElementById('modal-release-grid');
   if (grid) {
@@ -1270,20 +1247,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const clickable = e.target.closest('[data-index]');
       if (!clickable) return;
       const idx = parseInt(clickable.getAttribute('data-index'), 10);
-      if (!Number.isNaN(idx)) {
-        displayDetails(idx);
-        closeModal();
-      }
+      if (!Number.isNaN(idx)) { displayDetails(idx); closeModal(); }
     });
     grid.addEventListener('keydown', (e) => {
       const clickable = e.target.closest('[data-index]');
       if (!clickable) return;
       if (e.key === 'Enter' || e.key === ' ') {
         const idx = parseInt(clickable.getAttribute('data-index'), 10);
-        if (!Number.isNaN(idx)) {
-          displayDetails(idx);
-          closeModal();
-        }
+        if (!Number.isNaN(idx)) { displayDetails(idx); closeModal(); }
       }
     });
   }
@@ -1293,21 +1264,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) closeModal();
   });
 
-  window.addEventListener('popstate', () => {
+  const handleRouteChange = () => {
     const page = getRequestedPage();
     showPage(page, { updateUrl: false });
-  });
-  window.addEventListener('hashchange', () => {
-    const page = getRequestedPage();
-    showPage(page, { updateUrl: true });
-  });
+  };
+  window.addEventListener('popstate', handleRouteChange);
+  window.addEventListener('hashchange', () => showPage(getRequestedPage(), { updateUrl: true }));
 
-  renderSocialLinks();
-  renderInitialSummary();
-
-  if (getRequestedPage() === 'donation') {
-    initDonationModule();
-  }
+  if (getRequestedPage() === 'donation') initDonationModule();
 
   const kofiBtn = document.getElementById('kofi-button');
   if (kofiBtn) {
@@ -1326,7 +1290,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// Contact form submit to Netlify (with mailto fallback disabled)
+// Contact form submit to Netlify
 async function handleContactSubmit(e) {
   e.preventDefault();
   const form = e.currentTarget;
@@ -1337,12 +1301,10 @@ async function handleContactSubmit(e) {
   const message = form.message.value.trim();
   const honeypot = form.querySelector('input[name="bot-field"]')?.value || '';
   if (!name || !email || !subject || !message) {
-    showMessage('Please complete all fields before sending.', 'error');
-    return;
+    showMessage('Please complete all fields before sending.', 'error'); return;
   }
   if (message.length > 3000) {
-    showMessage('Please shorten your message (max 3000 characters).', 'error');
-    return;
+    showMessage('Please shorten your message (max 3000 characters).', 'error'); return;
   }
   const data = new URLSearchParams();
   data.append('form-name', formName);
@@ -1359,8 +1321,7 @@ async function handleContactSubmit(e) {
     });
     if (res.ok) {
       showMessage('Thanks! Your message was sent successfully.', 'success');
-      form.reset();
-      return;
+      form.reset(); return;
     }
     showMessage('Could not send via server.', 'error');
   } catch {
