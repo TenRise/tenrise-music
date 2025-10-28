@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -8,8 +8,8 @@
 <meta name="robots" content="index, follow">
 <meta name="description" content="Ten Rise Music: Immersive, story-driven songs inspired by Anime and J-Pop. Explore the official music gallery. (日本語アニソン、J-Pop、OST、楽曲)">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="ja_JP">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:locale:alternate" content="en_US">
 <meta property="og:site_name" content="Ten Rise">
 <meta property="og:title" content="Ten Rise | Official Music Gallery">
 <meta property="og:description" content="Ten Rise Music: Immersive, story-driven songs inspired by Anime and J-Pop. Explore the official music gallery. (日本語アニソン、J-Pop、OST、楽曲)">
@@ -21,6 +21,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png">
+
 <!-- JSON-LD: MusicGroup (background only) -->
 <script type="application/ld+json">
 {
@@ -46,6 +47,59 @@
   ]
 }
 </script>
+
+<!-- JSON-LD: MusicRecording for releases (helps Bing indexation) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@type": "MusicRecording",
+        "name": "光の旅路 Journey of Light",
+        "byArtist": { "@type": "MusicGroup", "name": "Ten Rise" },
+        "duration": "PT5M7S",
+        "datePublished": "2025-09-25",
+        "image": "https://i.imgur.com/dFLGglK.jpeg",
+        "url": "https://music.apple.com/jp/album/journey-of-light-single/1840632415",
+        "inAlbum": { "@type": "MusicAlbum", "name": "Journey of Light - Single" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@type": "MusicRecording",
+        "name": "星の彼方へ Beyond the Stars",
+        "byArtist": { "@type": "MusicGroup", "name": "Ten Rise" },
+        "duration": "PT6M33S",
+        "datePublished": "2025-10-02",
+        "image": "https://i.imgur.com/mcMAj8X.jpeg",
+        "url": "https://music.apple.com/jp/album/beyond-the-stars-single/1843268720",
+        "inAlbum": { "@type": "MusicAlbum", "name": "Beyond the Stars - Single" }
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "item": {
+        "@type": "MusicRecording",
+        "name": "光の祈り Prayer of Light",
+        "byArtist": { "@type": "MusicGroup", "name": "Ten Rise" },
+        "duration": "PT5M34S",
+        "datePublished": "2025-10-27",
+        "image": "https://i.imgur.com/XgVG9bT.jpeg",
+        "url": "https://music.apple.com/jp/album/prayer-of-light-single/1848646444",
+        "inAlbum": { "@type": "MusicAlbum", "name": "Prayer of Light - Single" }
+      }
+    }
+  ]
+}
+</script>
+
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://www.youtube.com/iframe_api"></script>
 <style>
@@ -68,7 +122,6 @@ body {
 }
 
 detail-panel {
-
   background-image:
     linear-gradient(rgba(17, 24, 39, 0.95), rgba(17, 24, 39, 0.95)),
     url('https://i.imgur.com/3RD3PbO.jpeg');
@@ -103,9 +156,7 @@ detail-panel {
 }
 
 /* Inputs and scrollbars */
-
 modal-search-input:focus {
-
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(44, 255, 255, 0.5);
@@ -141,6 +192,11 @@ modal-search-input:focus {
   transition: all 0.3s ease;
   background: transparent;
   border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
 }
 .nav-button:hover {
   transform: translateY(-2px);
@@ -224,9 +280,7 @@ modal-search-input:focus {
 @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
 
 /* Hide iframe offscreen for accessibility; keep created player tiny */
-
 youtube-player {
-
   position: fixed;
   top: -9999px; left: -9999px;
   width: 1px; height: 1px;
@@ -284,39 +338,43 @@ tailwind.config = {
 </script>
 </head>
 <body class="text-white overflow-x-hidden">
-<!-- Navigation -->
+<!-- Navigation: hash links for reliability anywhere -->
 <div class="fixed top-4 left-4 z-40">
   <div class="nav-panel rounded-xl p-1 flex items-center justify-between space-x-1 min-h-[40px]">
-    <button onclick="showPage('home')" title="Home" class="nav-button p-1 rounded-lg group">
-      <svg width="20" height="20" viewBox="0 0 24 24" class="nav-icon" fill="currentColor">
+    <a href="#home" title="Home" class="nav-button group" onclick="return routeTo(event,'home')">
+      <svg width="20" height="20" viewBox="0 0 24 24" class="nav-icon" fill="currentColor" aria-hidden="true">
         <path d="M12 2L2 7L4 9V21H20V9L22 7L12 2Z" stroke="currentColor" stroke-width="1" fill="none"/>
         <rect x="9" y="13" width="6" height="8" fill="currentColor" opacity="0.7"/>
         <path d="M12 2V7" stroke="currentColor" stroke-width="1.5"/>
       </svg>
-    </button>
-    <button onclick="showPage('showcase')" title="Music Showcase" class="nav-button p-1 rounded-lg group">
-      <svg width="20" height="20" viewBox="0 0 24 24" class="nav-icon" fill="currentColor">
+      <span class="sr-only">Home</span>
+    </a>
+    <a href="#showcase" title="Music Showcase" class="nav-button group" onclick="return routeTo(event,'showcase')">
+      <svg width="20" height="20" viewBox="0 0 24 24" class="nav-icon" fill="currentColor" aria-hidden="true">
         <path d="M6 17V9M10 17V5M14 17V9M18 17V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
         <circle cx="6" cy="17" r="2" fill="currentColor"/>
         <circle cx="10" cy="17" r="2" fill="currentColor"/>
         <circle cx="14" cy="17" r="2" fill="currentColor"/>
         <circle cx="18" cy="17" r="2" fill="currentColor"/>
       </svg>
-    </button>
-    <button onclick="showPage('contact')" title="Contact Us" class="nav-button p-1 rounded-lg group">
-      <svg width="20" height="20" viewBox="0 0 24 24" class="nav-icon" fill="currentColor">
+      <span class="sr-only">Music Showcase</span>
+    </a>
+    <a href="#contact" title="Contact Us" class="nav-button group" onclick="return routeTo(event,'contact')">
+      <svg width="20" height="20" viewBox="0 0 24 24" class="nav-icon" fill="currentColor" aria-hidden="true">
         <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/>
         <path d="M2 8L12 13L22 8" stroke="currentColor" stroke-width="1.5" fill="none"/>
         <circle cx="7" cy="11" r="0.5" fill="currentColor"/>
         <circle cx="10" cy="11" r="0.5" fill="currentColor"/>
         <circle cx="13" cy="11" r="0.5" fill="currentColor"/>
       </svg>
-    </button>
-    <button onclick="showPage('donation')" title="Support Us" class="nav-button p-1 rounded-lg group">
-      <svg width="20" height="20" viewBox="0 0 24 24" class="nav-icon" fill="currentColor">
+      <span class="sr-only">Contact</span>
+    </a>
+    <a href="#donation" title="Support Us" class="nav-button group" onclick="return routeTo(event,'donation')">
+      <svg width="20" height="20" viewBox="0 0 24 24" class="nav-icon" fill="currentColor" aria-hidden="true">
         <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5C22 12.28 18.6 15.36 13.45 20.04L12 21.35Z" fill="currentColor"/>
       </svg>
-    </button>
+      <span class="sr-only">Support</span>
+    </a>
   </div>
 </div>
 
@@ -325,27 +383,33 @@ tailwind.config = {
 
 <!-- Home -->
 <div id="page-home" class="page active min-h-screen flex flex-col justify-center items-center p-4 sm:p-8">
-  <h1 class="sr-only">Ten Rise | Official Music Gallery</h1>
-  <button onclick="showPage('showcase')" title="Go to Music Showcase" class="bg-transparent border-none transition-transform duration-300 hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-primary-accent focus:ring-opacity-50 rounded-lg p-0 cursor-pointer">
-    <img src="https://i.imgur.com/Uhxirbr.png" alt="Ten Rise Official Logo" class="w-full max-w-2xl h-auto mb-12 animate-pulse" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
-  </button>
+  <h1 id="h1-home" class="text-center">
+    <a href="#showcase" onclick="return routeTo(event,'showcase')" class="bg-transparent border-none transition-transform duration-300 hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-primary-accent focus:ring-opacity-50 rounded-lg p-0 cursor-pointer" title="Go to Music Showcase">
+      <img id="logo-home" src="https://i.imgur.com/Uhxirbr.png" alt="Ten Rise | 公式音楽ギャラリー" class="w-full max-w-2xl h-auto mb-12 animate-pulse" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
+      <span id="h1-home-text" class="sr-only">Ten Rise | Official Music Gallery</span>
+    </a>
+  </h1>
 </div>
 
 <!-- Music Showcase -->
 <div id="page-showcase" class="page min-h-screen flex flex-col p-4 sm:p-8">
   <header class="mb-4 flex flex-col items-center relative">
-    <h1 class="sr-only">Ten Rise Showcase | Anime OST, Vocaloid Tracks – Spotify, Awa, KKBOX</h1>
     <div class="absolute top-0 right-0 flex space-x-2">
-      <button id="lang-en" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-primary-accent" onclick="setLanguage('en')">EN</button>
-      <button id="lang-jp" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-gray-400" onclick="setLanguage('jp')">JP</button>
+      <button id="lang-en" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-gray-400" onclick="setLanguage('en')">EN</button>
+      <button id="lang-jp" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-primary-accent" onclick="setLanguage('jp')">JP</button>
     </div>
-    <img src="https://i.imgur.com/Uhxirbr.png" alt="Ten Rise Logo" class="w-full max-w-xl h-auto" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
+    <h1 id="h1-showcase" class="text-center">
+      <a href="#showcase" onclick="return routeTo(event,'showcase')" title="Ten Rise Showcase">
+        <img id="logo-showcase" src="https://i.imgur.com/Uhxirbr.png" alt="Ten Rise Showcase | アニメOST・ボーカロイド" class="w-full max-w-xl h-auto" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
+        <span id="h1-showcase-text" class="sr-only">Ten Rise Showcase | Anime OST, Vocaloid Tracks – Spotify, Awa, KKBOX</span>
+      </a>
+    </h1>
   </header>
-  <div id="social-links-bar" class="flex justify-center items-center mb-8"></div>
+  <div id="social-links-bar" class="flex justify-center items-center mb-8 gap-1"></div>
   <div class="mb-10 bg-gray-900/50 backdrop-blur-sm rounded-xl p-4 shadow-xl">
     <div id="current-selection-summary" class="w-full mb-4 flex items-center justify-between space-x-4 min-h-[64px]"></div>
     <button id="gallery-toggle" class="w-full flex justify-between items-center text-left group focus:outline-none bg-primary-accent/10 hover:bg-primary-accent/20 p-3 rounded-lg transition-colors duration-200" onclick="openModal()">
-      <h2 id="gallery-title" class="text-xl font-bold text-gray-100 group-hover:text-primary-accent transition-colors duration-200">View All Releases</h2>
+      <h2 id="gallery-title" class="text-xl font-bold text-gray-100 group-hover:text-primary-accent transition-colors duration-200">全リリースを見る</h2>
       <svg class="w-6 h-6 text-gray-400 group-hover:text-primary-accent transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
     </button>
   </div>
@@ -360,23 +424,30 @@ tailwind.config = {
 <!-- Contact -->
 <div id="page-contact" class="page min-h-screen flex flex-col p-4 sm:p-8">
   <header class="mb-4 flex flex-col items-center relative">
-    <h1 class="sr-only">Contact Ten Rise | Sync Licensing, Anime, Cinema, OST & Partnerships</h1>
     <div class="absolute top-0 right-0 flex space-x-2">
-      <button id="lang-en-contact" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-primary-accent" onclick="setLanguage('en')">EN</button>
-      <button id="lang-jp-contact" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-gray-400" onclick="setLanguage('jp')">JP</button>
+      <button id="lang-en-contact" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-gray-400" onclick="setLanguage('en')">EN</button>
+      <button id="lang-jp-contact" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-primary-accent" onclick="setLanguage('jp')">JP</button>
     </div>
-    <img src="https://i.imgur.com/Uhxirbr.png" alt="Ten Rise Logo" class="w-full max-w-xl h-auto" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
+    <h1 id="h1-contact" class="text-center">
+      <a href="#contact" onclick="return routeTo(event,'contact')" title="Contact Ten Rise">
+        <img id="logo-contact" src="https://i.imgur.com/Uhxirbr.png" alt="Ten Riseへのお問い合わせ | ライセンス・提携" class="w-full max-w-xl h-auto" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
+        <span id="h1-contact-text" class="sr-only">Contact Ten Rise | Sync Licensing, Anime, Cinema, OST & Partnerships</span>
+      </a>
+    </h1>
   </header>
   <div class="flex-grow flex items-center justify-center">
     <div class="bg-gray-900/90 rounded-xl shadow-2xl p-8 w-full max-w-2xl">
       <h2 id="contact-title" class="text-3xl font-bold text-primary-accent mb-6 text-center">
-        Partnership & Professional Inquiries
+        提携および専門的なお問い合わせ
       </h2>
-      <div id="contact-description" class="text-gray-300 mb-8 text-center whitespace-pre-line">
-        This page is reserved for professional inquiries regarding sync licensing, collaborations, and partnerships with Ten Rise Records.
-Ten Rise Records is a small dedicated team passionate about crafting immersive, story-driven songs inspired by anime and centered around the adventures of Rise's universe. Our mission is to bring unique worlds to life through music, connecting listeners to rich narratives, emotion, and creativity.
-We are always open to exploring partnership opportunities with Anime Studios, Film Production Companies, Music Supervisors, Game Developers, and other visionary production teams looking to license our existing catalog or discuss creative business ventures.
-To explore a partnership or sync license, please use the form below. To ensure the fastest and most efficient review of your inquiry, we kindly ask that you provide the necessary project details.
+      <div id="contact-description" class="text-gray-300 mb-8 text-left whitespace-pre-line">
+        このページは、テン・ライズ・レコーズ（Ten Rise Records）との音源使用ライセンス（Sync Licensing）、コラボレーション、およびパートナーシップに関する専門的なお問い合わせのための窓口です。
+テン・ライズ・レコーズは、アニメから着想を得たビジュアルとストーリー性、そしてキャラクター「Rise」が見つめる世界を軸に、情感豊かな音楽を創り出すクリエイティブチームです。
+私たちの使命は、独自のサウンドを通して想像の世界を現実に広げ、リスナーを物語・感情・創造性で満たされた体験へと導くことにあります。
+アニメ制作会社、映画制作会社、音楽スーパーバイザー、ゲーム開発者など、先見性あるクリエイターや制作チームとのパートナーシップを常に歓迎しています。
+また、音楽・映像・メディアなどの分野での事業提携のご相談も承っております。
+パートナーシップや音源使用ライセンスをご検討の際は、下記フォームよりご連絡ください。
+よりスムーズなご対応のため、プロジェクトの概要やご提案内容をできるだけ具体的にご記入いただけますと幸いです。
       </div>
       <form id="contact-form" name="contact" method="POST" netlify data-netlify="true" netlify-honeypot="bot-field" class="space-y-6">
         <input type="hidden" name="form-name" value="contact" />
@@ -384,14 +455,14 @@ To explore a partnership or sync license, please use the form below. To ensure t
           <label>Don’t fill this out if you’re human: <input name="bot-field" /></label>
         </p>
         <label for="name" class="sr-only">Your Name</label>
-        <input type="text" id="name" name="name" required placeholder="Your Name" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300" aria-label="Your Name">
+        <input type="text" id="name" name="name" required placeholder="お名前" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300" aria-label="お名前">
         <label for="email" class="sr-only">Your Email</label>
-        <input type="email" id="email" name="email" required placeholder="Your Email" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300" aria-label="Your Email">
+        <input type="email" id="email" name="email" required placeholder="メールアドレス" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300" aria-label="メールアドレス">
         <label for="subject" class="sr-only">Subject</label>
-        <input type="text" id="subject" name="subject" required placeholder="Subject" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300" aria-label="Subject">
+        <input type="text" id="subject" name="subject" required placeholder="件名" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300" aria-label="件名">
         <label for="message" class="sr-only">Your Message</label>
-        <textarea id="message" name="message" rows="6" required placeholder="Your Message" maxlength="3000" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300 resize-none" aria-label="Your Message"></textarea>
-        <button id="send-button" type="submit" class="w-full bg-primary-accent hover:bg-primary-accent/80 text-[#0a1f44] font-semibold py-3 px-6 rounded-lg transition-colors duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-accent focus:ring-opacity-50">Send Message</button>
+        <textarea id="message" name="message" rows="6" required placeholder="メッセージ" maxlength="3000" class="w-full px-4 py-3 rounded-lg bg-gray-800/70 text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent focus:outline-none transition-all duration-300 resize-none" aria-label="メッセージ"></textarea>
+        <button id="send-button" type="submit" class="w-full bg-primary-accent hover:bg-primary-accent/80 text-[#0a1f44] font-semibold py-3 px-6 rounded-lg transition-colors duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary-accent focus:ring-opacity-50">送信</button>
       </form>
     </div>
   </div>
@@ -400,17 +471,21 @@ To explore a partnership or sync license, please use the form below. To ensure t
 <!-- Donation -->
 <div id="page-donation" class="page min-h-screen flex flex-col p-4 sm:p-8">
   <header class="mb-4 flex flex-col items-center relative">
-    <h1 class="sr-only">Support Ten Rise Universe | Fund the Rise Galaxy Video Development</h1>
     <div class="absolute top-0 right-0 flex space-x-2">
-      <button id="lang-en-donation" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-primary-accent" onclick="setLanguage('en')">EN</button>
-      <button id="lang-jp-donation" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-gray-400" onclick="setLanguage('jp')">JP</button>
+      <button id="lang-en-donation" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-gray-400" onclick="setLanguage('en')">EN</button>
+      <button id="lang-jp-donation" class="text-sm font-semibold p-1 rounded-md transition-colors duration-200 text-primary-accent" onclick="setLanguage('jp')">JP</button>
     </div>
-    <img src="https://i.imgur.com/Uhxirbr.png" alt="Ten Rise Logo" class="w-full max-w-xl h-auto" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
+    <h1 id="h1-donation" class="text-center">
+      <a href="#donation" onclick="return routeTo(event,'donation')" title="Support Ten Rise Universe">
+        <img id="logo-donation" src="https://i.imgur.com/Uhxirbr.png" alt="Ten Riseをサポート" class="w-full max-w-xl h-auto" onerror="this.src='https://placehold.co/600x150/111827/ffffff?text=TEN+RISE'">
+        <span id="h1-donation-text" class="sr-only">Support Ten Rise Universe | Fund the Rise Galaxy Video Development</span>
+      </a>
+    </h1>
   </header>
   <div class="flex-grow flex items-center justify-center">
     <div class="bg-gray-900/90 rounded-xl shadow-2xl p-6 md:p-8 w-full max-w-2xl md:max-w-3xl lg:max-w-4xl">
       <div class="w-full mb-6">
-        <h3 id="donation-section-title" class="text-lg sm:text-2xl font-bold text-primary-accent mb-3 text-center">Built on Passion: A Message from Ten Rise</h3>
+        <h3 id="donation-section-title" class="text-lg sm:text-2xl font-bold text-primary-accent mb-3 text-center">情熱が生んだ世界 ― Ten Riseからのメッセージ</h3>
         <div id="recent-supporters" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
       </div>
       <div id="donation-message" class="bg-dark-bg/60 border border-primary-accent/30 rounded-xl p-4 md:p-6 text-gray-300 whitespace-normal leading-relaxed text-sm md:text-base max-h-[62vh] md:max-h-[66vh] lg:max-h-[70vh] overflow-y-auto"></div>
@@ -448,12 +523,12 @@ To explore a partnership or sync license, please use the form below. To ensure t
     <div id="modalContent" class="modal-content-translucent p-6 sm:p-8 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden transform scale-95 opacity-0 transition-all duration-300 ease-out">
       <div class="modal-sticky-header sticky top-0 z-20 -mx-6 -mt-6 px-6 pt-6 pb-4">
         <div class="flex justify-between items-center pb-4 mb-4 border-b border-gray-700">
-          <h2 id="modal-title" class="text-3xl font-bold text-primary-accent text-gray-100">Select a Release</h2>
+          <h2 id="modal-title" class="text-3xl font-bold text-primary-accent text-gray-100">全リリースを見る</h2>
           <button id="closeModalButton" onclick="closeModal()" class="text-primary-accent hover:text-[#23cccc] transition-colors p-2 rounded-full hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-accent" aria-label="Close modal">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
           </button>
         </div>
-        <input type="text" id="modal-search-input" oninput="filterReleases()" placeholder="Search by Title, Style, or Instrument..." class="w-full md:max-w-xl py-1 px-3 rounded-lg bg-gray-800/70 text-sm text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent transition-all duration-300">
+        <input type="text" id="modal-search-input" oninput="filterReleases()" placeholder="タイトル・ジャンル・楽器で検索..." class="w-full md:max-w-xl py-1 px-3 rounded-lg bg-gray-800/70 text-sm text-gray-200 placeholder-gray-400 border border-gray-600 focus:border-primary-accent transition-all duration-300">
       </div>
       <div class="modal-scrollable overflow-y-auto max-h-[60vh] pb-4 py-6 px-6 sm:py-8 sm:px-10">
         <div id="modal-release-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"></div>
@@ -464,6 +539,9 @@ To explore a partnership or sync license, please use the form below. To ensure t
 
 <!-- JavaScript -->
 <script>
+// Toggle this to false AFTER you add server rewrites for pretty URLs
+const USE_HASH_ROUTER = true;
+
 // SEO per page
 const PAGE_SEO = {
   home: {
@@ -510,16 +588,18 @@ function updateMeta(pageKey) {
   desc.setAttribute('content', cfg.desc);
   ensureMeta('meta[property="og:title"]', { property: 'og:title', content: cfg.title });
   ensureMeta('meta[property="og:description"]', { property: 'og:description', content: cfg.desc });
-  ensureMeta('meta[property="og:url"]', { property: 'og:url', content: location.href });
+
+  const urlPart = (pageKey === 'home') ? '/' : (USE_HASH_ROUTER ? `/#${pageKey}` : `/${pageKey}`);
+  ensureMeta('meta[property="og:url"]', { property: 'og:url', content: location.origin + urlPart });
   ensureMeta('meta[name="twitter:title"]', { name: 'twitter:title', content: cfg.title });
   ensureMeta('meta[name="twitter:description"]', { name: 'twitter:description', content: cfg.desc });
   const canonical = document.querySelector('link[rel="canonical"]') || ensureMeta('link[rel="canonical"]', { rel: 'canonical', href: location.href });
-  canonical.setAttribute('href', location.href);
+  canonical.setAttribute('href', location.origin + '/');
 }
 
 // App state
 const CONFIG = {
-  currentLanguage: 'en',
+  currentLanguage: 'jp',
   selectedReleaseIndex: null,
   youtubePlayer: null,
   isPlaying: false,
@@ -531,10 +611,12 @@ const CONFIG = {
   lastFocusedElement: null
 };
 
-// Translations
+// Translations (added H1 texts for alt/aria)
 const TRANSLATIONS = {
   en: {
     'gallery-title': 'View All Releases',
+    'modal-title': 'Select a Release',
+    'modal-search-placeholder': 'Search by Title, Style, or Instrument...',
     'current-selection': 'Current Selection:',
     'initial-prompt': 'Select a release to view the full details.',
     'details-heading': 'Single Details',
@@ -549,20 +631,28 @@ const TRANSLATIONS = {
     'click-to-view': 'Click "View All Releases" below to select a track',
     'contact-title': 'Partnership & Professional Inquiries',
     'contact-description': `This page is reserved for professional inquiries regarding sync licensing, collaborations, and partnerships with Ten Rise Records.
-Ten Rise Records is a small dedicated team passionate about crafting immersive, story-driven songs inspired by anime and centered around the adventures of Rise's universe. Our mission is to bring unique worlds to life through music, connecting listeners to rich narratives, emotion, and creativity.
+Ten Rise Records is a small dedicated team passionate about crafting immersive, story-driven songs inspired by anime and centered around the adventures of Rise's universe.
+Our mission is to bring unique worlds to life through music, connecting listeners to rich narratives, emotion, and creativity.
 We are always open to exploring partnership opportunities with Anime Studios, Film Production Companies, Music Supervisors, Game Developers, and other visionary production teams looking to license our existing catalog or discuss creative business ventures.
 To explore a partnership or sync license, please use the form below. To ensure the fastest and most efficient review of your inquiry, we kindly ask that you provide the necessary project details.`,
     'donation-title': 'Support Ten Rise',
-    'track-journey-desc': "A gentle, cinematic piece built around themes of hope and aspiration. Featuring serene female vocals, intricate piano melodies, and lush synthesizer arrangements, the track culminates with the ethereal quality of a children's choir, suggesting a bright, illuminated future. The style aligns with uplifting Anisong and anime soundtracks, providing calm, hopeful music.",
-    'track-stars-desc': "An energetic and highly rhythmic anthem designed to inspire determination. This track features a powerful lead female vocal backed by a dynamic children's choir, set against a driving blend of synthesizer leads and prominent piano rhythms. Its powerful, uplifting style is characteristic of modern Anisong and anime themes, delivering rhymed, energetic music.",
+    'track-journey-desc': "A gentle, cinematic piece built around themes of hope and aspiration...",
+    'track-stars-desc': "An energetic and highly rhythmic anthem designed to inspire determination...",
+    'track-prayer-desc': 'A story where prayer guides the way, gently filling the heart with light and hope.',
     'placeholder_name': 'Your Name',
     'placeholder_email': 'Your Email',
     'placeholder_subject': 'Subject',
     'placeholder_message': 'Your Message',
-    'send_button': 'Send Message'
+    'send_button': 'Send Message',
+    'h1_home': 'Ten Rise | Official Music Gallery',
+    'h1_showcase': 'Ten Rise Showcase | Anime OST, Vocaloid Tracks',
+    'h1_contact': 'Contact Ten Rise | Sync Licensing & Partnerships',
+    'h1_donation': 'Support Ten Rise Universe'
   },
   jp: {
     'gallery-title': '全リリースを見る',
+    'modal-title': '全リリースを見る',
+    'modal-search-placeholder': 'タイトル・ジャンル・楽器で検索...',
     'current-selection': '現在の選択:',
     'initial-prompt': 'リリースを選択して詳細をご覧ください。',
     'details-heading': 'シングル詳細',
@@ -584,13 +674,18 @@ To explore a partnership or sync license, please use the form below. To ensure t
 パートナーシップや音源使用ライセンスをご検討の際は、下記フォームよりご連絡ください。
 よりスムーズなご対応のため、プロジェクトの概要やご提案内容をできるだけ具体的にご記入いただけますと幸いです。`,
     'donation-title': 'Ten Riseをサポート',
-    'track-journey-desc': "希望と憧れをテーマにした、優しくシネマティックな楽曲。穏やかな女性ボーカル、繊細なピアノメロディ、豊かなシンセサイザーアレンジメントを特徴とし、子供たちのコーラスが明るく照らされた未来を暗示します。アップリフティングなアニソン、アニメのサウンドトラックに適合する、穏やかで希望に満ちた音楽です。",
-    'track-stars-desc': "決意を鼓舞するためにデザインされた、エネルギッシュでリズミカルなアンセム。力強いリード女性ボーカルとダイナミックな子供たちのコーラスが特徴で、ドライヴ感のあるシンセサイザーと際立ったピアノのリズムが融合しています。力強く、高揚感のあるスタイルは、現代のアニソンやアニメのテーマ曲を彷彿とさせ、リズミカルでエネルギッシュな楽曲をお届けします。",
+    'track-journey-desc': "希望と憧れをテーマにした、優しくシネマティックな楽曲...",
+    'track-stars-desc': "決意を鼓舞するためにデザインされた、エネルギッシュでリズミカルなアンセム...",
+    'track-prayer-desc': '祈りに導かれ、心に光と希望がそっと満ちる物語。',
     'placeholder_name': 'お名前',
     'placeholder_email': 'メールアドレス',
     'placeholder_subject': '件名',
     'placeholder_message': 'メッセージ',
-    'send_button': '送信'
+    'send_button': '送信',
+    'h1_home': 'Ten Rise | 公式音楽ギャラリー',
+    'h1_showcase': 'Ten Rise ショーケース | アニメOST・ボーカロイド',
+    'h1_contact': 'Ten Riseへのお問い合わせ | ライセンス・提携',
+    'h1_donation': 'Ten Riseをサポート'
   }
 };
 
@@ -602,7 +697,7 @@ const SOCIAL_LINKS = [
   { name: "X (Twitter)", url: "https://x.com/TR_TenRise", iconUrl: "https://i.imgur.com/Yd5oBVX.png" }
 ];
 
-// Releases
+// Releases (restored from your latest code)
 const RELEASES_DATA = [
   {
     id: 'track-journey', title: "光の旅路 Journey of Light", artist: "Ten Rise", label: "Ten Rise Records",
@@ -645,11 +740,44 @@ const RELEASES_DATA = [
       { name: "Music.jp", url: "https://music-book.jp/Search?Keyword=Ten%20Rise%20%E6%98%9F%E3%81%AE%E5%BD%90%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/yl0AG8L.png"},
       { name: "Rakuten Music", url: "https://music.rakuten.co.jp/link/search?q=%20%E6%98%9F%E3%81%AE%E5%BD%90%E6%96%B9%E3%81%B8", iconUrl: "https://i.imgur.com/AhUEhy2.png"}
     ]
+  },
+  {
+    id: 'track-prayer', title: "光の祈り Prayer of Light", artist: "Ten Rise", label: "Ten Rise Records",
+    image: "https://i.imgur.com/XgVG9bT.jpeg", duration: "5:34", descriptionKey: 'track-prayer-desc',
+    genres: ["J-Pop", "Anisong", "Anime OST", "Female Vocal", "Cinematic", "Piano", "Children's Choir"],
+    releaseDate: "October 27, 2025",
+    youtubeId: "YLqB86yH_DY",
+    streamingLinks: [
+      { name: "Apple Music", url: "https://music.apple.com/jp/album/prayer-of-light-single/1848646444", iconUrl: "https://i.imgur.com/VEq0YKj.png"},
+      { name: "Spotify", url: "https://open.spotify.com/album/6EfsXbWc4QlisHZ7LTrZvr", iconUrl: "https://i.imgur.com/C1Sa9gR.png"},
+      { name: "YouTube Music", url: "https://music.youtube.com/watch?v=YLqB86yH_DY", iconUrl: "https://i.imgur.com/IKzOJac.png"},
+      { name: "Line Music", url: "https://music.line.me/webapp/album/mb0000000004c4ae66", iconUrl: "https://i.imgur.com/b90tXvr.png"},
+      { name: "Amazon Music", url: "https://www.amazon.co.jp/s?k=Ten+Rise+%E5%85%89%E3%81%AE%E7%A5%88%E3%82%8A&i=digital-music&ref=nb_sb_noss_2", iconUrl: "https://i.imgur.com/x8Fu3Ot.png"},
+      { name: "Awa", url: "https://s.awa.fm/track/c26bc282d762ded4f888", iconUrl: "https://i.imgur.com/Lfo1UZ4.png"},
+      { name: "Recochoku", url: "https://recochoku.jp/album/A2005824766", iconUrl: "https://i.imgur.com/tjVsvF2.png"},
+      { name: "Mora", url: "https://mora.jp/package/43000074/TCJPR0001527997/", iconUrl: "https://i.imgur.com/sPIBy5J.png"},
+      { name: "KKBOX", url: "https://www.kkbox.com/jp/ja/album/PXbeqFLHQ7mrxdGxxb", iconUrl: "https://i.imgur.com/noe1VXg.png"},
+      { name: "Dhit Docomo", url: "https://dhits.docomo.ne.jp/search/freeword/musics?k_q=Ten%20Rise%20%E5%85%89%E3%81%AE%E7%A5%88%E3%82%8A", iconUrl: "https://i.imgur.com/nheUqcV.png" },
+      { name: "Music.jp", url: "https://music-book.jp/Search?Keyword=Ten%20Rise%20%E5%85%89%E3%81%AE%E7%A5%88%E3%82%8A", iconUrl: "https://i.imgur.com/yl0AG8L.png"},
+      { name: "Rakuten Music", url: "https://music.rakuten.co.jp/link/search?q=%20%E5%85%89%E3%81%AE%E7%A5%88%E3%82%8A", iconUrl: "https://i.imgur.com/AhUEhy2.png"}
+    ]
   }
 ];
 
 // Helpers
 function t(key) { return TRANSLATIONS[CONFIG.currentLanguage][key] || key; }
+
+function routeTo(event, page) {
+  if (event && event.preventDefault) event.preventDefault();
+  if (USE_HASH_ROUTER) {
+    const targetHash = page === 'home' ? '#home' : `#${page}`;
+    if (location.hash !== targetHash) location.hash = targetHash;
+    showPage(page, { updateUrl: false });
+  } else {
+    showPage(page, { updateUrl: true });
+  }
+  return false;
+}
 
 function updatePlayUI({ isPlaying = false, isBuffering = false } = {}) {
   const playIcon = document.getElementById('play-icon');
@@ -809,7 +937,6 @@ function loadTrack(youtubeId) {
     CONFIG.youtubePlayer.stopVideo();
     CONFIG.isPlaying = false;
     stopVisualizer();
-    stopProgressUpdates();
   }
   CONFIG.currentTrackId = youtubeId;
   updatePlayUI({ isPlaying: false });
@@ -828,17 +955,22 @@ const VALID_PAGES = ['home', 'showcase', 'contact', 'donation'];
 function normalizePathname() { return window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase(); }
 function getRequestedPage() {
   const hashPage = window.location.hash.replace('#', '').toLowerCase();
-  const pathPage = normalizePathname();
   if (VALID_PAGES.includes(hashPage)) return hashPage;
+
+  const pathPage = normalizePathname();
   if (VALID_PAGES.includes(pathPage)) return pathPage;
+
   return 'home';
 }
-function updateUrlForPage(pageName, replace = false) {
-  const targetPath = pageName === 'home' ? '/' : `/${pageName}`;
-  const currentPath = window.location.pathname;
-  if (replace) window.history.replaceState({ page: pageName }, '', targetPath);
-  else if (currentPath !== targetPath) window.history.pushState({ page: pageName }, '', targetPath);
-  if (window.location.hash) window.history.replaceState({ page: pageName }, '', targetPath);
+function updateUrlForPage(pageName) {
+  if (USE_HASH_ROUTER) {
+    const targetHash = pageName === 'home' ? '#home' : `#${pageName}`;
+    if (location.hash !== targetHash) location.hash = targetHash;
+  } else {
+    const targetPath = pageName === 'home' ? '/' : `/${pageName}`;
+    const currentPath = window.location.pathname;
+    if (currentPath !== targetPath) window.history.pushState({ page: pageName }, '', targetPath);
+  }
 }
 
 // UI helpers
@@ -857,12 +989,18 @@ function showMessage(message, type = 'info') {
   box.timeout = setTimeout(() => box.classList.add('hidden'), 5000);
 }
 
+function updateHeadingAria(activePageName) {
+  document.querySelectorAll('.page h1').forEach(h1 => h1.setAttribute('aria-hidden', 'true'));
+  const active = document.querySelector(`#page-${activePageName} h1`);
+  if (active) active.removeAttribute('aria-hidden');
+}
+
 // Page switch
 function renderSocialLinks() {
   const container = document.getElementById('social-links-bar');
   if (!container) return;
   container.innerHTML = SOCIAL_LINKS.map(link => `
-    <a href="${link.url}" target="_blank" rel="noopener noreferrer" title="Visit Ten Rise on ${link.name}" class="mx-1 transition-opacity duration-200 opacity-80 hover:opacity-100 hover:scale-105">
+    <a href="${link.url}" target="_blank" rel="noopener noreferrer" title="Visit Ten Rise on ${link.name}" class="transition-opacity duration-200 opacity-50 hover:opacity-100 hover:scale-105">
       <img src="${link.iconUrl}" alt="${link.name} icon" class="w-14 h-14 object-contain rounded-lg" onerror="this.src='https://placehold.co/40x40/9ca3af/ffffff?text=?'">
     </a>
   `).join('');
@@ -898,7 +1036,7 @@ function renderInitialSummary() {
       <div class="flex space-x-2">${covers}</div>
     </div>
     <div class="text-right text-xs text-gray-500 hidden sm:block">${t('click-to-view')}</div>
-    <div class="text-right text-xs text-gray-500 sm:hidden"><p>${t('available-releases')}</p><p class="text-primary-accent font-semibold">View All →</p></div>
+    <div class="text-right text-xs text-gray-500 sm:hidden"><p>${t('available-releases')}</p></div>
   `;
   const dc = document.getElementById('detail-content');
   if (dc) {
@@ -1023,6 +1161,14 @@ async function initDonationModule() {
       : 'Built on Passion: A Message from Ten Rise';
   }
 
+  // Set Ko-fi button text based on language
+  const kofiBtnEl = document.getElementById('kofi-button');
+  if (kofiBtnEl) {
+    const kofiTextSpan = kofiBtnEl.querySelector('span');
+    if (kofiTextSpan) kofiTextSpan.textContent = (lang === 'ja') ? '支援する' : 'Support Ten Rise';
+  }
+
+  // Restored full English content
   const msgEn = `
 <p>If you're reading this, it means you've connected with the world we've built—the music, the emotion, and the adventures of Rise. Thank you.</p>
 <p>We are Ten Rise: a tiny, dedicated team (which is essentially one passionate creator) pouring our hearts into high-quality, story-driven music inspired by anime and centered on Rise's universe. From the initial spark of an idea to the final official release on music platforms, every beat, note, and lyric is a labor of love created in our limited free time. We're not some big label; we're just like you—fans of immersive stories who happen to make music.</p>
@@ -1067,7 +1213,7 @@ async function initDonationModule() {
   const messageEl = document.getElementById('donation-message');
   if (messageEl) messageEl.innerHTML = (lang === 'ja') ? msgJp : msgEn;
 
-  // Near-live summary fetch (optional)
+  // Optional summary fetch
   try {
     const res = await fetch(`/.netlify/functions/donation-summary?currency=${currencyParam}`);
     if (!res.ok) throw new Error('Summary not available');
@@ -1089,7 +1235,7 @@ async function initDonationModule() {
       `).join('');
     }
   } catch {
-    // Silent fallback; placeholders remain
+    // Silent fallback
   }
 }
 
@@ -1107,6 +1253,7 @@ function showPage(pageName, options = { updateUrl: true }) {
       initDonationModule();
     }
   }
+  updateHeadingAria(pageName);
   updateMeta(pageName);
   if (options.updateUrl) updateUrlForPage(pageName);
 }
@@ -1134,8 +1281,15 @@ function setLanguage(lang) {
     }
   });
 
+  // Update UI text/labels per language
   const galleryTitle = document.getElementById('gallery-title');
   if (galleryTitle) galleryTitle.textContent = t('gallery-title');
+
+  const modalTitle = document.getElementById('modal-title');
+  if (modalTitle) modalTitle.textContent = t('modal-title');
+
+  const modalSearchInput = document.getElementById('modal-search-input');
+  if (modalSearchInput) modalSearchInput.placeholder = t('modal-search-placeholder');
 
   const contactTitleEl = document.getElementById('contact-title');
   if (contactTitleEl) contactTitleEl.textContent = t('contact-title');
@@ -1157,12 +1311,37 @@ function setLanguage(lang) {
   if (messageInput) { messageInput.placeholder = t('placeholder_message'); messageInput.setAttribute('aria-label', t('placeholder_message')); }
   if (sendButton) sendButton.textContent = t('send_button');
 
+  // Update H1 image alts and sr-only text
+  const h1Map = {
+    home: t('h1_home'),
+    showcase: t('h1_showcase'),
+    contact: t('h1_contact'),
+    donation: t('h1_donation')
+  };
+  const logoHome = document.getElementById('logo-home');
+  const logoShow = document.getElementById('logo-showcase');
+  const logoContact = document.getElementById('logo-contact');
+  const logoDonation = document.getElementById('logo-donation');
+  if (logoHome) logoHome.setAttribute('alt', h1Map.home);
+  if (logoShow) logoShow.setAttribute('alt', h1Map.showcase);
+  if (logoContact) logoContact.setAttribute('alt', h1Map.contact);
+  if (logoDonation) logoDonation.setAttribute('alt', h1Map.donation);
+
+  const h1HomeText = document.getElementById('h1-home-text');
+  const h1ShowText = document.getElementById('h1-showcase-text');
+  const h1ContactText = document.getElementById('h1-contact-text');
+  const h1DonationText = document.getElementById('h1-donation-text');
+  if (h1HomeText) h1HomeText.textContent = h1Map.home;
+  if (h1ShowText) h1ShowText.textContent = PAGE_SEO.showcase.title;
+  if (h1ContactText) h1ContactText.textContent = PAGE_SEO.contact.title;
+  if (h1DonationText) h1DonationText.textContent = PAGE_SEO.donation.title;
+
   if (RELEASES_DATA.length > 0) {
     if (CONFIG.selectedReleaseIndex !== null) displayDetails(CONFIG.selectedReleaseIndex);
     else renderInitialSummary();
   }
 
-  initDonationModule(); // refresh currency and text
+  initDonationModule();
 }
 
 // Modal outside close
@@ -1232,7 +1411,10 @@ function closeModal() {
 document.addEventListener('DOMContentLoaded', () => {
   const initialPage = getRequestedPage();
   showPage(initialPage, { updateUrl: false });
-  updateUrlForPage(initialPage, true);
+  if (USE_HASH_ROUTER) {
+    const targetHash = initialPage === 'home' ? '#home' : `#${initialPage}`;
+    if (location.hash !== targetHash) location.hash = targetHash;
+  }
   setLanguage(CONFIG.currentLanguage);
 
   const contactForm = document.getElementById('contact-form');
@@ -1264,12 +1446,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) closeModal();
   });
 
-  const handleRouteChange = () => {
+  window.addEventListener('hashchange', () => {
     const page = getRequestedPage();
     showPage(page, { updateUrl: false });
-  };
-  window.addEventListener('popstate', handleRouteChange);
-  window.addEventListener('hashchange', () => showPage(getRequestedPage(), { updateUrl: true }));
+  });
 
   if (getRequestedPage() === 'donation') initDonationModule();
 
@@ -1340,7 +1520,15 @@ async function handleContactSubmit(e) {
   <input type="text" name="bot-field" />
 </form>
 
+<!-- Noscript crawlable links (for bots and no-JS) -->
+<noscript>
+  <div style="padding:8px;text-align:center;">
+    <p><a href="/showcase">Ten Rise Showcase</a> | <a href="/contact">Contact Ten Rise</a> | <a href="/donation">Support Ten Rise</a></p>
+  </div>
+</noscript>
+
 <!-- Ko-fi overlay widget loader -->
 <script src="https://storage.ko-fi.com/cdn/widget/overlay.js"></script>
 </body>
 </html>
+
