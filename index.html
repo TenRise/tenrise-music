@@ -95,6 +95,20 @@
         "url": "https://music.apple.com/jp/album/prayer-of-light-single/1848646444",
         "inAlbum": { "@type": "MusicAlbum", "name": "Prayer of Light - Single" }
       }
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "item": {
+        "@type": "MusicRecording",
+        "name": "水に選ばれし者 The One Chosen by Water",
+        "byArtist": { "@type": "MusicGroup", "name": "Ten Rise" },
+        "duration": "PT6M8S",
+        "datePublished": "2025-10-31",
+        "image": "https://i.imgur.com/BfKeqLg.jpeg",
+        "url": "https://music.apple.com/jp/album/the-one-chosen-by-water-single/1845238413",
+        "inAlbum": { "@type": "MusicAlbum", "name": "The One Chosen by Water - Single" }
+      }
     }
   ]
 }
@@ -639,6 +653,7 @@ To explore a partnership or sync license, please use the form below. To ensure t
     'track-journey-desc': "A gentle, cinematic piece built around themes of hope and aspiration...",
     'track-stars-desc': "An energetic and highly rhythmic anthem designed to inspire determination...",
     'track-prayer-desc': 'A story where prayer guides the way, gently filling the heart with light and hope.',
+    'track-water-desc': 'A serene soundscape inspired by elemental myths, reflecting the harmony and spiritual connection with water.',
     'placeholder_name': 'Your Name',
     'placeholder_email': 'Your Email',
     'placeholder_subject': 'Subject',
@@ -677,6 +692,7 @@ To explore a partnership or sync license, please use the form below. To ensure t
     'track-journey-desc': "希望と憧れをテーマにした、優しくシネマティックな楽曲...",
     'track-stars-desc': "決意を鼓舞するためにデザインされた、エネルギッシュでリズミカルなアンセム...",
     'track-prayer-desc': '祈りに導かれ、心に光と希望がそっと満ちる物語。',
+    'track-water-desc': '水の精霊の神話に着想を得た、穏やかでスピリチュアルな 音の世界。 水との調和や精神的な繋がりが表現されています。',
     'placeholder_name': 'お名前',
     'placeholder_email': 'メールアドレス',
     'placeholder_subject': '件名',
@@ -760,6 +776,27 @@ const RELEASES_DATA = [
       { name: "Dhit Docomo", url: "https://dhits.docomo.ne.jp/search/freeword/musics?k_q=Ten%20Rise%20%E5%85%89%E3%81%AE%E7%A5%88%E3%82%8A", iconUrl: "https://i.imgur.com/nheUqcV.png" },
       { name: "Music.jp", url: "https://music-book.jp/Search?Keyword=Ten%20Rise%20%E5%85%89%E3%81%AE%E7%A5%88%E3%82%8A", iconUrl: "https://i.imgur.com/yl0AG8L.png"},
       { name: "Rakuten Music", url: "https://music.rakuten.co.jp/link/search?q=%20%E5%85%89%E3%81%AE%E7%A5%88%E3%82%8A", iconUrl: "https://i.imgur.com/AhUEhy2.png"}
+    ]
+  },
+  {
+    id: 'track-water', title: "水に選ばれし者 The One Chosen by Water", artist: "Ten Rise", label: "Ten Rise Records",
+    image: "https://i.imgur.com/BfKeqLg.jpeg", duration: "6:08", descriptionKey: 'track-water-desc',
+    genres: ["J-Pop", "Anisong", "Anime OST", "Female Vocal", "Cinematic", "Piano", "Children's Choir", "Ethereal", "Synthesizer"],
+    releaseDate: "October 31, 2025",
+    youtubeId: "E5lAcDlrcps",
+    streamingLinks: [
+      { name: "Apple Music", url: "https://music.apple.com/jp/album/the-one-chosen-by-water-single/1845238413", iconUrl: "https://i.imgur.com/VEq0YKj.png"},
+      { name: "Spotify", url: "https://open.spotify.com/album/7j0oPb5OzmvotpCN7quxGk", iconUrl: "https://i.imgur.com/C1Sa9gR.png"},
+      { name: "YouTube Music", url: "https://music.youtube.com/watch?v=E5lAcDlrcps", iconUrl: "https://i.imgur.com/IKzOJac.png"},
+      { name: "Line Music", url: "https://music.line.me/webapp/album/mb0000000004bbcdea", iconUrl: "https://i.imgur.com/b90tXvr.png"},
+      { name: "Amazon Music", url: "https://www.amazon.co.jp/music/player/albums/B0FVL8VVVZ?&_encoding=UTF8&tag=tcjaz-22&linkCode=ur2&camp=247&creative=1211", iconUrl: "https://i.imgur.com/x8Fu3Ot.png"},
+      { name: "Awa", url: "https://s.awa.fm/track/0e46ee976ca605691d13", iconUrl: "https://i.imgur.com/Lfo1UZ4.png"},
+      { name: "Recochoku", url: "https://recochoku.jp/album/A2005786500", iconUrl: "https://i.imgur.com/tjVsvF2.png"},
+      { name: "Mora", url: "https://mora.jp/package/43000074/TCJPR0001515527/", iconUrl: "https://i.imgur.com/sPIBy5J.png"},
+      { name: "KKBOX", url: "https://www.kkbox.com/jp/ja/album/4rMBs1nAFoOybgGaTv", iconUrl: "https://i.imgur.com/noe1VXg.png"},
+      { name: "Dhit Docomo", url: "https://dhits.docomo.ne.jp/search/freeword/musics?k_q=Ten%20Rise%20%E6%B0%B4%E3%81%AB%E9%81%B8%E3%81%B0%E3%82%8C%E3%81%97%E8%80%85", iconUrl: "https://i.imgur.com/nheUqcV.png" },
+      { name: "Music.jp", url: "https://music-book.jp/music/Search?keyword=Ten%20Rise%20%E6%B0%B4%E3%81%AB%E9%81%B8%E3%81%B0%E3%82%8C%E3%81%97%E8%80%85&ga=sg_search_summary&_sf=p", iconUrl: "https://i.imgur.com/yl0AG8L.png"},
+      { name: "Rakuten Music", url: "https://music.rakuten.co.jp/link/search?q=%20%E6%B0%B4%E3%81%AB%E9%81%B8%E3%81%B0%E3%82%8C%E3%81%97%E8%80%85", iconUrl: "https://i.imgur.com/AhUEhy2.png"}
     ]
   }
 ];
@@ -1531,4 +1568,3 @@ async function handleContactSubmit(e) {
 <script src="https://storage.ko-fi.com/cdn/widget/overlay.js"></script>
 </body>
 </html>
-
